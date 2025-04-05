@@ -13,7 +13,7 @@
 #include <stb_image.h>
 #include <stdexcept>
 
-#include "continiumwave.hpp"
+#include "xyzlabs.hpp"
 #include "constants.hpp"
 #include "utils.hpp"
 
@@ -23,7 +23,7 @@ static void glfw_error_callback(int error, const char* description) {
     throw std::runtime_error(description);
 }
 
-void ContiniumWave::init() {
+void XYZLabs::init() {
     glfwSetErrorCallback(glfw_error_callback);
 
     utils::handle_event("GLFW initialization", glfwInit() == GLFW_TRUE);
@@ -47,7 +47,7 @@ void ContiniumWave::init() {
     io.IniFilename = nullptr;
 }
 
-int ContiniumWave::mainloop() {
+int XYZLabs::mainloop() {
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
@@ -85,7 +85,7 @@ int ContiniumWave::mainloop() {
     return 0;
 }
 
-void ContiniumWave::exit() {
+void XYZLabs::exit() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImPlot::DestroyContext();
@@ -94,7 +94,7 @@ void ContiniumWave::exit() {
     glfwTerminate();
 }
 
-int ContiniumWave::exec() {
+int XYZLabs::exec() {
     try {
         init();
         mainloop();
@@ -106,6 +106,6 @@ int ContiniumWave::exec() {
 
     exit();
 
-    spdlog::info("ContiniumWave closing");
+    spdlog::info("XYZLabs closing");
     return 0;
 }

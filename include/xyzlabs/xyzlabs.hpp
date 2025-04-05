@@ -1,6 +1,6 @@
 
-#ifndef CONTINIUMWAVE_HPP
-#define CONTINIUMWAVE_HPP
+#ifndef XYZLABS_HPP
+#define XYZLABS_HPP
 
 #include <imgui.h>
 #include <memory>
@@ -9,7 +9,7 @@
 
 class GLFWwindow;
 
-class ContiniumWave {
+class XYZLabs {
     GLFWwindow *window;
 
     const char* glsl_version = "#version 300 es";

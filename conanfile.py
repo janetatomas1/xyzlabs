@@ -2,7 +2,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
 
-class ContiniumWave(ConanFile):
+class XYZLabs(ConanFile):
     name = "continium-wave"
     version = "0.0"
     license = "Proprietary"
@@ -32,4 +32,4 @@ class ContiniumWave(ConanFile):
         pass
 
     def package_info(self):
-        self.cpp_info.libs = ["continiumwave"]
+        self.cpp_info.libs = ["xyzlabs"]

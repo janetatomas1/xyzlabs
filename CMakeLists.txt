@@ -1,6 +1,6 @@
 
 cmake_minimum_required(VERSION 3.28)
-project(continiumwave)
+project(xyzlabs)
 
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/third-party/gcc/conan_toolchain.cmake")
@@ -30,34 +30,34 @@ set(
     "${IMPLOT_DIR}/implot_items.cpp"
 )
 
-file(GLOB WAVE_SOURCES "${CMAKE_SOURCE_DIR}/src/wave/*.cpp")
+file(GLOB XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
 add_executable(
-    continiumwave
-    "${WAVE_SOURCES}"
+    xyzlabs
+    "${XYZLABS_SOURCES}"
     "${IMGUI_SOURCES}"
     "${IMPLOT_SOURCES}"
 )
 
-target_compile_definitions(continiumwave PUBLIC SPDLOG_FMT_EXTERNAL) 
-target_compile_definitions(continiumwave INTERFACE SPDLOG_FMT_EXTERNAL)
+target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
+target_compile_definitions(xyzlabs INTERFACE SPDLOG_FMT_EXTERNAL)
 
 target_include_directories(
-    continiumwave
+    xyzlabs
     PRIVATE
     "${CMAKE_INCLUDE_PATH}"
-    "${CMAKE_SOURCE_DIR}/include/wave"
+    "${CMAKE_SOURCE_DIR}/include/xyzlabs"
     "${IMGUI_DIR}"
     "${IMGUI_BACKENDS_DIR}"
     "${IMPLOT_DIR}"
     "${STB_DIR}"
 )
 target_link_directories(
-    continiumwave
+    xyzlabs
     PRIVATE
     ${CMAKE_LIBRARY_PATH}
 )
 target_link_libraries(
-    continiumwave
+    xyzlabs
     PRIVATE
     glfw3
     spdlog
