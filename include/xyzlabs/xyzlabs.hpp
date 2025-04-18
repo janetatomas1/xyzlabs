@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "widgetmanager.hpp"
+#include "taskmanager.hpp"
 
 class GLFWwindow;
 
@@ -16,7 +17,8 @@ class XYZLabs {
     ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
 
     int width, height;
-    WidgetManager wManager;
+    WidgetManager widgetManager;
+    TaskManager taskManager;
 
     void init();
     int mainloop();
@@ -27,6 +29,8 @@ class XYZLabs {
     XYZLabs& operator=(const XYZLabs&) = delete;
 public:
     static XYZLabs& instance();
+    WidgetManager &get_widget_manager();
+    TaskManager &get_task_manager();
     int exec();
 };
 

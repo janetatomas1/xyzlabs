@@ -113,3 +113,11 @@ int XYZLabs::exec() {
     spdlog::info("XYZLabs closing");
     return 0;
 }
+
+WidgetManager &XYZLabs::get_widget_manager() {
+    return widgetManager;
+}
+
+TaskManager &XYZLabs::get_task_manager() {
+    return taskManager;
+}
