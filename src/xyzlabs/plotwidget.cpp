@@ -4,11 +4,10 @@
 
 #include "plotwidget.hpp"
 
-void PlotWidget::show(int width, int height) {
+void PlotWidget::show(const ImVec2 &size, const ImVec2 &position) {
     auto flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-    auto size = ImVec2(width, height);
     ImGui::SetNextWindowSize(size);
-    ImGui::SetNextWindowPos({0, 0});
+    ImGui::SetNextWindowPos(position);
     ImGui::Begin(title.c_str(), NULL, flags);
     if(ImPlot::BeginPlot(plotID.c_str(), size, flags)) {
         ImPlot::EndPlot();
@@ -16,5 +15,5 @@ void PlotWidget::show(int width, int height) {
     ImGui::End();
 }
 
-PlotWidget::PlotWidget(const std::string &title): title(title), plotID(fmt::format("##{}", title)) {
+PlotWidget::PlotWidget(std::string &title): title(title), plotID(fmt::format("##{}", title)) {
 }

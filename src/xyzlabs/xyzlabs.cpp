@@ -69,14 +69,6 @@ int XYZLabs::mainloop() {
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
             
-            ImGui::Begin("tttt");
-            ImDrawList* draw_list = ImGui::GetWindowDrawList(); 
-            ImVec2 p = ImGui::GetCursorScreenPos();
-            draw_list->AddCircleFilled(ImVec2(50, 50), 30.0f, IM_COL32(255, 0, 0, 255), 16); 
-            draw_list->AddLine(ImVec2(p.x, p.y), ImVec2(p.x + 100.0f, p.y + 100.0f), IM_COL32(255, 255, 0, 255), 3.0f);
-
-            ImGui::End();
-
             ImGui::Render();
     
             glViewport(0, 0, width, height);
@@ -99,6 +91,12 @@ void XYZLabs::exit() {
     glfwDestroyWindow(window);
     glfwTerminate();
 }
+
+XYZLabs& XYZLabs::instance() {
+    static XYZLabs labs;
+    return labs;
+}
+
 
 int XYZLabs::exec() {
     try {
