@@ -7,12 +7,13 @@
 #include <queue>
 #include <condition_variable>
 #include <mutex>
+#include <readerwriterqueue/readerwriterqueue.h>
 
 #include "task.hpp"
 
 class TaskManager {
     std::thread worker;
-    std::queue<std::unique_ptr<Task>> tasks;
+    moodycamel::ReaderWriterQueue<std::unique_ptr<Task>> tasks;
     std::condition_variable cv;
     std::mutex mux;
 

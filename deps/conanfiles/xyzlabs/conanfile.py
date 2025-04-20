@@ -13,7 +13,8 @@ class XYZLabs(ConanFile):
     exports_sources = "src/*", "include/*"
     requires = [
         "glfw/3.4",
-        "spdlog/1.15.1"
+        "spdlog/1.15.1",
+        "readerwriterqueue/1.0.6",
     ]
 
     def generate(self):

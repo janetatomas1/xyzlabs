@@ -99,6 +99,8 @@ XYZLabs& XYZLabs::instance() {
 
 
 int XYZLabs::exec() {
+    #include <type_traits>
+
     try {
         init();
         mainloop();

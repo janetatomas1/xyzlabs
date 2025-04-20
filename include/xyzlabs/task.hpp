@@ -4,7 +4,7 @@
 
 class Task {
 public:
-    void execute() = delete;
+    void execute() {};
 };
 
 #endif
