@@ -1,16 +1,28 @@
 
-#ifndef WIDGET_HPP
-#define WIDGET_HPP
+#ifndef WIDGET_H
+#define WIDGET_H
 
 #include <imgui.h>
-
-#include "widgetmanager.hpp"
-
+#include <string>
+#include <memory>
 
 class Widget {
+    std::string title_;
+    std::string id_;
+
 public:
-    virtual void show(const ImVec2 &size, const ImVec2 &position) = 0;
-    Widget() = default;
+    Widget(const std::string &title);
+    virtual void show(ImVec2 &size, ImVec2& position);
+    inline const std::string& title() const;
+    inline const std::string &id() const;
 };
+
+const std::string& Widget::title() const {
+    return title_;
+}
+
+const std::string &Widget::id() const {
+    return id_;
+}
 
 #endif

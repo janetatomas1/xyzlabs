@@ -5,33 +5,38 @@
 #include <imgui.h>
 #include <memory>
 
-#include "widgetmanager.hpp"
+#include <boost/uuid.hpp>
+
 #include "taskmanager.hpp"
+#include "widgetmanager.hpp"
+
+namespace uuid = boost::uuids;
 
 class GLFWwindow;
 
+
 class XYZLabs {
-    GLFWwindow *window;
+    GLFWwindow *window_;
+    TaskManager taskManager_;
+    WidgetManager widgetManager_;
+    uuid::random_generator idGenerator_;
 
-    const char* glsl_version = "#version 300 es";
-    ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
-
-    int width, height;
-    WidgetManager widgetManager;
-    TaskManager taskManager;
-
+    int width_ = 0, height_ = 0;
+    
     void init();
     int mainloop();
     void exit();
-
     XYZLabs() = default;
-    XYZLabs(const XYZLabs&) = delete;
-    XYZLabs& operator=(const XYZLabs&) = delete;
+    ~XYZLabs() = default;
 public:
-    static XYZLabs& instance();
-    WidgetManager &get_widget_manager();
-    TaskManager &get_task_manager();
+    XYZLabs(const XYZLabs &) = delete;
+    XYZLabs & operator = (const XYZLabs &) = delete;
+
     int exec();
+    static XYZLabs& instance();
+    TaskManager &task_manager();
+    WidgetManager &widget_manager();
+    uuid::random_generator& id_generator();
 };
 
 #endif

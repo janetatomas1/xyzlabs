@@ -14,8 +14,9 @@
 #include <stdexcept>
 
 #include "xyzlabs.hpp"
-#include "constants.hpp"
 #include "utils.hpp"
+#include "introwidget.hpp"
+#include "constants.hpp"
 
 
 static void glfw_error_callback(int error, const char* description) {
@@ -31,12 +32,12 @@ void XYZLabs::init() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-    window = glfwCreateWindow(1000, 1000, constants::TITLE, nullptr, nullptr);
-    utils::handle_event("Window creation", window != nullptr);
+    window_ = glfwCreateWindow(1000, 1000, constants::TITLE.c_str(), nullptr, nullptr);
+    utils::handle_event("Window creation", window_ != nullptr);
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(window_);
     glfwSwapInterval(1);
-    glfwMaximizeWindow(window);
+    glfwMaximizeWindow(window_);
 
     IMGUI_CHECKVERSION();
     
@@ -45,62 +46,61 @@ void XYZLabs::init() {
 
     ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = nullptr;
+
+    auto initialWidget = std::make_unique<IntroWidget>();
+    widgetManager_.add_widget(std::move(initialWidget));
+    taskManager_.run();
 }
 
 int XYZLabs::mainloop() {
+    ImVec2 size = {};
+    ImVec2 pos = {0, 0};
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
     ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
+    ImGui_ImplGlfw_InitForOpenGL(window_, true);
+    ImGui_ImplOpenGL3_Init("#version 300 es");
 
-
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window_)) {
         glfwPollEvents();
 
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        if (glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             spdlog::info("ESC key pressed, exiting");
-            glfwSetWindowShouldClose(window, true);
+            glfwSetWindowShouldClose(window_, true);
         } else {
-            glfwGetFramebufferSize(window, &width, &height);
+            glfwGetFramebufferSize(window_, &width_, &height_);
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            
+
+            size = {static_cast<float>(width_), static_cast<float>(height_)};
+
+            widgetManager_.show(size, pos);
+
             ImGui::Render();
     
-            glViewport(0, 0, width, height);
-            glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-            glClear(GL_COLOR_BUFFER_BIT);
-    
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    
-            glfwSwapBuffers(window);    
+
+            glViewport(0, 0, width_, height_);
+            glfwSwapBuffers(window_);    
         }
     }
     return 0;
 }
 
 void XYZLabs::exit() {
+    taskManager_.stop();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImPlot::DestroyContext();
     ImGui::DestroyContext();
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(window_);
     glfwTerminate();
 }
 
-XYZLabs& XYZLabs::instance() {
-    static XYZLabs labs;
-    return labs;
-}
-
-
 int XYZLabs::exec() {
-    #include <type_traits>
-
     try {
         init();
         mainloop();
@@ -116,10 +116,19 @@ int XYZLabs::exec() {
     return 0;
 }
 
-WidgetManager &XYZLabs::get_widget_manager() {
-    return widgetManager;
+XYZLabs& XYZLabs::instance() {
+    static XYZLabs wave;
+    return wave;
 }
 
-TaskManager &XYZLabs::get_task_manager() {
-    return taskManager;
+TaskManager &XYZLabs::task_manager() {
+    return taskManager_;
+}
+
+WidgetManager &XYZLabs::widget_manager() {
+    return widgetManager_;
+}
+
+uuid::random_generator &XYZLabs::id_generator() {
+    return idGenerator_;
 }

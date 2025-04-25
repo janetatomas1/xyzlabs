@@ -2,5 +2,6 @@
 #include "xyzlabs.hpp"
 
 int main() {
-    return XYZLabs::instance().exec();    
+    XYZLabs &wave = XYZLabs::instance();
+    return wave.exec();    
 }

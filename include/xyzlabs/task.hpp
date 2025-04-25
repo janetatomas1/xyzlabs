@@ -4,7 +4,7 @@
 
 class Task {
 public:
-    void execute() {};
+    virtual void execute() = 0;
 };
 
 #endif

@@ -2,26 +2,20 @@
 #ifndef TASKMANAGER_HPP
 #define TASKMANAGER_HPP
 
-#include <thread>
-#include <memory>
-#include <queue>
-#include <condition_variable>
-#include <mutex>
-#include <readerwriterqueue/readerwriterqueue.h>
+#include <boost/asio.hpp>
 
-#include "task.hpp"
+namespace asio = boost::asio;
 
 class TaskManager {
-    std::thread worker;
-    moodycamel::ReaderWriterQueue<std::unique_ptr<Task>> tasks;
-    std::condition_variable cv;
-    std::mutex mux;
+    const size_t threadCount_ = 4;
 
-    bool running;
-    bool busy;
+    asio::thread_pool pool_;
+    asio::io_context io_;
+
 public:
-    TaskManager() = default;
-    void start();
+    TaskManager();
+    void run();
+    void stop();
 };
 
 #endif

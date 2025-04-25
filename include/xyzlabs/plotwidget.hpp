@@ -6,13 +6,12 @@
 
 #include "widget.hpp"
 
-class PlotWidget : public Widget {
-    std::string title;
-    std::string plotID;
-    
+
+class PlotWidget : Widget {
+    std::string plotID_;
 public:
-    void show(const ImVec2 &size, const ImVec2 &position) override;
-    PlotWidget(std::string &title);
+    void show(ImVec2 &size, ImVec2& position) override;
+    PlotWidget(const std::string &title);
 };
 
 #endif

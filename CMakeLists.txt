@@ -14,7 +14,7 @@ set(IMGUI_DIR "${CMAKE_SOURCE_DIR}/submodules/imgui/")
 set(IMGUI_BACKENDS_DIR "${CMAKE_SOURCE_DIR}/submodules/imgui/backends")
 set(IMPLOT_DIR "${CMAKE_SOURCE_DIR}/submodules/implot")
 set(STB_DIR "${CMAKE_SOURCE_DIR}/submodules/stb")
-
+set(PFD_DIR "${CMAKE_SOURCE_DIR}/submodules/portable-file-dialogs")
 set(
     IMGUI_SOURCES
     "${IMGUI_DIR}/imgui.cpp"
@@ -50,6 +50,7 @@ target_include_directories(
     "${IMGUI_BACKENDS_DIR}"
     "${IMPLOT_DIR}"
     "${STB_DIR}"
+    "${PFD_DIR}"
 )
 target_link_directories(
     xyzlabs
