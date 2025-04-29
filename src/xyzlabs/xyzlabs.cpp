@@ -48,6 +48,7 @@ void XYZLabs::init() {
     io.IniFilename = nullptr;
 
     auto initialWidget = std::make_unique<IntroWidget>();
+    initialWidget->disable_closing();
     widgetManager_.add_widget(std::move(initialWidget));
     taskManager_.run();
 }

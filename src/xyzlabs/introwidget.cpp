@@ -1,12 +1,14 @@
 
 #include <imgui.h>
+#include <portable-file-dialogs.h>
 
 #include "introwidget.hpp"
 #include "constants.hpp"
-#include "portable-file-dialogs.h"
+#include "xyzlabs.hpp"
+#include "analysiswidget.hpp"
 
 
-IntroWidget::IntroWidget(): Widget("") {}
+IntroWidget::IntroWidget(): Widget("Welcome !!!") {}
 
 void IntroWidget::show(ImVec2 &size, ImVec2& position) {
     ImGui::SetWindowFontScale(1.3);
@@ -16,7 +18,9 @@ void IntroWidget::show(ImVec2 &size, ImVec2& position) {
 
     if(ImGui::Button(constants::LOAD_FILE_BUTTON_TITLE.c_str(), loadFileBtnSize_)) {
         auto selection = pfd::open_file("Select a file").result();
-        if(!selection.empty())
-            std::cout << "User selected file " << selection[0] << "\n";
+        if(!selection.empty()) {
+            std::unique_ptr<Widget> widget = std::make_unique<AnalysisWidget>(selection[0]);
+            XYZLabs::instance().widget_manager().add_widget(std::move(widget));
+        }
     }
 }
