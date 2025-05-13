@@ -5,21 +5,18 @@
 #include <imgui.h>
 #include <memory>
 
-#include <boost/uuid.hpp>
+#include "idgenerator.hpp"
 
 #include "taskmanager.hpp"
 #include "widgetmanager.hpp"
 
-namespace uuid = boost::uuids;
-
 class GLFWwindow;
-
 
 class XYZLabs {
     GLFWwindow *window_;
     TaskManager taskManager_;
     WidgetManager widgetManager_;
-    uuid::random_generator idGenerator_;
+    IDGenerator idGenerator_;
 
     int width_ = 0, height_ = 0;
     
@@ -36,7 +33,7 @@ public:
     static XYZLabs& instance();
     TaskManager &task_manager();
     WidgetManager &widget_manager();
-    uuid::random_generator& id_generator();
+    IDGenerator& id_generator();
 };
 
 #endif

@@ -9,7 +9,7 @@
 
 void AnalysisWidget::show(ImVec2 &size, ImVec2& position) {
     // TODO: create separate flags for the plot
-    if(ImPlot::BeginPlot(id().c_str(), size, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove)) {
+    if(ImPlot::BeginPlot(title_id().c_str(), size, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove)) {
         ImPlot::EndPlot();
     }
 }

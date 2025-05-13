@@ -130,6 +130,6 @@ WidgetManager &XYZLabs::widget_manager() {
     return widgetManager_;
 }
 
-uuid::random_generator &XYZLabs::id_generator() {
+IDGenerator &XYZLabs::id_generator() {
     return idGenerator_;
 }

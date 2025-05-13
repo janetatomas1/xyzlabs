@@ -6,9 +6,11 @@
 #include <string>
 #include <memory>
 
+#include "idgenerator.hpp"
+
 class Widget {
     std::string title_;
-    std::string id_;
+    IDType id_;
     std::string titleID_;
 
     bool open_ = true;
@@ -19,7 +21,7 @@ public:
     Widget(const std::string &title);
     virtual void show(ImVec2 &size, ImVec2& position);
     inline const std::string& title() const;
-    inline const std::string &id() const;
+    inline IDType id() const;
     void disable_closing();
     inline bool is_open() const;
     inline bool *is_open_ptr();
@@ -33,7 +35,7 @@ const std::string &Widget::title() const {
     return title_;
 }
 
-const std::string &Widget::id() const {
+IDType Widget::id() const {
     return id_;
 }
 

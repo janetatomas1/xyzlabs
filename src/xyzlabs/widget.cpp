@@ -6,8 +6,8 @@
 #include "widget.hpp"
 
 
-Widget::Widget(const std::string &title): title_(title), id_(""), open_(true), openPtr_(&open_) {
-    id_ = boost::uuids::to_string(XYZLabs::instance().id_generator()());
+Widget::Widget(const std::string &title):
+    title_(title), id_(XYZLabs::instance().id_generator().get_id()), open_(true), openPtr_(&open_) {
     titleID_ = std::format("{}##{}", title_, id_);
 }
 
