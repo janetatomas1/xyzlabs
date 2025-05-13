@@ -4,6 +4,8 @@
 
 #include <boost/asio.hpp>
 
+#include "task.hpp"
+
 namespace asio = boost::asio;
 
 class TaskManager {
@@ -14,6 +16,7 @@ class TaskManager {
 
 public:
     TaskManager();
+    void execute_task(std::unique_ptr<Task> task);
     void run();
     void stop();
 };
