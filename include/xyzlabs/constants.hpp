@@ -8,6 +8,8 @@ namespace constants {
     const std::string TITLE = "XYZLABS";
     const std::string INTRO_SCREEN_TITLE = "Initial screen";
     const std::string LOAD_FILE_BUTTON_TITLE = "Load file";
+    const std::string DATA_FLOW_BUTTON_TITLE = "Data flow";
+    const std::string SINUS_FLOW_BUTTON_TITLE = "Sinus flow";
     const std::string MAIN_WINDOW_ID = "MAIN_WINDOW";
     const std::string TAB_BAR_ID = "TAB_BAR";
 }
