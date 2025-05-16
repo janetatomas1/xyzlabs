@@ -29,6 +29,8 @@ class WidgetManager {
 public:
     WidgetManager() = default;
     void show(ImVec2 &size, ImVec2 &pos);
+    inline void flush_new_widgets();
+    inline void remove_closed_tabs();
 
     template<WidgetConcept W, typename... Args>
     IDType add_widget(Args... args) {

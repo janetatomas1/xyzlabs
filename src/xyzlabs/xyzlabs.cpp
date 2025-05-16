@@ -48,6 +48,7 @@ void XYZLabs::init() {
     io.IniFilename = nullptr;
 
     auto initialWidgetID = widgetManager_.add_widget<IntroWidget>();
+    widgetManager_.flush_new_widgets();
     widgetManager_.disable_widget_closing(initialWidgetID);
     taskManager_.run();
 }

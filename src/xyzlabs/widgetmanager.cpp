@@ -8,21 +8,8 @@
 
 
 void WidgetManager::show(ImVec2 &size, ImVec2 &pos) {
-    if(!newWidgets_.empty()) {
-        for(auto &w: newWidgets_) {
-            tabs_.push_back(std::move(w));
-        }
-        newWidgets_.clear();
-
-    }
-
-    tabs_.erase(
-        std::remove_if(tabs_.begin(), tabs_.end(),
-            [](auto &t) {
-                return !t->is_open();
-            }
-        ), tabs_.end()
-    );
+    flush_new_widgets();
+    remove_closed_tabs();
 
     ImGui::SetNextWindowSize(size);
     ImGui::SetNextWindowPos(pos);
@@ -45,6 +32,25 @@ void WidgetManager::show(ImVec2 &size, ImVec2 &pos) {
     }
     ImGui::End();
 
+}
+
+void WidgetManager::flush_new_widgets() {
+    if(!newWidgets_.empty()) {
+        for(auto &w: newWidgets_) {
+            tabs_.push_back(std::move(w));
+        }
+        newWidgets_.clear();
+    }
+}
+
+void WidgetManager::remove_closed_tabs() {
+    tabs_.erase(
+        std::remove_if(tabs_.begin(), tabs_.end(),
+            [](auto &t) {
+                return !t->is_open();
+            }
+        ), tabs_.end()
+    );
 }
 
 bool WidgetManager::disable_widget_closing(IDType id) {
