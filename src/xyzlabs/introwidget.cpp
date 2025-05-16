@@ -19,8 +19,7 @@ void IntroWidget::show(ImVec2 &size, ImVec2& position) {
     if(ImGui::Button(constants::LOAD_FILE_BUTTON_TITLE.c_str(), loadFileBtnSize_)) {
         auto selection = pfd::open_file("Select a file").result();
         if(!selection.empty()) {
-            std::unique_ptr<Widget> widget = std::make_unique<AnalysisWidget>(selection[0]);
-            XYZLabs::instance().widget_manager().add_widget(std::move(widget));
+            XYZLabs::instance().widget_manager().add_widget<AnalysisWidget>(selection[0]);
         }
     }
 }

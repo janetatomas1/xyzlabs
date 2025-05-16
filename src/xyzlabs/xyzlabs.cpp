@@ -47,9 +47,8 @@ void XYZLabs::init() {
     ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = nullptr;
 
-    auto initialWidget = std::make_unique<IntroWidget>();
-    initialWidget->disable_closing();
-    widgetManager_.add_widget(std::move(initialWidget));
+    auto initialWidgetID = widgetManager_.add_widget<IntroWidget>();
+    widgetManager_.disable_widget_closing(initialWidgetID);
     taskManager_.run();
 }
 

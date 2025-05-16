@@ -47,6 +47,13 @@ void WidgetManager::show(ImVec2 &size, ImVec2 &pos) {
 
 }
 
-void WidgetManager::add_widget(std::unique_ptr<Widget> widget) {
-    newWidgets_.push_back(std::move(widget));
+bool WidgetManager::disable_widget_closing(IDType id) {
+    for(auto &w: tabs_) {
+        if(w->id() == id) {
+            w->disable_closing();
+            return true;
+        }
+    }
+
+    return false;
 }

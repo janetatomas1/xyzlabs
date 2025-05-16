@@ -11,6 +11,10 @@
 
 constexpr size_t DEFAULT_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 
+template <typename T>
+concept WidgetConcept = std::derived_from<Widget, Widget>;
+
+
 class WidgetManager {
     std::vector<std::unique_ptr<Widget>> newWidgets_;
     std::vector<std::unique_ptr<Widget>> tabs_;
@@ -25,7 +29,15 @@ class WidgetManager {
 public:
     WidgetManager() = default;
     void show(ImVec2 &size, ImVec2 &pos);
-    void add_widget(std::unique_ptr<Widget> widget);
+
+    template<WidgetConcept W, typename... Args>
+    IDType add_widget(Args... args) {
+        auto widget = std::make_unique<W>(std::forward<Args>(args)...);
+        const IDType id = widget->id();
+        newWidgets_.push_back(std::move(widget));
+        return id;
+    };
+    bool disable_widget_closing(IDType id);
 };
 
 #endif
