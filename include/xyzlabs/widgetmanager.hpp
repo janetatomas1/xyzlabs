@@ -14,7 +14,6 @@ constexpr size_t DEFAULT_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_
 template <typename T>
 concept WidgetConcept = std::derived_from<Widget, Widget>;
 
-
 class WidgetManager {
     std::vector<std::unique_ptr<Widget>> newWidgets_;
     std::vector<std::unique_ptr<Widget>> tabs_;
@@ -41,5 +40,24 @@ public:
     };
     bool disable_widget_closing(IDType id);
 };
+
+void WidgetManager::flush_new_widgets() {
+    if(!newWidgets_.empty()) {
+        for(auto &w: newWidgets_) {
+            tabs_.push_back(std::move(w));
+        }
+        newWidgets_.clear();
+    }
+}
+
+void WidgetManager::remove_closed_tabs() {
+    tabs_.erase(
+        std::remove_if(tabs_.begin(), tabs_.end(),
+            [](auto &t) {
+                return !t->is_open();
+            }
+        ), tabs_.end()
+    );
+}
 
 #endif
