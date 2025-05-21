@@ -2,9 +2,9 @@
 #include <utility>
 #include <algorithm>
 
-#include "widgetmanager.hpp"
-#include "introwidget.hpp"
-#include "constants.hpp"
+#include "xyzlabs/widgetmanager.hpp"
+#include "xyzlabs/introwidget.hpp"
+#include "xyzlabs/constants.hpp"
 
 
 void WidgetManager::show(ImVec2 &size, ImVec2 &pos) {

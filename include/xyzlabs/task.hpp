@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include "result.hpp"
+#include "xyzlabs/result.hpp"
 
 class Task {
 public:

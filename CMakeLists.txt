@@ -45,7 +45,7 @@ target_include_directories(
     xyzlabs
     PRIVATE
     "${CMAKE_INCLUDE_PATH}"
-    "${CMAKE_SOURCE_DIR}/include/xyzlabs"
+    "${CMAKE_SOURCE_DIR}/include/"
     "${IMGUI_DIR}"
     "${IMGUI_BACKENDS_DIR}"
     "${IMPLOT_DIR}"

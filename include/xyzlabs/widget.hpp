@@ -6,7 +6,7 @@
 #include <string>
 #include <memory>
 
-#include "idgenerator.hpp"
+#include "xyzlabs/idgenerator.hpp"
 
 class Widget {
     std::string title_;

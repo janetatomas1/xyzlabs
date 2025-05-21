@@ -1,5 +1,5 @@
 
-#include "xyzlabs.hpp"
+#include "xyzlabs/xyzlabs.hpp"
 
 int main() {
     XYZLabs &wave = XYZLabs::instance();

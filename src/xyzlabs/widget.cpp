@@ -2,8 +2,8 @@
 #include <spdlog/spdlog.h>
 #include <format>
 
-#include "xyzlabs.hpp"
-#include "widget.hpp"
+#include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/widget.hpp"
 
 
 Widget::Widget(const std::string &title):

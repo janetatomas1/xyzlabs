@@ -2,9 +2,9 @@
 #include <imgui.h>
 #include <portable-file-dialogs.h>
 
-#include "introwidget.hpp"
-#include "constants.hpp"
-#include "xyzlabs.hpp"
+#include "xyzlabs/introwidget.hpp"
+#include "xyzlabs/constants.hpp"
+#include "xyzlabs/xyzlabs.hpp"
 
 
 IntroWidget::IntroWidget(): Widget("Welcome !!!") {}

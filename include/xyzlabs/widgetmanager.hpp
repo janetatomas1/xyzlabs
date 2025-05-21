@@ -7,7 +7,7 @@
 
 #include <imgui.h>
 
-#include "widget.hpp"
+#include "xyzlabs/widget.hpp"
 
 constexpr size_t DEFAULT_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 

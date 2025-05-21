@@ -2,7 +2,7 @@
 #ifndef INTROWIDGET_HPP
 #define INTROWIDGET_HPP
 
-#include "widget.hpp"
+#include "xyzlabs/widget.hpp"
 
 class IntroWidget: public Widget {
     ImVec2 loadFileBtnSize_ = {150.0, 30.0};

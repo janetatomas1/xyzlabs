@@ -13,10 +13,10 @@
 #include <stb_image.h>
 #include <stdexcept>
 
-#include "xyzlabs.hpp"
-#include "utils.hpp"
-#include "introwidget.hpp"
-#include "constants.hpp"
+#include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/utils.hpp"
+#include "xyzlabs/introwidget.hpp"
+#include "xyzlabs/constants.hpp"
 
 
 static void glfw_error_callback(int error, const char* description) {

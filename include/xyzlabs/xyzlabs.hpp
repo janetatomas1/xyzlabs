@@ -5,10 +5,10 @@
 #include <imgui.h>
 #include <memory>
 
-#include "idgenerator.hpp"
+#include "xyzlabs/idgenerator.hpp"
 
-#include "taskmanager.hpp"
-#include "widgetmanager.hpp"
+#include "xyzlabs/taskmanager.hpp"
+#include "xyzlabs/widgetmanager.hpp"
 
 class GLFWwindow;
 
