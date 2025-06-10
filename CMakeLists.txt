@@ -62,5 +62,7 @@ target_link_libraries(
     PRIVATE
     glfw3
     spdlog
+    GLEW
     fmt
+    GL
 )

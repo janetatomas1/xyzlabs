@@ -2,8 +2,8 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-#include <imgui_impl_opengl3_loader.h>
 #include <implot.h>
+#include <GL/glew.h>
 
 #include <GLFW/glfw3.h>
 #include <spdlog/spdlog.h>
@@ -50,6 +50,7 @@ void XYZLabs::init() {
     auto initialWidgetID = widgetManager_.add_widget<IntroWidget>();
     widgetManager_.flush_new_widgets();
     widgetManager_.disable_widget_closing(initialWidgetID);
+    glewInit();
     taskManager_.run();
 }
 
