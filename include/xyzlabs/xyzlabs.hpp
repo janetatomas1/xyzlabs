@@ -18,7 +18,7 @@
 #include <iostream>
 
 class XYZLabs {
-	GLFWwindow *window;
+	GLFWwindow *window_;
 	OpenGLBackend backend;
     TaskManager taskManager_;
     WidgetManager widgetManager_;
@@ -33,7 +33,7 @@ public:
     TaskManager &task_manager();
     WidgetManager &widget_manager();
     IDGenerator& id_generator();
-    void exec();
+    int exec();
 };
 
 #endif

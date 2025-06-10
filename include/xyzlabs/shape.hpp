@@ -3,40 +3,41 @@
 
 #include <spdlog/spdlog.h>
 
+const std::string vertex_shader_code = R"*(
+#version 330
+
+layout (location = 0) in vec3 pos;
+
+void main()
+{
+	gl_Position = vec4(0.9*pos.x, 0.9*pos.y, 0.5*pos.z, 1.0);
+}
+)*";
+
+const std::string fragment_shader_code = R"*(
+#version 330
+
+out vec4 color;
+
+void main()
+{
+	color = vec4(1.0, 1.0, 1.0, 1.0);
+}
+)*";
+
 
 struct Triangle {
-	const char* vertex_shader_code = R"*(
-	#version 330
 
-	layout (location = 0) in vec3 pos;
-
-	void main()
-	{
-		gl_Position = vec4(0.9*pos.x, 0.9*pos.y, 0.5*pos.z, 1.0);
-	}
-	)*";
-
-	const char* fragment_shader_code = R"*(
-	#version 330
-
-	out vec4 color;
-
-	void main()
-	{
-		color = vec4(0.0, 1.0, 0.0, 1.0);
-	}
-	)*";
-
-	GLuint VAO;
-	GLuint VBO;
-	GLuint shader;
+	uint32_t VAO;
+	uint32_t VBO;
+	uint32_t shader;
 	GLfloat vertices[9] = {
 		-1.0f, -1.0f, 0.0f,
 		1.0f, -1.0f, 0.0f,
 		0.0f, 1.0f, 0.0f
 	};
 
-	void create_triangle() {
+	void draw_triangle() {
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
 
@@ -51,14 +52,14 @@ struct Triangle {
 		glBindVertexArray(0);
 	}
 
-	void create_shaders() {
+	void init() {
 		shader = glCreateProgram();
 		if(!shader) {
 			
 		}
 
-		add_shader(shader, vertex_shader_code, GL_VERTEX_SHADER);
-		add_shader(shader, fragment_shader_code, GL_FRAGMENT_SHADER);
+		add_shader(shader, vertex_shader_code.c_str(), GL_VERTEX_SHADER);
+		add_shader(shader, fragment_shader_code.c_str(), GL_FRAGMENT_SHADER);
 
 		GLint result = 0;
 		GLchar log[1024] = {0};
@@ -78,8 +79,8 @@ struct Triangle {
 		}
 	}
 
-	void add_shader(GLuint program, const char* shader_code, GLenum type) {
-		GLuint current_shader = glCreateShader(type);
+	void add_shader(uint32_t program, const char* shader_code, GLenum type) {
+		uint32_t current_shader = glCreateShader(type);
 
 		const GLchar* code[1];
 		code[0] = shader_code;

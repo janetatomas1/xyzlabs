@@ -30,25 +30,29 @@ void XYZLabs::init() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    window = glfwCreateWindow(1000, 1000, "My Window", NULL, NULL);
-    glfwMaximizeWindow(window);
-    if (!window) {
+    uint32_t width = 1000;
+    uint32_t height = 1000;
+
+    window_ = glfwCreateWindow(width, height, "My Window", NULL, NULL);
+    glfwMaximizeWindow(window_);
+    if (!window_) {
         std::cout << "GLFW creation failed!\n";
         glfwTerminate();
     }
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(window_);
     glewExperimental = GL_TRUE;
 
     if (glewInit() != GLEW_OK) {
         std::cout << "glew initialisation failed!\n";
-        glfwDestroyWindow(window);
+        glfwDestroyWindow(window_);
         glfwTerminate();
     }
 
-    t0.create_triangle();
-    t0.create_shaders();
-    backend.create_framebuffer(1000, 1000);
+    t0.draw_triangle();
+    t0.init();
+    backend.create_framebuffer(width, height);
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -57,15 +61,20 @@ void XYZLabs::init() {
     ImGui::StyleColorsDark();
     ImGuiStyle& style = ImGui::GetStyle();
 
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 }
 
 void XYZLabs::mainloop() {
-    while (!glfwWindowShouldClose(window)) {
+    uint32_t width = 1000;
+    uint32_t height = 1000;
 
-
+    while (!glfwWindowShouldClose(window_)) {
         glfwPollEvents();
+
+        if(glfwGetKey(window_, GLFW_KEY_ESCAPE)) {
+            glfwSetWindowShouldClose(window_, GLFW_TRUE);
+        }
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();    
@@ -97,12 +106,11 @@ void XYZLabs::mainloop() {
 
         backend.bind_framebuffer();
         t0.render();
-                    // t0.render();
         backend.unbind_framebuffer();
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
 
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(window_);
     }
 }
 
@@ -115,14 +123,15 @@ void XYZLabs::exit() {
     glDeleteTextures(1, &backend.texture_id);
     glDeleteRenderbuffers(1, &backend.RBO);
 
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(window_);
     glfwTerminate();
 }
 
-void XYZLabs::exec() {
+int XYZLabs::exec() {
     init();
     mainloop();
     exit();
+    return 0;
 }
 
 XYZLabs& XYZLabs::instance() {

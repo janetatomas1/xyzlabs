@@ -2,7 +2,6 @@
 #include "xyzlabs/xyzlabs.hpp"
 
 int main() {
-    XYZLabs wave;
-    wave.exec();
-    return 0;
+    XYZLabs &wave = XYZLabs::instance();
+    return wave.exec();    
 }
