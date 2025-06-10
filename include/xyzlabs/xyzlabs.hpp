@@ -2,38 +2,38 @@
 #ifndef XYZLABS_HPP
 #define XYZLABS_HPP
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <imgui.h>
-#include <memory>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
+#include "xyzlabs/shape.hpp"
+#include "xyzlabs/openglbackend.hpp"
 #include "xyzlabs/idgenerator.hpp"
-
 #include "xyzlabs/taskmanager.hpp"
 #include "xyzlabs/widgetmanager.hpp"
 
-class GLFWwindow;
+#include <iostream>
 
 class XYZLabs {
-    GLFWwindow *window_;
+	GLFWwindow *window;
+	OpenGLBackend backend;
     TaskManager taskManager_;
     WidgetManager widgetManager_;
     IDGenerator idGenerator_;
+    Triangle t0;
 
-    int width_ = 0, height_ = 0;
-    
     void init();
-    int mainloop();
     void exit();
-    XYZLabs() = default;
-    ~XYZLabs() = default;
+    void mainloop();
 public:
-    XYZLabs(const XYZLabs &) = delete;
-    XYZLabs & operator = (const XYZLabs &) = delete;
-
-    int exec();
     static XYZLabs& instance();
     TaskManager &task_manager();
     WidgetManager &widget_manager();
     IDGenerator& id_generator();
+    void exec();
 };
 
 #endif
