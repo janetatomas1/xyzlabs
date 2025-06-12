@@ -21,7 +21,7 @@
 
 void XYZLabs::init() {
     if (!glfwInit()) {
-        std::cout << "GLFW initialisation failed!\n";
+        spdlog::error("GLFW initialisation failed!\n");
         glfwTerminate();
     }
 
@@ -33,10 +33,10 @@ void XYZLabs::init() {
     uint32_t width = 1000;
     uint32_t height = 1000;
 
-    window_ = glfwCreateWindow(width, height, "My Window", NULL, NULL);
+    window_ = glfwCreateWindow(width, height, constants::TITLE.c_str(), NULL, NULL);
     glfwMaximizeWindow(window_);
     if (!window_) {
-        std::cout << "GLFW creation failed!\n";
+        spdlog::error("GLFW creation failed!\n");
         glfwTerminate();
     }
 
@@ -44,7 +44,7 @@ void XYZLabs::init() {
     glewExperimental = GL_TRUE;
 
     if (glewInit() != GLEW_OK) {
-        std::cout << "glew initialisation failed!\n";
+        spdlog::error("GLEW initialisation failed!\n");
         glfwDestroyWindow(window_);
         glfwTerminate();
     }
@@ -66,8 +66,8 @@ void XYZLabs::init() {
 }
 
 void XYZLabs::mainloop() {
-    uint32_t width = 1000;
-    uint32_t height = 1000;
+    int32_t width = 0;
+    int32_t height = 0;
 
     while (!glfwWindowShouldClose(window_)) {
         glfwPollEvents();
@@ -75,6 +75,8 @@ void XYZLabs::mainloop() {
         if(glfwGetKey(window_, GLFW_KEY_ESCAPE)) {
             glfwSetWindowShouldClose(window_, GLFW_TRUE);
         }
+
+        glfwGetWindowSize(window_, &width, &height);
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();    
@@ -88,15 +90,15 @@ void XYZLabs::mainloop() {
         const float window_width = ImGui::GetContentRegionAvail().x;
         const float window_height = ImGui::GetContentRegionAvail().y;
 
-        backend.rescale_framebuffer(window_width, window_height);
-        glViewport(0, 0, window_width, window_height);
+        backend.rescale_framebuffer(width, height);
+        glViewport(0, 0, width, height);
 
         ImVec2 pos = ImGui::GetCursorScreenPos();
         
         ImGui::GetWindowDrawList()->AddImage(
             backend.texture_id, 
-            ImVec2(pos.x, pos.y), 
-            ImVec2(pos.x + window_width, pos.y + window_height), 
+            ImVec2(0, 0), 
+            ImVec2(width, height), 
             ImVec2(0, 1), 
             ImVec2(1, 0)
         );

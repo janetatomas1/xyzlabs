@@ -15,7 +15,6 @@
 #include "xyzlabs/taskmanager.hpp"
 #include "xyzlabs/widgetmanager.hpp"
 
-#include <iostream>
 
 class XYZLabs {
 	GLFWwindow *window_;

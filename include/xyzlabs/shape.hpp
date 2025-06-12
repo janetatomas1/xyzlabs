@@ -27,14 +27,13 @@ void main()
 
 
 struct Triangle {
-
 	uint32_t VAO;
 	uint32_t VBO;
 	uint32_t shader;
 	GLfloat vertices[9] = {
-		-1.0f, -1.0f, 0.0f,
+		-0.0f, -1.0f, 0.0f,
 		1.0f, -1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f
+		0.0f, 0.5f, 0.5f
 	};
 
 	void draw_triangle() {
@@ -108,6 +107,5 @@ struct Triangle {
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);
-		glUseProgram(0);
 	}
 };
