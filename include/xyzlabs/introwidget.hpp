@@ -7,7 +7,7 @@
 class IntroWidget: public Widget {
     ImVec2 loadFileBtnSize_ = {150.0, 30.0};
 public:
-    void show(ImVec2 &size, ImVec2& position) override;
+    void show(const ImVec2 &size, const ImVec2& position) override;
     IntroWidget();
 };
 

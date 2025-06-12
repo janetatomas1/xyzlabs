@@ -9,7 +9,6 @@
 
 #include "xyzlabs/widget.hpp"
 
-constexpr size_t DEFAULT_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 
 template <typename T>
 concept WidgetConcept = std::derived_from<Widget, Widget>;
@@ -27,7 +26,7 @@ class WidgetManager {
 
 public:
     WidgetManager() = default;
-    void show(ImVec2 &size, ImVec2 &pos);
+    void show(const ImVec2 &size, const ImVec2 &pos);
     inline void flush_new_widgets();
     inline void remove_closed_tabs();
 

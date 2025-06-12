@@ -11,7 +11,7 @@ Widget::Widget(const std::string &title):
     titleID_ = std::format("{}##{}", title_, id_);
 }
 
-void Widget::show(ImVec2 &size, ImVec2& position) {}
+void Widget::show(const ImVec2 &size, const ImVec2& position) {}
 
 void Widget::disable_closing() {
     openPtr_ = nullptr;

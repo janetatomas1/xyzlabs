@@ -19,7 +19,7 @@ class Widget {
 
 public:
     Widget(const std::string &title);
-    virtual void show(ImVec2 &size, ImVec2& position);
+    virtual void show(const ImVec2 &size, const ImVec2& position);
     inline const std::string& title() const;
     inline IDType id() const;
     void disable_closing();

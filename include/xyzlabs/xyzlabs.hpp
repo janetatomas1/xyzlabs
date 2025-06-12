@@ -3,7 +3,6 @@
 #define XYZLABS_HPP
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -15,10 +14,11 @@
 #include "xyzlabs/taskmanager.hpp"
 #include "xyzlabs/widgetmanager.hpp"
 
+class GLFWWindow;
 
 class XYZLabs {
 	GLFWwindow *window_;
-	OpenGLBackend backend;
+	OpenGLBackend backend_;
     TaskManager taskManager_;
     WidgetManager widgetManager_;
     IDGenerator idGenerator_;

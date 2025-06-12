@@ -9,7 +9,7 @@
 
 IntroWidget::IntroWidget(): Widget("Welcome !!!") {}
 
-void IntroWidget::show(ImVec2 &size, ImVec2& position) {
+void IntroWidget::show(const ImVec2 &size, const ImVec2& position) {
     ImGui::SetWindowFontScale(1.3);
 
     ImGui::SetCursorPosX(size.x * 0.45);

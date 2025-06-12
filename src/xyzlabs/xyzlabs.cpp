@@ -18,6 +18,8 @@
 #include "xyzlabs/introwidget.hpp"
 #include "xyzlabs/constants.hpp"
 
+constexpr size_t MAIN_WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+
 
 void XYZLabs::init() {
     if (!glfwInit()) {
@@ -51,7 +53,7 @@ void XYZLabs::init() {
 
     t0.draw_triangle();
     t0.init();
-    backend.create_framebuffer(width, height);
+    backend_.create_framebuffer(width, height);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -63,6 +65,8 @@ void XYZLabs::init() {
 
     ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
+
+    widgetManager_.add_widget<IntroWidget>();
 }
 
 void XYZLabs::mainloop() {
@@ -85,30 +89,17 @@ void XYZLabs::mainloop() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         ImGui::NewFrame();
-        ImGui::Begin("My Scene");
+        ImGui::Begin(constants::MAIN_WINDOW_ID.c_str(), nullptr, MAIN_WINDOW_FLAGS);
 
-        const float window_width = ImGui::GetContentRegionAvail().x;
-        const float window_height = ImGui::GetContentRegionAvail().y;
+        widgetManager_.show({static_cast<float>(width), static_cast<float>(height)}, {0.0, 0.0});
 
-        backend.rescale_framebuffer(width, height);
-        glViewport(0, 0, width, height);
-
-        ImVec2 pos = ImGui::GetCursorScreenPos();
+        backend_.rescale_framebuffer(width, height);
         
-        ImGui::GetWindowDrawList()->AddImage(
-            backend.texture_id, 
-            ImVec2(0, 0), 
-            ImVec2(width, height), 
-            ImVec2(0, 1), 
-            ImVec2(1, 0)
-        );
-
         ImGui::End();
         ImGui::Render();
 
-        backend.bind_framebuffer();
-        t0.render();
-        backend.unbind_framebuffer();
+        backend_.bind_framebuffer();
+        backend_.unbind_framebuffer();
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
 
@@ -121,9 +112,9 @@ void XYZLabs::exit() {
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    glDeleteFramebuffers(1, &backend.FBO);
-    glDeleteTextures(1, &backend.texture_id);
-    glDeleteRenderbuffers(1, &backend.RBO);
+    glDeleteFramebuffers(1, &backend_.FBO);
+    glDeleteTextures(1, &backend_.texture_id);
+    glDeleteRenderbuffers(1, &backend_.RBO);
 
     glfwDestroyWindow(window_);
     glfwTerminate();
