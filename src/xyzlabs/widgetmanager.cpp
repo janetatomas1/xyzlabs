@@ -5,6 +5,7 @@
 #include "xyzlabs/widgetmanager.hpp"
 #include "xyzlabs/introwidget.hpp"
 #include "xyzlabs/constants.hpp"
+#include "xyzlabs/xyzlabs.hpp"
 
 
 void WidgetManager::show(const ImVec2 &size, const ImVec2 &pos) {
@@ -13,8 +14,24 @@ void WidgetManager::show(const ImVec2 &size, const ImVec2 &pos) {
 
     ImGui::SetWindowSize(size);
     ImGui::SetWindowPos(pos);
+    
+    ImVec2 toolBarSize = {size.x * 0.15f, size.y * 0.5f};
+    ImVec2 btnSize = {size.x * 0.14f, size.y * 0.03f};
 
-    tabs_[0]->show(size, pos);
+    ImGui::SetNextWindowSize(toolBarSize);
+    ImGui::SetNextWindowPos(pos);
+
+    ImGui::Begin(constants::TOOLBAR_ID.c_str());
+
+    if(ImGui::Button(constants::EXIT_BTN_TITLE.c_str(), btnSize)) {
+        XYZLabs::instance().close();
+    }
+    
+    ImGui::Button(constants::APP_SETTINGS_BTN_TITLE.c_str(), btnSize);
+    ImGui::Button(constants::SIMULATION_SETTINGS_BTN_TITLE.c_str(), btnSize);
+    ImGui::Button(constants::CLOSE_CURRENT_SIMULATION_BTN_TITLE.c_str(), btnSize);
+
+    ImGui::End();
 }
 
 bool WidgetManager::disable_widget_closing(IDType id) {

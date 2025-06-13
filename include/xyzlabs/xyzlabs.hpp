@@ -32,6 +32,7 @@ public:
     TaskManager &task_manager();
     WidgetManager &widget_manager();
     IDGenerator& id_generator();
+    void close();
     int exec();
 };
 

@@ -16,6 +16,7 @@
 
 #include "xyzlabs/utils.hpp"
 #include "xyzlabs/introwidget.hpp"
+#include "xyzlabs/burningforest.hpp"
 #include "xyzlabs/constants.hpp"
 
 constexpr size_t MAIN_WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
@@ -23,8 +24,10 @@ constexpr size_t MAIN_WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFl
 
 void XYZLabs::init() {
     if (!glfwInit()) {
-        spdlog::error("GLFW initialisation failed!\n");
+        spdlog::error("GLFW initialisation failed!");
         glfwTerminate();
+    } else {
+        spdlog::info("GLFW initialisation SUCCESS!");
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -36,19 +39,23 @@ void XYZLabs::init() {
     uint32_t height = 1000;
 
     window_ = glfwCreateWindow(width, height, constants::TITLE.c_str(), NULL, NULL);
-    glfwMaximizeWindow(window_);
     if (!window_) {
-        spdlog::error("GLFW creation failed!\n");
+        spdlog::error("GLFW creation failed!");
         glfwTerminate();
+    } else {
+        spdlog::info("GLFW creation SUCCESS!");
     }
+    glfwMaximizeWindow(window_);
 
     glfwMakeContextCurrent(window_);
     glewExperimental = GL_TRUE;
 
     if (glewInit() != GLEW_OK) {
-        spdlog::error("GLEW initialisation failed!\n");
+        spdlog::error("GLEW initialisation failed!");
         glfwDestroyWindow(window_);
         glfwTerminate();
+    } else {
+        spdlog::info("GLEW initialisation SUCCESS!");
     }
 
     t0.draw_triangle();
@@ -59,6 +66,7 @@ void XYZLabs::init() {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; 
+    io.IniFilename = nullptr;
 
     ImGui::StyleColorsDark();
     ImGuiStyle& style = ImGui::GetStyle();
@@ -66,7 +74,7 @@ void XYZLabs::init() {
     ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    widgetManager_.add_widget<IntroWidget>();
+    widgetManager_.add_widget<BurningForest>();
 }
 
 void XYZLabs::mainloop() {
@@ -77,6 +85,7 @@ void XYZLabs::mainloop() {
         glfwPollEvents();
 
         if(glfwGetKey(window_, GLFW_KEY_ESCAPE)) {
+            spdlog::info("ESC key pressed, closing!");
             glfwSetWindowShouldClose(window_, GLFW_TRUE);
         }
 
@@ -118,6 +127,7 @@ void XYZLabs::exit() {
 
     glfwDestroyWindow(window_);
     glfwTerminate();
+    spdlog::info("Closed XYZLABS");
 }
 
 int XYZLabs::exec() {
@@ -142,4 +152,8 @@ WidgetManager &XYZLabs::widget_manager() {
 
 IDGenerator &XYZLabs::id_generator() {
     return idGenerator_;
+}
+
+void XYZLabs::close() {
+    glfwSetWindowShouldClose(window_, GLFW_TRUE);
 }

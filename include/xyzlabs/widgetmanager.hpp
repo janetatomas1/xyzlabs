@@ -17,11 +17,6 @@ class WidgetManager {
     std::vector<std::unique_ptr<Widget>> newWidgets_;
     std::vector<std::unique_ptr<Widget>> tabs_;
 
-    ImVec2 innerSize_ = {0.0, 0.0};
-    ImVec2 innerPos_ = {0.0, 0.0};
-    ImVec2 toolBarSize_ = {0.0, 0.0};
-    ImVec2 toolBarPos_ = {0.0, 0.0};
-
     const float TOOLBAR_RELATIVE_HEIGHT = 0.08;
 
 public:
