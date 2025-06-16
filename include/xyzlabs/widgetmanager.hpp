@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <memory>
+#include <ranges>
 
 #include <imgui.h>
 
@@ -15,15 +16,15 @@ concept WidgetConcept = std::derived_from<Widget, Widget>;
 
 class WidgetManager {
     std::vector<std::unique_ptr<Widget>> newWidgets_;
-    std::vector<std::unique_ptr<Widget>> tabs_;
-
-    const float TOOLBAR_RELATIVE_HEIGHT = 0.08;
+    std::vector<std::unique_ptr<Widget>> widgets_;
+    bool simulationRunning_ = true;
+    int currentWidget_ = 0;
 
 public:
     WidgetManager() = default;
     void show(const ImVec2 &size, const ImVec2 &pos);
     inline void flush_new_widgets();
-    inline void remove_closed_tabs();
+    inline void remove_closed_widgets();
 
     template<WidgetConcept W, typename... Args>
     IDType add_widget(Args... args) {
@@ -33,25 +34,32 @@ public:
         return id;
     };
     bool disable_widget_closing(IDType id);
+    inline void display_radio_buttons();
 };
 
 void WidgetManager::flush_new_widgets() {
     if(!newWidgets_.empty()) {
         for(auto &w: newWidgets_) {
-            tabs_.push_back(std::move(w));
+            widgets_.push_back(std::move(w));
         }
         newWidgets_.clear();
     }
 }
 
-void WidgetManager::remove_closed_tabs() {
-    tabs_.erase(
-        std::remove_if(tabs_.begin(), tabs_.end(),
+void WidgetManager::remove_closed_widgets() {
+    widgets_.erase(
+        std::remove_if(widgets_.begin(), widgets_.end(),
             [](auto &t) {
                 return !t->is_open();
             }
-        ), tabs_.end()
+        ), widgets_.end()
     );
+}
+
+void WidgetManager::display_radio_buttons() {
+    for(int i=0;i < widgets_.size();i++) {
+        ImGui::RadioButton(widgets_[i]->title().c_str(), &currentWidget_, i);
+    }
 }
 
 #endif

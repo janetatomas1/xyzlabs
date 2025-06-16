@@ -10,12 +10,12 @@
 
 void WidgetManager::show(const ImVec2 &size, const ImVec2 &pos) {
     flush_new_widgets();
-    remove_closed_tabs();
+    remove_closed_widgets();
 
     ImGui::SetWindowSize(size);
     ImGui::SetWindowPos(pos);
     
-    ImVec2 toolBarSize = {size.x * 0.15f, size.y * 0.5f};
+    ImVec2 toolBarSize = {size.x * 0.2f, size.y * 0.5f};
     ImVec2 btnSize = {size.x * 0.14f, size.y * 0.03f};
 
     ImGui::SetNextWindowSize(toolBarSize);
@@ -31,11 +31,26 @@ void WidgetManager::show(const ImVec2 &size, const ImVec2 &pos) {
     ImGui::Button(constants::SIMULATION_SETTINGS_BTN_TITLE.c_str(), btnSize);
     ImGui::Button(constants::CLOSE_CURRENT_SIMULATION_BTN_TITLE.c_str(), btnSize);
 
+    if(simulationRunning_) {
+        if(ImGui::Button(constants::STOP_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
+            simulationRunning_ = false;
+        }
+    } else {
+        if(ImGui::Button(constants::START_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
+            simulationRunning_ = true;
+        }
+    }
+
+    if(widgets_.size() > 1) {
+        display_radio_buttons();
+    }
     ImGui::End();
+
+    widgets_[currentWidget_]->show(size, pos);
 }
 
 bool WidgetManager::disable_widget_closing(IDType id) {
-    for(auto &w: tabs_) {
+    for(auto &w: widgets_) {
         if(w->id() == id) {
             w->disable_closing();
             return true;

@@ -14,6 +14,8 @@ namespace constants {
     const std::string APP_SETTINGS_BTN_TITLE = "App settings";
     const std::string SIMULATION_SETTINGS_BTN_TITLE = "Simulation settings";
     const std::string CLOSE_CURRENT_SIMULATION_BTN_TITLE = "Close current simulation";
+    const std::string STOP_SIMULATION_BTN_TITLE = "Stop simulation";
+    const std::string START_SIMULATION_BTN_TITLE = "Start simulation";
 }
 
 #endif

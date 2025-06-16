@@ -74,7 +74,7 @@ void XYZLabs::init() {
     ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    widgetManager_.add_widget<BurningForest>();
+    widgetManager_.add_widget<IntroWidget>();
 }
 
 void XYZLabs::mainloop() {
