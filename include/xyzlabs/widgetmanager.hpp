@@ -18,6 +18,7 @@ class WidgetManager {
     std::vector<std::unique_ptr<Widget>> newWidgets_;
     std::vector<std::unique_ptr<Widget>> widgets_;
     bool simulationRunning_ = true;
+    bool toolbarOpen_ = true;
     int currentWidget_ = 0;
 
 public:

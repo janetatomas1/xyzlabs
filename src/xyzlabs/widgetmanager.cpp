@@ -18,6 +18,10 @@ void WidgetManager::show(const ImVec2 &size, const ImVec2 &pos) {
     ImVec2 toolBarSize = {size.x * 0.2f, size.y * 0.5f};
     ImVec2 btnSize = {size.x * 0.14f, size.y * 0.03f};
 
+    if(simulationRunning_) {
+        widgets_[currentWidget_]->show(size, pos);
+    }
+
     ImGui::SetNextWindowSize(toolBarSize);
     ImGui::SetNextWindowPos(pos);
 
@@ -50,8 +54,6 @@ void WidgetManager::show(const ImVec2 &size, const ImVec2 &pos) {
         display_radio_buttons();
     }
     ImGui::End();
-
-    widgets_[currentWidget_]->show(size, pos);
 }
 
 bool WidgetManager::disable_widget_closing(IDType id) {
