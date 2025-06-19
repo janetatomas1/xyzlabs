@@ -16,7 +16,6 @@
 
 #include "xyzlabs/utils.hpp"
 #include "xyzlabs/introwidget.hpp"
-#include "xyzlabs/burningforest.hpp"
 #include "xyzlabs/constants.hpp"
 
 constexpr size_t MAIN_WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;

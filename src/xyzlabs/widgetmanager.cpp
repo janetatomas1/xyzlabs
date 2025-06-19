@@ -21,6 +21,11 @@ void WidgetManager::show(const ImVec2 &size, const ImVec2 &pos) {
     ImGui::SetNextWindowSize(toolBarSize);
     ImGui::SetNextWindowPos(pos);
 
+    if(toolbarOpen_) {
+        ImGui::SetNextWindowFocus();
+        toolbarOpen_ = false;
+    }
+
     ImGui::Begin(constants::TOOLBAR_ID.c_str());
 
     if(ImGui::Button(constants::EXIT_BTN_TITLE.c_str(), btnSize)) {

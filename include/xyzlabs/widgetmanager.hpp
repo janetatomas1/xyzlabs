@@ -27,12 +27,7 @@ public:
     inline void remove_closed_widgets();
 
     template<WidgetConcept W, typename... Args>
-    IDType add_widget(Args... args) {
-        auto widget = std::make_unique<W>(std::forward<Args>(args)...);
-        const IDType id = widget->id();
-        newWidgets_.push_back(std::move(widget));
-        return id;
-    };
+    IDType add_widget(Args... args);
     bool disable_widget_closing(IDType id);
     inline void display_radio_buttons();
 };
@@ -42,8 +37,18 @@ void WidgetManager::flush_new_widgets() {
         for(auto &w: newWidgets_) {
             widgets_.push_back(std::move(w));
         }
+        toolbarOpen_ = true;
         newWidgets_.clear();
+        currentWidget_ = widgets_.size() - 1;
     }
+}
+
+template<WidgetConcept W, typename... Args>
+IDType WidgetManager::add_widget(Args... args) {
+    auto widget = std::make_unique<W>(std::forward<Args>(args)...);
+    const IDType id = widget->id();
+    newWidgets_.push_back(std::move(widget));
+    return id;
 }
 
 void WidgetManager::remove_closed_widgets() {
@@ -58,7 +63,7 @@ void WidgetManager::remove_closed_widgets() {
 
 void WidgetManager::display_radio_buttons() {
     for(int i=0;i < widgets_.size();i++) {
-        ImGui::RadioButton(widgets_[i]->title().c_str(), &currentWidget_, i);
+        ImGui::RadioButton(widgets_[i]->title_id().c_str(), &currentWidget_, i);
     }
 }
 
