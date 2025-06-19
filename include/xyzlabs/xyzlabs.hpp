@@ -9,7 +9,6 @@
 #include <imgui_impl_opengl3.h>
 
 #include "xyzlabs/shape.hpp"
-#include "xyzlabs/openglbackend.hpp"
 #include "xyzlabs/idgenerator.hpp"
 #include "xyzlabs/taskmanager.hpp"
 #include "xyzlabs/widgetmanager.hpp"
@@ -18,11 +17,11 @@ class GLFWWindow;
 
 class XYZLabs {
 	GLFWwindow *window_;
-	OpenGLBackend backend_;
     TaskManager taskManager_;
     WidgetManager widgetManager_;
     IDGenerator idGenerator_;
-    Triangle t0;
+    int32_t width_ = 1000;
+    int32_t height_ = 1000;
 
     void init();
     void exit();
@@ -34,6 +33,12 @@ public:
     IDGenerator& id_generator();
     void close();
     int exec();
+    inline int32_t width() {
+        return width_;
+    }
+    inline int32_t height() {
+        return height_;
+    }
 };
 
 #endif
