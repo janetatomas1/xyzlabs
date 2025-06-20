@@ -53,4 +53,10 @@ struct OpenGLBackend {
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
         glViewport(0, 0, width, height);
 	}
+
+	void destroy() {
+		glDeleteFramebuffers(1, &FBO);
+		glDeleteTextures(1, &texture_id);
+		glDeleteRenderbuffers(1, &RBO);
+	}
 };

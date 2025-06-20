@@ -92,13 +92,8 @@ void XYZLabs::mainloop() {
 
         widgetManager_.show({static_cast<float>(width_), static_cast<float>(height_)}, {0.0, 0.0});
 
-        // backend_.rescale_framebuffer(width_, height_);
-        
         ImGui::End();
         ImGui::Render();
-
-        // backend_.bind_framebuffer();
-        // backend_.unbind_framebuffer();
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
 
@@ -110,10 +105,6 @@ void XYZLabs::exit() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
-    // glDeleteFramebuffers(1, &backend_.FBO);
-    // glDeleteTextures(1, &backend_.texture_id);
-    // glDeleteRenderbuffers(1, &backend_.RBO);
 
     glfwDestroyWindow(window_);
     glfwTerminate();

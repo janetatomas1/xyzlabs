@@ -9,4 +9,10 @@ BurningForest::BurningForest(): Widget("Burning forest simulation") {
 
 void BurningForest::show(const ImVec2 &size, const ImVec2 &pos) {
     backend_.rescale_framebuffer(size.x, size.y);
+    backend_.bind_framebuffer();
+    backend_.unbind_framebuffer();
+}
+
+BurningForest::~BurningForest() {
+    backend_.destroy();   
 }
