@@ -4,9 +4,9 @@
 #include <spdlog/spdlog.h>
 
 struct OpenGLBackend {
-	GLuint FBO;
-	GLuint RBO;
-	GLuint texture_id;
+	uint32_t FBO;
+	uint32_t RBO;
+	uint32_t texture_id;
 
 	void create_framebuffer(int width, int height) {
 		glGenFramebuffers(1, &FBO);

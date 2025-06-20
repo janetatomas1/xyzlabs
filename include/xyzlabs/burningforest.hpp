@@ -11,7 +11,6 @@ class BurningForest: public OpenGLWidget {
 public:
     BurningForest();
     void update() override;
-    // ~BurningForest();
 };
 
 #endif

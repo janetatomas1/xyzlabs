@@ -11,7 +11,7 @@ struct Triangle {
 	uint32_t VBO;
 	uint32_t shader;
 	GLfloat vertices[9] = {
-		-0.0f, -1.0f, 0.0f,
+		-0.0f, -2.0f, 0.0f,
 		1.0f, -1.0f, 0.0f,
 		0.0f, 0.5f, 0.5f
 	};
