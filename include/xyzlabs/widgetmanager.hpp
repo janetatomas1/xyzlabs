@@ -31,7 +31,6 @@ public:
 
     template<WidgetConcept W, typename... Args>
     IDType add_widget(Args... args);
-    bool disable_widget_closing(IDType id);
     inline void display_radio_buttons();
     void show_toolbar(const ImVec2 &size);
     inline float toolbar_window_ratio() {

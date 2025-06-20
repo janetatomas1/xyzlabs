@@ -32,17 +32,6 @@ void WidgetManager::show(const ImVec2 &size) {
     ImGui::End();
 }
 
-bool WidgetManager::disable_widget_closing(IDType id) {
-    for(auto &w: widgets_) {
-        if(w->id() == id) {
-            w->disable_closing();
-            return true;
-        }
-    }
-
-    return false;
-}
-
 void WidgetManager::show_toolbar(const ImVec2 &size) {    
     ImGui::Begin(constants::TOOLBAR_ID.c_str(), NULL, TOOLBAR_WINDOW_FLAGS);
 
@@ -72,7 +61,10 @@ void WidgetManager::show_toolbar(const ImVec2 &size) {
         }
     }
 
+    ImGui::Separator();
+
     if(widgets_.size() > 1) {
+        ImGui::Text("Open widgets");
         display_radio_buttons();
     }
 
