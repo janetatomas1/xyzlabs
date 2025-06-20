@@ -19,12 +19,13 @@ class WidgetManager {
     std::vector<std::unique_ptr<Widget>> widgets_;
     bool simulationRunning_ = true;
     bool toolbarOpen_ = true;
-    uint32_t toolbarCount_ = 0;
     int currentWidget_ = 0;
+    float toolbarClosedRatio_ = 0.05f;
+    float toolbarOpenRatio_ = 0.15;
 
 public:
     WidgetManager() = default;
-    void show(const ImVec2 &size, const ImVec2 &pos);
+    void show(const ImVec2 &size);
     inline void flush_new_widgets();
     inline void remove_closed_widgets();
 
@@ -32,6 +33,10 @@ public:
     IDType add_widget(Args... args);
     bool disable_widget_closing(IDType id);
     inline void display_radio_buttons();
+    void show_toolbar(const ImVec2 &size);
+    inline float toolbar_window_ratio() {
+        return toolbarOpen_ ? toolbarOpenRatio_ : toolbarClosedRatio_;
+    }
 };
 
 void WidgetManager::flush_new_widgets() {

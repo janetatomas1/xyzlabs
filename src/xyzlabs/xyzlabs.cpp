@@ -18,8 +18,6 @@
 #include "xyzlabs/introwidget.hpp"
 #include "xyzlabs/constants.hpp"
 
-constexpr size_t MAIN_WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-
 
 void XYZLabs::init() {
     if (!glfwInit()) {
@@ -88,11 +86,9 @@ void XYZLabs::mainloop() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         ImGui::NewFrame();
-        ImGui::Begin(constants::MAIN_WINDOW_ID.c_str(), nullptr, MAIN_WINDOW_FLAGS);
 
-        widgetManager_.show({static_cast<float>(width_), static_cast<float>(height_)}, {0.0, 0.0});
+        widgetManager_.show({static_cast<float>(width_), static_cast<float>(height_)});
 
-        ImGui::End();
         ImGui::Render();
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
