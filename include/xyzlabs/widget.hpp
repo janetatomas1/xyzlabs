@@ -14,7 +14,6 @@ class Widget {
     std::string titleID_;
 
     bool open_ = true;
-    bool *openPtr_;
     ImGuiTabItemFlags tabItemFlags_ = ImGuiTabItemFlags_SetSelected;
 
 public:
@@ -22,13 +21,10 @@ public:
     virtual void show(const ImVec2 &size, const ImVec2& position);
     inline const std::string& title() const;
     inline IDType id() const;
-    void disable_closing();
     inline bool is_open() const;
-    inline bool *is_open_ptr();
     inline std::string& title_id();
     virtual ~Widget() = default;
-    inline void deselect();
-    inline ImGuiTabItemFlags tab_item_flags() const;
+    void close();
 };
 
 const std::string &Widget::title() const {
@@ -43,20 +39,8 @@ bool Widget::is_open() const {
     return open_;
 }
 
-bool *Widget::is_open_ptr() {
-    return openPtr_;
-}
-
 std::string &Widget::title_id() {
     return titleID_;
-}
-
-void Widget::deselect() {
-    tabItemFlags_ = ImGuiTabItemFlags_None;
-}
-
-ImGuiTabItemFlags Widget::tab_item_flags() const {
-    return tabItemFlags_;
 }
 
 #endif

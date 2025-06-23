@@ -7,12 +7,12 @@
 
 
 Widget::Widget(const std::string &title):
-    title_(title), id_(XYZLabs::instance().id_generator().get_id()), open_(true), openPtr_(&open_) {
+    title_(title), id_(XYZLabs::instance().id_generator().get_id()), open_(true) {
     titleID_ = std::format("{}##{}", title_, id_);
 }
 
 void Widget::show(const ImVec2 &size, const ImVec2& position) {}
 
-void Widget::disable_closing() {
-    openPtr_ = nullptr;
+void Widget::close() {
+    open_ = false;
 }

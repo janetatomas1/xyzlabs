@@ -8,7 +8,7 @@
 #include "xyzlabs/burningforest.hpp"
 
 
-IntroWidget::IntroWidget(): Widget("Welcome !!!") {}
+IntroWidget::IntroWidget(): Widget("Intro") {}
 
 void IntroWidget::show(const ImVec2 &size, const ImVec2& position) {
     ImGui::SetWindowFontScale(1.3);

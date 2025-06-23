@@ -49,7 +49,10 @@ void WidgetManager::show_toolbar(const ImVec2 &size) {
 
     ImGui::Button(constants::APP_SETTINGS_BTN_TITLE.c_str(), btnSize);
     ImGui::Button(constants::SIMULATION_SETTINGS_BTN_TITLE.c_str(), btnSize);
-    ImGui::Button(constants::CLOSE_CURRENT_SIMULATION_BTN_TITLE.c_str(), btnSize);
+
+    if(ImGui::Button(constants::CLOSE_CURRENT_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
+        close_current_widget();
+    }
 
     if(simulationRunning_) {
         if(ImGui::Button(constants::STOP_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
@@ -69,4 +72,11 @@ void WidgetManager::show_toolbar(const ImVec2 &size) {
     }
 
     ImGui::End();
+}
+
+void WidgetManager::close_current_widget() {
+    if(currentWidget_ != 0) {
+        widgets_[currentWidget_]->close();
+        spdlog::info("Closed widget. Title: {}, id: {}", widgets_[currentWidget_]->title(), widgets_[currentWidget_]->id());
+    }
 }

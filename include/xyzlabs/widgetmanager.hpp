@@ -9,6 +9,7 @@
 #include <imgui.h>
 
 #include "xyzlabs/widget.hpp"
+#include "spdlog/spdlog.h"
 
 
 template <typename T>
@@ -36,6 +37,7 @@ public:
     inline float toolbar_window_ratio() {
         return toolbarOpen_ ? toolbarOpenRatio_ : toolbarClosedRatio_;
     }
+    void close_current_widget();
 };
 
 void WidgetManager::flush_new_widgets() {
@@ -53,18 +55,19 @@ template<WidgetConcept W, typename... Args>
 IDType WidgetManager::add_widget(Args... args) {
     auto widget = std::make_unique<W>(std::forward<Args>(args)...);
     const IDType id = widget->id();
+    spdlog::info("Added new widget. Title: {}, id: {}", widget->title(), widget->id());
     newWidgets_.push_back(std::move(widget));
     return id;
 }
 
 void WidgetManager::remove_closed_widgets() {
-    widgets_.erase(
-        std::remove_if(widgets_.begin(), widgets_.end(),
-            [](auto &t) {
-                return !t->is_open();
-            }
-        ), widgets_.end()
-    );
+    std::erase_if(widgets_, [](const auto &w){
+        return !w || !(w->is_open());
+    });
+
+    if(currentWidget_ >= widgets_.size()) {
+        currentWidget_ = widgets_.size() - 1;
+    }
 }
 
 void WidgetManager::display_radio_buttons() {
