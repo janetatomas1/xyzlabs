@@ -13,3 +13,6 @@
 [submodule "submodules/implot"]
 	path = submodules/implot
 	url = https://github.com/epezent/implot.git
+[submodule "submodules/concurrentqueue"]
+	path = submodules/concurrentqueue
+	url = https://github.com/cameron314/concurrentqueue.git
