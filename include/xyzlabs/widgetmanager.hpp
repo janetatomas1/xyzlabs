@@ -7,9 +7,10 @@
 #include <ranges>
 
 #include <imgui.h>
+#include <spdlog/spdlog.h>
 
 #include "xyzlabs/widget.hpp"
-#include "spdlog/spdlog.h"
+#include "xyzlabs/result.hpp"
 
 
 template <typename T>
