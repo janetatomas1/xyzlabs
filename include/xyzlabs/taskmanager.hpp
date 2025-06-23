@@ -17,6 +17,7 @@ class TaskManager {
 public:
     TaskManager();
     void execute_task(std::unique_ptr<Task> task);
+    void execute_periodic_task(std::unique_ptr<Task> task);
     void run();
     void stop();
 };
