@@ -33,6 +33,8 @@ public:
 
     template<WidgetConcept W, typename... Args>
     IDType add_widget(Args... args);
+    template<WidgetConcept W>
+    IDType add_intro_widget();
     inline void display_radio_buttons();
     void show_toolbar(const ImVec2 &size);
     void consume_result(std::unique_ptr<Result> result);
@@ -57,8 +59,17 @@ template<WidgetConcept W, typename... Args>
 IDType WidgetManager::add_widget(Args... args) {
     auto widget = std::make_unique<W>(std::forward<Args>(args)...);
     const IDType id = widget->id();
-    spdlog::info("Added new widget. Title: {}, id: {}", widget->title(), widget->id());
+    spdlog::info("Added new widget. Title: {}, id: {}", widget->title(), id);
     newWidgets_.push_back(std::move(widget));
+    return id;
+}
+
+template<WidgetConcept W>
+IDType WidgetManager::add_intro_widget() {
+    auto widget = std::make_unique<W>();
+    const IDType id = widget->id();
+    spdlog::info("Added new intro widget. Title: {}, id: {}", widget->title(), id);
+    widgets_[0] = std::move(widget);
     return id;
 }
 

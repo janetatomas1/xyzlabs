@@ -14,9 +14,11 @@
 #include "xyzlabs/widgetmanager.hpp"
 #include "xyzlabs/resultmanager.hpp"
 
+
 class GLFWWindow;
 
 class XYZLabs {
+    std::string title_;
 	GLFWwindow *window_;
     TaskManager taskManager_;
     WidgetManager widgetManager_;
@@ -25,10 +27,12 @@ class XYZLabs {
     int32_t width_ = 1000;
     int32_t height_ = 1000;
 
-    void init();
-    void exit();
-    void mainloop();
+    void init_();
+    void exit_();
+    void mainloop_();
+    XYZLabs() = default;
 public:
+    void init(const std::string &title);
     static XYZLabs& instance();
     TaskManager &task_manager();
     WidgetManager &widget_manager();

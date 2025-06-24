@@ -2,15 +2,15 @@
 #include <imgui.h>
 #include <portable-file-dialogs.h>
 
-#include "xyzlabs/introwidget.hpp"
+#include "xyzlabs/defaultintrowidget.hpp"
 #include "xyzlabs/constants.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/burningforest.hpp"
 
 
-IntroWidget::IntroWidget(): Widget("Intro") {}
+DefaultIntroWidget::DefaultIntroWidget(): Widget("Intro") {}
 
-void IntroWidget::show(const ImVec2 &size, const ImVec2& position) {
+void DefaultIntroWidget::show(const ImVec2 &size, const ImVec2& position) {
     ImGui::SetWindowFontScale(1.3);
 
     ImGui::SetCursorPos({size.x * 0.37f, size.y * 0.45f});

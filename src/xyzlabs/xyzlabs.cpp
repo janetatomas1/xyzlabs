@@ -15,11 +15,11 @@
 #include <stdexcept>
 
 #include "xyzlabs/utils.hpp"
-#include "xyzlabs/introwidget.hpp"
 #include "xyzlabs/constants.hpp"
+#include "xyzlabs/defaultintrowidget.hpp"
 
 
-void XYZLabs::init() {
+void XYZLabs::init_() {
     if (!glfwInit()) {
         spdlog::error("GLFW initialisation failed!");
         glfwTerminate();
@@ -32,7 +32,7 @@ void XYZLabs::init() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    window_ = glfwCreateWindow(width_, height_, constants::TITLE.c_str(), NULL, NULL);
+    window_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
     if (!window_) {
         spdlog::error("GLFW creation failed!");
         glfwTerminate();
@@ -65,10 +65,10 @@ void XYZLabs::init() {
     ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    widgetManager_.add_widget<IntroWidget>();
+    widgetManager_.add_widget<DefaultIntroWidget>();
 }
 
-void XYZLabs::mainloop() {
+void XYZLabs::mainloop_() {
     while(!glfwWindowShouldClose(window_)) {
         glfwPollEvents();
 
@@ -97,20 +97,24 @@ void XYZLabs::mainloop() {
     }
 }
 
-void XYZLabs::exit() {
+void XYZLabs::exit_() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
     glfwDestroyWindow(window_);
     glfwTerminate();
-    spdlog::info("Closed XYZLABS");
+    spdlog::info("Closed {}", title_);
+}
+
+void XYZLabs::init(const std::string &title) {
+    title_ = title;
 }
 
 int XYZLabs::exec() {
-    init();
-    mainloop();
-    exit();
+    init_();
+    mainloop_();
+    exit_();
     return 0;
 }
 

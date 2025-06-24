@@ -3,7 +3,6 @@
 #include <algorithm>
 
 #include "xyzlabs/widgetmanager.hpp"
-#include "xyzlabs/introwidget.hpp"
 #include "xyzlabs/constants.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 

@@ -3,5 +3,6 @@
 
 int main() {
     XYZLabs &wave = XYZLabs::instance();
-    return wave.exec();    
+    wave.init("XYZLabs");
+    return wave.exec();
 }
