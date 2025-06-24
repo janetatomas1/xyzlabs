@@ -13,10 +13,16 @@ IntroWidget::IntroWidget(): Widget("Intro") {}
 void IntroWidget::show(const ImVec2 &size, const ImVec2& position) {
     ImGui::SetWindowFontScale(1.3);
 
-    ImGui::SetCursorPosX(size.x * 0.40);
-    ImGui::SetCursorPosY(size.y * 0.45);
-    ImVec2 btnSize = {250.0, 30.0};
+    ImGui::SetCursorPos({size.x * 0.37f, size.y * 0.45f});
+    ImVec2 btnSize = {size.x * 0.15f, size.y * 0.035f};
 
+    if(ImGui::Button(constants::BURNING_FOREST_BTN.c_str(), btnSize)) {
+        XYZLabs::instance()
+        .widget_manager()
+        .add_widget<BurningForest>();
+    }
+
+    ImGui::SetCursorPos({size.x * 0.37f, size.y * 0.50f});
     if(ImGui::Button(constants::BURNING_FOREST_BTN.c_str(), btnSize)) {
         XYZLabs::instance()
         .widget_manager()
