@@ -6,8 +6,8 @@
 
 BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
     auto &app = XYZLabs::instance();
-    t.draw_triangle();
     t.init();
+    t.draw();
 }
 
 void BurningForest::update() {

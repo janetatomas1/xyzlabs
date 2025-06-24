@@ -8,22 +8,24 @@ layout (location = 0) in vec3 pos;
 
 void main()
 {
-	gl_Position = vec4(0.9*pos.x, 0.9*pos.y, 0.5*pos.z, 1.0);
+	gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
 }
 )*";
 
 const std::string fragment_shader_code = R"*(
-#version 330
+// fragment_shader.glsl
+#version 330 core
 
-out vec4 color;
+out vec4 FragColor;
 
-void main()
-{
-	color = vec4(1.0, 1.0, 1.0, 0.5);
+uniform vec4 inColor;
+
+void main() {
+    FragColor = inColor;
 }
 )*";
 
-void Triangle::draw_triangle() {
+void Triangle::draw() {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
@@ -39,28 +41,28 @@ void Triangle::draw_triangle() {
 }
 
 void Triangle::init() {
-    shader = glCreateProgram();
-    if(!shader) {
-        
+    program = glCreateProgram();
+    if(!program) {
+        spdlog::error("Error creating program:", log);
     }
 
-    add_shader(shader, vertex_shader_code.c_str(), GL_VERTEX_SHADER);
-    add_shader(shader, fragment_shader_code.c_str(), GL_FRAGMENT_SHADER);
+    add_shader(program, vertex_shader_code.c_str(), GL_VERTEX_SHADER);
+    add_shader(program, fragment_shader_code.c_str(), GL_FRAGMENT_SHADER);
 
     GLint result = 0;
     GLchar log[1024] = {0};
 
-    glLinkProgram(shader);
-    glGetProgramiv(shader, GL_LINK_STATUS, &result);
+    glLinkProgram(program);
+    glGetProgramiv(program, GL_LINK_STATUS, &result);
     if (!result) {
-        glGetProgramInfoLog(shader, sizeof(log), NULL, log);
+        glGetProgramInfoLog(program, sizeof(log), NULL, log);
         spdlog::error("Error linking program:", log);
     }
 
-    glValidateProgram(shader);
-    glGetProgramiv(shader, GL_VALIDATE_STATUS, &result);
+    glValidateProgram(program);
+    glGetProgramiv(program, GL_VALIDATE_STATUS, &result);
     if (!result) {
-        glGetProgramInfoLog(shader, sizeof(log), NULL, log);
+        glGetProgramInfoLog(program, sizeof(log), NULL, log);
         spdlog::error("Error validating program:", log);
     }
 }
@@ -90,9 +92,11 @@ void Triangle::add_shader(uint32_t program, const char* shader_code, GLenum type
 }
 
 void Triangle::render() {
-    glUseProgram(shader);
+    glUseProgram(program);
+    glUseProgram(program);
+    GLint colorLoc = glGetUniformLocation(program, "inColor");
+    glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 0.05f);
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
 }
-
