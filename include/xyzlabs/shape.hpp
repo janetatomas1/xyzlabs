@@ -3,7 +3,7 @@
 #define SHAPE_HPP
 
 #include <GL/glew.h>
-
+#include <array>
 #include <spdlog/spdlog.h>
 
 struct Shape {
@@ -12,15 +12,15 @@ struct Shape {
 	uint32_t EBO;
 
 	uint32_t program;
-	float vertices[12] = {
-         0.5f,  0.5f, 0.0f,  // top right
-         0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left 
+	std::array<float, 12> vertices = {
+         0.5f,  0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f 
     };
-    unsigned int indices[6] = {  // note that we start from 0!
-        0, 1, 3,  // first Triangle
-        1, 2, 3   // second Triangle
+	std::array<int32_t, 6> indices = {
+        0, 1, 3,
+        1, 2, 3
     };
 
 	void draw();
