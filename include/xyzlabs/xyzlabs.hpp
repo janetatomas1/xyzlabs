@@ -19,7 +19,7 @@ class GLFWWindow;
 
 class XYZLabs {
     std::string title_;
-	GLFWwindow *window_;
+	GLFWwindow *window_ = nullptr;
     TaskManager taskManager_;
     WidgetManager widgetManager_;
     IDGenerator idGenerator_;

@@ -25,6 +25,7 @@ public:
     inline std::string& title_id();
     virtual ~Widget() = default;
     void close();
+    virtual void destroy() {};
 };
 
 const std::string &Widget::title() const {

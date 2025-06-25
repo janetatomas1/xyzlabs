@@ -76,6 +76,7 @@ void WidgetManager::show_toolbar(const ImVec2 &size) {
 void WidgetManager::close_current_widget() {
     if(currentWidget_ != 0) {
         widgets_[currentWidget_]->close();
+        widgets_[currentWidget_]->destroy();
         spdlog::info("Closed widget. Title: {}, id: {}", widgets_[currentWidget_]->title(), widgets_[currentWidget_]->id());
     }
 }

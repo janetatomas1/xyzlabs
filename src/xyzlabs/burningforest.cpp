@@ -13,3 +13,7 @@ BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
 void BurningForest::update() {
     t.render();
 }
+
+void BurningForest::destroy() {
+    t.destroy();
+}

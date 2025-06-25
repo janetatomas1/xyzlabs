@@ -69,12 +69,16 @@ void XYZLabs::init_() {
 }
 
 void XYZLabs::mainloop_() {
-    while(!glfwWindowShouldClose(window_)) {
+    while(true) {
         glfwPollEvents();
 
         if(glfwGetKey(window_, GLFW_KEY_ESCAPE)) {
             spdlog::info("ESC key pressed, closing!");
             glfwSetWindowShouldClose(window_, GLFW_TRUE);
+        }
+
+        if(glfwWindowShouldClose(window_)) {
+            break;
         }
 
         glfwGetWindowSize(window_, &width_, &height_);
