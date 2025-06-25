@@ -21,11 +21,4 @@ void DefaultIntroWidget::show(const ImVec2 &size, const ImVec2& position) {
         .widget_manager()
         .add_widget<BurningForest>();
     }
-
-    ImGui::SetCursorPos({size.x * 0.37f, size.y * 0.50f});
-    if(ImGui::Button(constants::BURNING_FOREST_BTN.c_str(), btnSize)) {
-        XYZLabs::instance()
-        .widget_manager()
-        .add_widget<BurningForest>();
-    }
 }

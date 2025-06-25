@@ -6,15 +6,22 @@
 
 #include <spdlog/spdlog.h>
 
-struct Triangle {
+struct Shape {
 	uint32_t VAO;
 	uint32_t VBO;
+	uint32_t EBO;
+
 	uint32_t program;
-	GLfloat vertices[9] = {
-		-0.0f, -2.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f, 0.5f, 0.5f
-	};
+	float vertices[12] = {
+         0.5f,  0.5f, 0.0f,  // top right
+         0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+        -0.5f,  0.5f, 0.0f   // top left 
+    };
+    unsigned int indices[6] = {  // note that we start from 0!
+        0, 1, 3,  // first Triangle
+        1, 2, 3   // second Triangle
+    };
 
 	void draw();
 	void init();

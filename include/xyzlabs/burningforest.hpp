@@ -6,7 +6,7 @@
 #include "xyzlabs/shape.hpp"
 
 class BurningForest: public OpenGLWidget {
-    Triangle t;
+    Shape t;
     
 public:
     BurningForest();
