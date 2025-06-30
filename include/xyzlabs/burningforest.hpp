@@ -2,17 +2,18 @@
 #ifndef BURNING_FOREST
 #define BURNING_FOREST
 
+#include <vector>
+
 #include "xyzlabs/openglwidget.hpp"
 #include "xyzlabs/shape.hpp"
 
 class BurningForest: public OpenGLWidget {
-    Shape<4> t = {{
-        0.5f,  0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f
-    }};
-    
+    uint32_t height_ = 100;
+    uint32_t width_ = 100;
+    std::vector<std::vector<Shape<4>>> tiles_;
+    std::vector<std::vector<uint8_t>> colors_;
+    float begin_ = -0.95f, end_ = 0.95f;
+
 public:
     BurningForest();
     void update() override;

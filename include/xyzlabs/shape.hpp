@@ -40,6 +40,7 @@ struct Shape {
 	uint32_t program;
 	std::array<float, 3 * n> vertices;
 	std::array<int32_t, 3 * n - 6> indices;
+	Shape() = default;
 
 	Shape(const std::array<float, 3 * n> &data) {
 		vertices = data;
@@ -122,10 +123,10 @@ struct Shape {
 		glAttachShader(program, current_shader);
 	}
 
-	void render() {
+	void render(const std::array<float, 3> &color) {
 		glUseProgram(program);
 		GLint colorLoc = glGetUniformLocation(program, "inColor");
-		glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 1.0f);
+		glUniform4f(colorLoc, color[0], color[1], color[2], 1.0f);
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 3 * n - 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
