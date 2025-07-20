@@ -18,6 +18,7 @@ public:
     TaskManager();
     void execute_task(std::shared_ptr<OnceTaskInterface> &task);
     void execute_periodic_task(std::shared_ptr<PeriodicTaskInterface> &task);
+    void stop_periodic_task(std::shared_ptr<PeriodicTaskInterface> &task);
     void run();
     void stop();
 };

@@ -8,8 +8,8 @@
 TaskManager::TaskManager(): pool_(asio::thread_pool(threadCount_)) {}
 
 void TaskManager::execute_task(std::shared_ptr<OnceTaskInterface> &task) {
-    asio::post(pool_, []() mutable {
-
+    asio::post(pool_, [task]() mutable {
+        task->execute();
     });
 }
 
@@ -26,5 +26,13 @@ void TaskManager::stop() {
 }
 
 void TaskManager::execute_periodic_task(std::shared_ptr<PeriodicTaskInterface> &task) {
+    asio::post(io_, [task]() {
+        task->start();
+    });
+}
 
+void TaskManager::stop_periodic_task(std::shared_ptr<PeriodicTaskInterface> &task) {
+    asio::post(io_, [task]() {
+        task->stop();
+    });
 }

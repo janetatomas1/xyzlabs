@@ -12,8 +12,41 @@ inline void swap(std::atomic<uint8_t> &a, std::atomic<uint8_t> &b) {
     b.store(tmp);
 }
 
-class OnceTaskInterface {};
-class PeriodicTaskInterface {};
+class OnceTaskInterface {
+public:
+    virtual void execute();
+};
+
+class PeriodicTaskInterface {
+    virtual void update_() {};
+
+protected:
+    boost::asio::steady_timer timer_;
+    uint64_t milisecondsTimeout_ = 1000;
+    std::atomic<bool> running_ = false;
+
+    std::atomic<bool> writeReady_ = false;
+    std::atomic<uint8_t> frontIdx_ = 0;
+    std::atomic<uint8_t> middleIdx_ = 1;
+    std::atomic<uint8_t> backIdx_ = 2;
+
+public:
+    inline bool write_ready() {
+        return writeReady_;
+    }
+
+    void stop() {
+        running_ = false;
+    }
+    
+    void start() {
+        running_ = true;
+        update_();
+    }
+
+    virtual void update() {};
+
+};
 
 template <typename T>
 class OnceTask: public OnceTaskInterface {
@@ -25,26 +58,14 @@ public:
     inline bool finished() {
         return finished_;
     }
-    virtual void execute();
     const T& get_value() {
         return result_;
     };
 };
 
 template <typename T>
-class PeriodicTask: public OnceTaskInterface {
-protected:
-    std::array<T, 3> states_;
-    std::atomic<bool> writeReady_ = false;
-    std::atomic<uint8_t> frontIdx_ = 0;
-    std::atomic<uint8_t> middleIdx_ = 1;
-    std::atomic<uint8_t> backIdx_ = 2;
-
-    boost::asio::steady_timer timer_;
-    uint64_t milisecondsTimeout_ = 1000;
-    std::atomic<bool> running_ = false;
-
-    virtual void update_() {
+class PeriodicTask: public PeriodicTaskInterface {
+    void update_() override {
         if(!writeReady_) {
             update();
             writeReady_ = true;
@@ -56,21 +77,11 @@ protected:
             update_();
         });
     };
-    virtual void update() {};
+
+protected:
+    std::array<T, 3> states_;
+
 public:
-
-    inline bool write_ready() {
-        return writeReady_;
-    }
-    void start() {
-        running_ = true;
-        update_();
-    }
-
-    void stop() {
-        running_ = false;
-    }
-
     const T& get_value() {
         if(writeReady_) {
             swap(frontIdx_, middleIdx_);
