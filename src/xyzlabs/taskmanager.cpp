@@ -7,12 +7,9 @@
 
 TaskManager::TaskManager(): pool_(asio::thread_pool(threadCount_)) {}
 
-void TaskManager::execute_task(std::unique_ptr<Task> task) {
-    asio::post(pool_, [task = std::move(task)]() mutable {
-        auto result = task->execute();
-        XYZLabs::instance()
-        .result_manager()
-        .receive_result(std::move(result));
+void TaskManager::execute_task(std::shared_ptr<OnceTaskInterface> &task) {
+    asio::post(pool_, []() mutable {
+
     });
 }
 
@@ -28,6 +25,6 @@ void TaskManager::stop() {
     pool_.join();
 }
 
-void TaskManager::execute_periodic_task(std::unique_ptr<Task> task) {
+void TaskManager::execute_periodic_task(std::shared_ptr<PeriodicTaskInterface> &task) {
 
 }

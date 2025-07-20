@@ -16,8 +16,8 @@ class TaskManager {
 
 public:
     TaskManager();
-    void execute_task(std::unique_ptr<Task> task);
-    void execute_periodic_task(std::unique_ptr<Task> task);
+    void execute_task(std::shared_ptr<OnceTaskInterface> &task);
+    void execute_periodic_task(std::shared_ptr<PeriodicTaskInterface> &task);
     void run();
     void stop();
 };
