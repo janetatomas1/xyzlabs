@@ -142,7 +142,3 @@ IDGenerator &XYZLabs::id_generator() {
 void XYZLabs::close() {
     glfwSetWindowShouldClose(window_, GLFW_TRUE);
 }
-
-ResultManager &XYZLabs::result_manager() {
-    return result_manager();
-}

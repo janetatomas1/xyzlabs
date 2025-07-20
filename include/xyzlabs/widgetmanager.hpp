@@ -10,7 +10,6 @@
 #include <spdlog/spdlog.h>
 
 #include "xyzlabs/widget.hpp"
-#include "xyzlabs/result.hpp"
 
 
 template <typename T>
@@ -37,7 +36,6 @@ public:
     IDType add_intro_widget();
     inline void display_radio_buttons();
     void show_toolbar(const ImVec2 &size);
-    void consume_result(std::unique_ptr<Result> result);
     inline float toolbar_window_ratio() {
         return toolbarOpen_ ? toolbarOpenRatio_ : toolbarClosedRatio_;
     }

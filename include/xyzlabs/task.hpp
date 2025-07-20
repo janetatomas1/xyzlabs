@@ -6,8 +6,6 @@
 #include <array>
 #include <boost/asio.hpp>
 
-#include "xyzlabs/result.hpp"
-
 inline void swap(std::atomic<uint8_t> &a, std::atomic<uint8_t> &b) {
     auto tmp = a.load();
     a.store(b);
@@ -28,7 +26,7 @@ public:
         return finished_;
     }
     virtual void execute();
-    void T& get_value() {
+    const T& get_value() {
         return result_;
     };
 };
