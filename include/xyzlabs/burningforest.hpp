@@ -6,6 +6,18 @@
 
 #include "xyzlabs/openglwidget.hpp"
 #include "xyzlabs/shape.hpp"
+#include "xyzlabs/periodictask.hpp"
+
+class MyTask: public PeriodicTask<int> {
+public:
+    MyTask(): PeriodicTask<int>() {
+        spdlog::info("constructor");
+    }
+    void update() override {
+        spdlog::info("abcd");
+    }
+};
+
 
 class BurningForest: public OpenGLWidget {
     uint32_t height_ = 100;
@@ -13,6 +25,7 @@ class BurningForest: public OpenGLWidget {
     std::vector<std::vector<Shape<4>>> tiles_;
     std::vector<std::vector<uint8_t>> colors_;
     float begin_ = -0.95f, end_ = 0.95f;
+    std::shared_ptr<MyTask> a;
 
 public:
     BurningForest();

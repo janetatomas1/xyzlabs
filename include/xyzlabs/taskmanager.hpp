@@ -4,7 +4,8 @@
 
 #include <boost/asio.hpp>
 
-#include "xyzlabs/task.hpp"
+#include "xyzlabs/oncetask.hpp"
+#include "xyzlabs/periodictask.hpp"
 
 namespace asio = boost::asio;
 
@@ -16,11 +17,12 @@ class TaskManager {
 
 public:
     TaskManager();
-    void execute_task(std::shared_ptr<OnceTaskInterface> &task);
-    void execute_periodic_task(std::shared_ptr<PeriodicTaskInterface> &task);
-    void stop_periodic_task(std::shared_ptr<PeriodicTaskInterface> &task);
+    void execute_task(std::shared_ptr<OnceTaskInterface> task);
+    void execute_periodic_task(std::shared_ptr<PeriodicTaskInterface> task);
+    void stop_periodic_task(std::shared_ptr<PeriodicTaskInterface> task);
     void run();
     void stop();
+    asio::io_context& io_ctx();
 };
 
 #endif

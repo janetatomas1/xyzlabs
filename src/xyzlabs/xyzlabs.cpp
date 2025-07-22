@@ -65,6 +65,8 @@ void XYZLabs::init_() {
     ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+    taskManager_.run();
+
     widgetManager_.add_widget<DefaultIntroWidget>();
 }
 
@@ -90,13 +92,10 @@ void XYZLabs::mainloop_() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         ImGui::NewFrame();
-
         widgetManager_.show({static_cast<float>(width_), static_cast<float>(height_)});
 
         ImGui::Render();
-
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
-
         glfwSwapBuffers(window_);
     }
 }

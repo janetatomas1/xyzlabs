@@ -2,7 +2,7 @@
 #include "xyzlabs/burningforest.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
-#include "xyzlabs/task.hpp"
+#include "xyzlabs/periodictask.hpp"
 
 const std::array<float, 3> RED = {1.0f, 0.0f, 0.0f};
 const std::array<float, 3> GREEN = {0.0f, 1.0f, 0.0f};
@@ -29,24 +29,28 @@ BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
             tiles_[i][j].draw();
         }
     }
+
+    a = std::make_shared<MyTask>();
+    auto b = XYZLabs::instance().task_manager().io_ctx().stopped();
+    XYZLabs::instance().task_manager().execute_periodic_task(a);
 }
 
 void BurningForest::update() {
-    auto get_color = [](){
-        auto id = XYZLabs::instance().id_generator().get_id() % 3;
-        if(id == 0) {
-            return GREEN;
-        } else if(id == 1) {
-            return RED;
-        } else {
-            return GRAY;
-        }
-    };
-    for(uint32_t i=0;i < height_;i++) {
-        for(uint32_t j=0;j < height_;j++) {
-            tiles_[i][j].render(get_color());
-        }
-    }       
+    // auto get_color = [](){
+    //     auto id = XYZLabs::instance().id_generator().get_id() % 3;
+    //     if(id == 0) {
+    //         return GREEN;
+    //     } else if(id == 1) {
+    //         return RED;
+    //     } else {
+    //         return GRAY;
+    //     }
+    // };
+    // for(uint32_t i=0;i < height_;i++) {
+    //     for(uint32_t j=0;j < height_;j++) {
+    //         tiles_[i][j].render(get_color());
+    //     }
+    // }       
 }
 
 void BurningForest::destroy() {
