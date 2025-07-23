@@ -31,7 +31,7 @@ class PeriodicTaskInterface {
 
 protected:
     boost::asio::steady_timer timer_;
-    uint64_t milisecondsTimeout_ = 1000;
+    uint64_t milisecondsTimeout_ = 100;
     std::atomic<bool> running_ = false;
 
     std::atomic<bool> writeReady_ = false;
@@ -50,7 +50,6 @@ public:
     }
     void start() {
         running_ = true;
-        spdlog::info("start");
         update_();
     }
     virtual void update() {};
@@ -62,6 +61,9 @@ protected:
     std::array<T, 3> states_;
 
 public:
+    PeriodicTask(const T &initialValue): PeriodicTaskInterface() {
+        states_ = {initialValue, initialValue, initialValue};
+    };
     PeriodicTask(): PeriodicTaskInterface() {};
     const T& get_value() {
         if(writeReady_) {
@@ -72,18 +74,13 @@ public:
         return states_[frontIdx_];
     };
 
-    virtual void update_state(const T *state1, T *state2) {}
+    virtual void update_state(const T &state1, T &state2) {}
     void update() override {
-        T *state1 = nullptr;
-        T *state2 = nullptr;
-
         if(writeReady_) {
-            state1 = &states_[middleIdx_];
+            update_state(states_[middleIdx_], states_[backIdx_]);
         } else {
-            state1 = &states_[frontIdx_];
+            update_state(states_[frontIdx_], states_[backIdx_]);
         }
-        state2 = &states_[backIdx_];
-        update_state(state1, state2);
     }
 };
 
