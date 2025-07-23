@@ -9,6 +9,7 @@ const std::array<float, 3> GREEN = {0.0f, 1.0f, 0.0f};
 const std::array<float, 3> BLUE = {0.0f, 0.0f, 1.0f};
 const std::array<float, 3> GRAY = {0.5f, 0.5f, 0.5f};
 
+
 BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
     tiles_.resize(height_);
 
@@ -31,7 +32,6 @@ BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
     }
 
     a = std::make_shared<MyTask>();
-    auto b = XYZLabs::instance().task_manager().io_ctx().stopped();
     XYZLabs::instance().task_manager().execute_periodic_task(a);
 }
 
@@ -50,13 +50,15 @@ void BurningForest::update() {
     //     for(uint32_t j=0;j < height_;j++) {
     //         tiles_[i][j].render(get_color());
     //     }
-    // }       
+    // }
+    spdlog::info("state {}", a->get_value());
 }
 
 void BurningForest::destroy() {
+    a->stop();
     for(uint32_t i=0;i < height_;i++) {
         for(uint32_t j=0;j < height_;j++) {
             tiles_[i][j].destroy();
         }
-    }   
+    }
 }

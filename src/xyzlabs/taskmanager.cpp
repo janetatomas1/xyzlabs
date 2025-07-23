@@ -4,7 +4,9 @@
 #include "xyzlabs/taskmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
-TaskManager::TaskManager(): pool_(asio::thread_pool(threadCount_)) {}
+TaskManager::TaskManager(): 
+    pool_(asio::thread_pool(threadCount_)),
+    guard_(asio::make_work_guard(io_)) {}
 
 void TaskManager::execute_task(std::shared_ptr<OnceTaskInterface> task) {
     asio::post(pool_, [task]() mutable {
@@ -19,13 +21,14 @@ void TaskManager::run() {
 }
 
 void TaskManager::stop() {
+    guard_.reset();
     io_.stop();
     pool_.stop();
     pool_.join();
 }
 
 void TaskManager::execute_periodic_task(std::shared_ptr<PeriodicTaskInterface> task) {
-    asio::post(pool_, [task]() {
+    asio::post(io_, [task]() {
         task->start();
     });
 }

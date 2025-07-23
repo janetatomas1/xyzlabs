@@ -14,6 +14,7 @@ class TaskManager {
 
     asio::thread_pool pool_;
     asio::io_context io_;
+    asio::executor_work_guard<boost::asio::io_context::executor_type> guard_;
 
 public:
     TaskManager();

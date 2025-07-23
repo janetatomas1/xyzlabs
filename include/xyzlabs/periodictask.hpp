@@ -13,11 +13,25 @@ inline void swap(std::atomic<uint8_t> &a, std::atomic<uint8_t> &b) {
 }
 
 class PeriodicTaskInterface {
-    virtual void update_() {};
+    void update_() {
+        timer_.expires_after(std::chrono::milliseconds(milisecondsTimeout_));
+        timer_.async_wait(handler);
+    };
+    std::function<void(const boost::system::error_code& code)> handler = [this](const boost::system::error_code& code) {
+        if(!writeReady_) {
+            update();
+            writeReady_ = true;
+            swap(backIdx_, middleIdx_);
+        }
+
+        timer_.expires_after(std::chrono::milliseconds(milisecondsTimeout_));
+        timer_.async_wait(handler);    
+    };
+
 
 protected:
     boost::asio::steady_timer timer_;
-    uint64_t milisecondsTimeout_ = 10;
+    uint64_t milisecondsTimeout_ = 1000;
     std::atomic<bool> running_ = false;
 
     std::atomic<bool> writeReady_ = false;
@@ -44,24 +58,6 @@ public:
 
 template <typename T>
 class PeriodicTask: public PeriodicTaskInterface {
-    void update_() override {
-        if(!writeReady_) {
-            update();
-            spdlog::info("abcdaaaa");
-            writeReady_ = true;
-            swap(backIdx_, middleIdx_);
-        }
-
-        timer_.expires_after(std::chrono::milliseconds(milisecondsTimeout_));
-        timer_.async_wait(handler);
-    };
-
-    std::function<void(const boost::system::error_code& code)> handler = [this](const boost::system::error_code& code) {
-        update_();
-        spdlog::info("abcdaaaa");
-        timer_.expires_after(std::chrono::milliseconds(milisecondsTimeout_));
-        timer_.async_wait(handler);    
-    };
 protected:
     std::array<T, 3> states_;
 
@@ -75,6 +71,20 @@ public:
 
         return states_[frontIdx_];
     };
+
+    virtual void update_state(const T *state1, T *state2) {}
+    void update() override {
+        T *state1 = nullptr;
+        T *state2 = nullptr;
+
+        if(writeReady_) {
+            state1 = &states_[middleIdx_];
+        } else {
+            state1 = &states_[frontIdx_];
+        }
+        state2 = &states_[backIdx_];
+        update_state(state1, state2);
+    }
 };
 
 #endif

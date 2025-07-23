@@ -13,8 +13,8 @@ public:
     MyTask(): PeriodicTask<int>() {
         spdlog::info("constructor");
     }
-    void update() override {
-        spdlog::info("abcd");
+    virtual void update_state(const int *state1, int *state2) {
+        *state2 = *state1 + 1;
     }
 };
 

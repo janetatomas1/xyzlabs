@@ -101,6 +101,8 @@ void XYZLabs::mainloop_() {
 }
 
 void XYZLabs::exit_() {
+    taskManager_.stop();
+    
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
