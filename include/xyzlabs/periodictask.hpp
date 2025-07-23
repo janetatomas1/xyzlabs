@@ -38,10 +38,9 @@ protected:
     std::atomic<uint8_t> frontIdx_ = 0;
     std::atomic<uint8_t> middleIdx_ = 1;
     std::atomic<uint8_t> backIdx_ = 2;
-    boost::asio::io_context io;
 
 public:
-    PeriodicTaskInterface();
+    PeriodicTaskInterface(uint64_t timeout);
     inline bool write_ready() {
         return writeReady_;
     }
@@ -61,10 +60,10 @@ protected:
     std::array<T, 3> states_;
 
 public:
-    PeriodicTask(const T &initialValue): PeriodicTaskInterface() {
+    PeriodicTask(const T &initialValue, uint64_t timeout = 1000): PeriodicTaskInterface(timeout) {
         states_ = {initialValue, initialValue, initialValue};
     };
-    PeriodicTask(): PeriodicTaskInterface() {};
+    PeriodicTask(uint64_t timeout = 1000): PeriodicTaskInterface(timeout) {};
     const T& get_value() {
         if(writeReady_) {
             swap(frontIdx_, middleIdx_);
