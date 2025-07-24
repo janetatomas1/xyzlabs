@@ -15,7 +15,7 @@ std::array<std::array<uint8_t, 50>, 50> zeroes();
 
 class MyTask: public PeriodicTask<std::array<std::array<uint8_t, 50>, 50>> {
 public:
-    MyTask(): PeriodicTask<std::array<std::array<uint8_t, 50>, 50>>(zeroes()) {
+    MyTask(): PeriodicTask<std::array<std::array<uint8_t, 50>, 50>>(zeroes(), 100) {
     }
     virtual void update_state(const  std::array<std::array<uint8_t, 50>, 50>& state1, std::array<std::array<uint8_t, 50>, 50> &state2) {
         for(uint32_t i=0;i < 50;i++) {

@@ -13,6 +13,8 @@ Widget::Widget(const std::string &title):
 
 void Widget::show(const ImVec2 &size, const ImVec2& position) {}
 
+void Widget::show_toolbar() {}
+
 void Widget::close() {
     open_ = false;
 }

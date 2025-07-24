@@ -19,6 +19,7 @@ class Widget {
 public:
     Widget(const std::string &title);
     virtual void show(const ImVec2 &size, const ImVec2& position);
+    virtual void show_toolbar();
     inline const std::string& title() const;
     inline IDType id() const;
     inline bool is_open() const;

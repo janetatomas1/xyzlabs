@@ -24,9 +24,7 @@ void WidgetManager::show(const ImVec2 &size) {
     ImGui::SetWindowSize(mainWindowSize);
     ImGui::SetWindowPos(mainWindowPos);
 
-    if(simulationRunning_) {
-        widgets_[currentWidget_]->show(size, pos);
-    }
+    widgets_[currentWidget_]->show(size, pos);
 
     ImGui::End();
 }
@@ -52,23 +50,21 @@ void WidgetManager::show_toolbar(const ImVec2 &size) {
     if(ImGui::Button(constants::CLOSE_CURRENT_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
         close_current_widget();
     }
-
-    if(simulationRunning_) {
-        if(ImGui::Button(constants::STOP_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
-            simulationRunning_ = false;
-        }
-    } else {
-        if(ImGui::Button(constants::START_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
-            simulationRunning_ = true;
-        }
-    }
-
+    ImGui::Dummy(ImVec2(0, 10));
     ImGui::Separator();
 
     if(widgets_.size() > 1) {
-        ImGui::Text("Open widgets");
         display_radio_buttons();
     }
+
+    ImGui::Dummy(ImVec2(0, 10));
+
+    if(widgets_.size() > 1) {
+        ImGui::Separator();
+        ImGui::Dummy(ImVec2(0, 10));
+    }
+
+    widgets_[currentWidget_]->show_toolbar();
 
     ImGui::End();
 }

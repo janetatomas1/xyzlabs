@@ -18,7 +18,6 @@ concept WidgetConcept = std::derived_from<Widget, Widget>;
 class WidgetManager {
     std::vector<std::unique_ptr<Widget>> newWidgets_;
     std::vector<std::unique_ptr<Widget>> widgets_;
-    bool simulationRunning_ = true;
     bool toolbarOpen_ = true;
     int currentWidget_ = 0;
     float toolbarClosedRatio_ = 0.05f;
@@ -82,6 +81,9 @@ void WidgetManager::remove_closed_widgets() {
 }
 
 void WidgetManager::display_radio_buttons() {
+    ImGui::Text("Open widgets");
+    ImGui::Dummy(ImVec2(0, 10));
+
     for(int i=0;i < widgets_.size();i++) {
         ImGui::RadioButton(widgets_[i]->title_id().c_str(), &currentWidget_, i);
     }
