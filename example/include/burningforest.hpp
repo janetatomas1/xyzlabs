@@ -13,10 +13,9 @@
 
 std::array<std::array<uint8_t, 50>, 50> zeroes();
 
-class BUrningForestTask: public PeriodicTask<std::array<std::array<uint8_t, 50>, 50>> {
+class BurningForestTask: public PeriodicTask<std::array<std::array<uint8_t, 50>, 50>> {
 public:
-    BUrningForestTask(): PeriodicTask<std::array<std::array<uint8_t, 50>, 50>>(zeroes(), 100) {
-    }
+    BurningForestTask(): PeriodicTask<std::array<std::array<uint8_t, 50>, 50>>(zeroes(), 100) {}
     virtual void update_state(const  std::array<std::array<uint8_t, 50>, 50>& state1, std::array<std::array<uint8_t, 50>, 50> &state2) {
         for(uint32_t i=0;i < 50;i++) {
             for(uint32_t j=0;j < 50;j++) {
@@ -49,12 +48,18 @@ class BurningForest: public OpenGLWidget {
     std::vector<std::vector<Shape<4>>> tiles_;
     std::vector<std::vector<uint8_t>> colors_;
     float begin_ = -0.95f, end_ = 0.95f;
-    std::shared_ptr<BUrningForestTask> task_ = nullptr;
+    std::shared_ptr<BurningForestTask> task_ = nullptr;
 
 public:
     BurningForest();
     void update() override;
     void destroy() override;
+};
+
+class IntroWidget: public Widget {
+public:
+    void show(const ImVec2 &size, const ImVec2& position) override;
+    IntroWidget();
 };
 
 #endif

@@ -2,7 +2,7 @@
 #ifndef XYZLABS_HPP
 #define XYZLABS_HPP
 
-#include <GL/glew.h>
+#include <concepts>
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -14,6 +14,9 @@
 
 
 class GLFWWindow;
+
+template<typename T>
+concept DerivedFromWidget = std::derived_from<T, Widget>;
 
 class XYZLabs {
     std::string title_;
@@ -29,6 +32,7 @@ class XYZLabs {
     void mainloop_();
     XYZLabs() = default;
 public:
+    template<DerivedFromWidget T>
     void init(const std::string &title);
     static XYZLabs& instance();
     TaskManager &task_manager();
@@ -43,5 +47,11 @@ public:
         return height_;
     }
 };
+
+template<DerivedFromWidget T>
+void XYZLabs::init(const std::string &title) {
+    widgetManager_.add_widget<T>();
+    title_ = title;
+}
 
 #endif

@@ -6,7 +6,9 @@
 #include <imgui_impl_opengl3.h>
 #include <implot.h>
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include <spdlog/spdlog.h>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -16,7 +18,6 @@
 
 #include "xyzlabs/utils.hpp"
 #include "xyzlabs/constants.hpp"
-#include "xyzlabs/defaultintrowidget.hpp"
 
 
 void XYZLabs::init_() {
@@ -66,8 +67,6 @@ void XYZLabs::init_() {
     ImGui_ImplOpenGL3_Init("#version 330");
 
     taskManager_.run();
-
-    widgetManager_.add_widget<DefaultIntroWidget>();
 }
 
 void XYZLabs::mainloop_() {
@@ -110,10 +109,6 @@ void XYZLabs::exit_() {
     glfwDestroyWindow(window_);
     glfwTerminate();
     spdlog::info("Closed {}", title_);
-}
-
-void XYZLabs::init(const std::string &title) {
-    title_ = title;
 }
 
 int XYZLabs::exec() {

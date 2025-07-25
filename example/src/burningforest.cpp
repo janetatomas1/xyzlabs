@@ -1,5 +1,7 @@
 
-#include "xyzlabs/burningforest.hpp"
+#include "burningforest.hpp"
+#include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/constants.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
 #include "xyzlabs/periodictask.hpp"
@@ -41,7 +43,7 @@ BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
         }
     }
 
-    task_ = std::make_shared<BUrningForestTask>();
+    task_ = std::make_shared<BurningForestTask>();
     XYZLabs::instance().task_manager().execute_periodic_task(task_);
 }
 
@@ -71,5 +73,20 @@ void BurningForest::destroy() {
         for(uint32_t j=0;j < height_;j++) {
             tiles_[i][j].destroy();
         }
+    }
+}
+
+IntroWidget::IntroWidget(): Widget("Intro") {}
+
+void IntroWidget::show(const ImVec2 &size, const ImVec2& position) {
+    ImGui::SetWindowFontScale(1.3);
+
+    ImGui::SetCursorPos({size.x * 0.37f, size.y * 0.45f});
+    ImVec2 btnSize = {size.x * 0.15f, size.y * 0.035f};
+
+    if(ImGui::Button(constants::BURNING_FOREST_BTN.c_str(), btnSize)) {
+        XYZLabs::instance()
+        .widget_manager()
+        .add_widget<BurningForest>();
     }
 }

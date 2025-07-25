@@ -32,8 +32,9 @@ set(
 )
 
 file(GLOB XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
-add_executable(
+add_library(
     xyzlabs
+    STATIC
     "${XYZLABS_SOURCES}"
     "${IMGUI_SOURCES}"
     "${IMPLOT_SOURCES}"
@@ -44,7 +45,7 @@ target_compile_definitions(xyzlabs INTERFACE SPDLOG_FMT_EXTERNAL)
 
 target_include_directories(
     xyzlabs
-    PRIVATE
+    PUBLIC
     "${CMAKE_INCLUDE_PATH}"
     "${CMAKE_SOURCE_DIR}/include/"
     "${IMGUI_DIR}"
@@ -56,15 +57,32 @@ target_include_directories(
 )
 target_link_directories(
     xyzlabs
-    PRIVATE
+    PUBLIC
     ${CMAKE_LIBRARY_PATH}
 )
 target_link_libraries(
     xyzlabs
-    PRIVATE
+    PUBLIC
     glfw3
     spdlog
     GLEW
     fmt
     GL
+)
+
+add_executable(
+    burningforest
+    ${CMAKE_SOURCE_DIR}/example/src/burningforest.cpp
+    ${CMAKE_SOURCE_DIR}/example/src/main.cpp
+)
+target_include_directories(
+    burningforest
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/example/include
+    ${CMAKE_SOURCE_DIR}/include
+)
+target_link_libraries(
+    burningforest
+    PRIVATE
+    xyzlabs
 )
