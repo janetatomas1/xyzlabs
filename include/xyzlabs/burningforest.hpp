@@ -13,9 +13,9 @@
 
 std::array<std::array<uint8_t, 50>, 50> zeroes();
 
-class MyTask: public PeriodicTask<std::array<std::array<uint8_t, 50>, 50>> {
+class BUrningForestTask: public PeriodicTask<std::array<std::array<uint8_t, 50>, 50>> {
 public:
-    MyTask(): PeriodicTask<std::array<std::array<uint8_t, 50>, 50>>(zeroes(), 100) {
+    BUrningForestTask(): PeriodicTask<std::array<std::array<uint8_t, 50>, 50>>(zeroes(), 100) {
     }
     virtual void update_state(const  std::array<std::array<uint8_t, 50>, 50>& state1, std::array<std::array<uint8_t, 50>, 50> &state2) {
         for(uint32_t i=0;i < 50;i++) {
@@ -49,7 +49,7 @@ class BurningForest: public OpenGLWidget {
     std::vector<std::vector<Shape<4>>> tiles_;
     std::vector<std::vector<uint8_t>> colors_;
     float begin_ = -0.95f, end_ = 0.95f;
-    std::shared_ptr<MyTask> task_ = nullptr;
+    std::shared_ptr<BUrningForestTask> task_ = nullptr;
 
 public:
     BurningForest();

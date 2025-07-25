@@ -41,7 +41,7 @@ BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
         }
     }
 
-    task_ = std::make_shared<MyTask>();
+    task_ = std::make_shared<BUrningForestTask>();
     XYZLabs::instance().task_manager().execute_periodic_task(task_);
 }
 

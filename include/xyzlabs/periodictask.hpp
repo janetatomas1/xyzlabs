@@ -5,6 +5,7 @@
 #include <array>
 #include <boost/asio.hpp>
 #include <spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 
 inline void swap(std::atomic<uint8_t> &a, std::atomic<uint8_t> &b) {
     auto tmp = a.load();
@@ -18,14 +19,16 @@ class PeriodicTaskInterface {
         timer_.async_wait(handler);
     };
     std::function<void(const boost::system::error_code& code)> handler = [this](const boost::system::error_code& code) {
-        if(!writeReady_) {
-            update();
-            writeReady_ = true;
-            swap(backIdx_, middleIdx_);
-        }
+        if(running_) {
+            if(!writeReady_) {
+                update();
+                writeReady_ = true;
+                swap(backIdx_, middleIdx_);
+            }
 
-        timer_.expires_after(std::chrono::milliseconds(milisecondsTimeout_));
-        timer_.async_wait(handler);    
+            timer_.expires_after(std::chrono::milliseconds(milisecondsTimeout_));
+            timer_.async_wait(handler);    
+        }
     };
 
 
@@ -46,6 +49,9 @@ public:
     }
     void stop() {
         running_ = false;
+        timer_.cancel();
+        timer_.wait();
+        spdlog::info("stop");
     }
     void start() {
         running_ = true;
