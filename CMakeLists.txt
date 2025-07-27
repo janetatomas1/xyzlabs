@@ -83,4 +83,11 @@ target_link_libraries(
     xyzlabs
 )
 
-install()
+install(
+    TARGETS xyzlabs
+    ARCHIVE DESTINATION lib
+)
+install(
+    DIRECTORY include/
+    DESTINATION include
+)
