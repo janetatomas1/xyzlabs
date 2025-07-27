@@ -82,3 +82,5 @@ target_link_libraries(
     PRIVATE
     xyzlabs
 )
+
+install()
