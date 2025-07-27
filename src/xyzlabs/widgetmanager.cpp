@@ -45,7 +45,7 @@ void WidgetManager::show_toolbar(const ImVec2 &size) {
     }
 
     ImGui::Button(constants::APP_SETTINGS_BTN_TITLE.c_str(), btnSize);
-    ImGui::Button(constants::SIMULATION_SETTINGS_BTN_TITLE.c_str(), btnSize);
+    ImGui::Button(constants::ANALYSIS_SETTINGS_BTN_TITLE.c_str(), btnSize);
 
     if(ImGui::Button(constants::CLOSE_CURRENT_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
         close_current_widget();
