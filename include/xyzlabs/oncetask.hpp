@@ -4,10 +4,17 @@
 
 #include <memory>
 #include <atomic>
+#include <string>
 
 class OnceTaskInterface {
+    std::string error_;
 public:
     virtual void execute() {};
+    const std::string& error() { return error_; };
+    void set_error(const std::string &error) { error_ = error; };
+    bool has_error() {
+        return error_.empty();
+    };
 };
 
 template <typename T>
@@ -24,6 +31,5 @@ public:
         return result_;
     };
 };
-
 
 #endif
