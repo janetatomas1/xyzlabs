@@ -8,6 +8,9 @@
 
 class OnceTaskInterface {
     std::string error_;
+    uint64_t progress_ = 0;
+    uint64_t progressMaximum_ = 0;
+
 public:
     virtual void execute() {};
     const std::string& error() { return error_; };
@@ -15,6 +18,15 @@ public:
     bool has_error() {
         return error_.empty();
     };
+    inline uint64_t progress() {
+        return progress_;
+    }
+    inline uint64_t progress_max() {
+        return progressMaximum_;
+    }
+    inline void set_progress(uint64_t progress) {
+        progress_ = progress;
+    }
 };
 
 template <typename T>
