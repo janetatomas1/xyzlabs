@@ -1,6 +1,4 @@
 
-#include "xyzlabs/xyzlabs.hpp"
-
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -18,6 +16,7 @@
 
 #include "xyzlabs/utils.hpp"
 #include "xyzlabs/constants.hpp"
+#include "xyzlabs/xyzlabs.hpp"
 
 
 void XYZLabs::init_() {
@@ -131,10 +130,14 @@ WidgetManager &XYZLabs::widget_manager() {
     return widgetManager_;
 }
 
-IDGenerator &XYZLabs::id_generator() {
-    return idGenerator_;
+RandomGenerator &XYZLabs::random_generator() {
+    return randomGenerator_;
 }
 
 void XYZLabs::close() {
     glfwSetWindowShouldClose(window_, GLFW_TRUE);
+}
+
+void XYZLabs::init(const std::string &title) {
+    title_ = title;
 }

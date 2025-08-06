@@ -7,13 +7,13 @@
 
 
 Widget::Widget(const std::string &title):
-    title_(title), id_(XYZLabs::instance().id_generator().get_id()), open_(true) {
+    title_(title), id_(XYZLabs::instance().random_generator().get_id()), open_(true) {
     titleID_ = std::format("{}##{}", title_, id_);
 }
 
 void Widget::show(const ImVec2 &size, const ImVec2& position) {}
 
-void Widget::show_toolbar() {}
+void Widget::show_toolbar(const ImVec2 &size, const ImVec2& position) {}
 
 void Widget::close() {
     open_ = false;

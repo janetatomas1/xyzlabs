@@ -29,7 +29,7 @@ public:
                     } if(j < 50 && state1[i][j + 1] == 1) {
                         state2[i][j] = 1;
                     } else {
-                        if(XYZLabs::instance().id_generator().get_id() % 100000 < 2) {
+                        if(XYZLabs::instance().random_generator().get_id() % 100000 < 2) {
                             state2[i][j] = 1;
                         }
                     }

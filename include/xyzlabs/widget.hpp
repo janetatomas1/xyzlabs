@@ -6,22 +6,21 @@
 #include <string>
 #include <memory>
 
-#include "xyzlabs/idgenerator.hpp"
-
 class Widget {
     std::string title_;
-    IDType id_;
+    uint64_t id_ = 0;
     std::string titleID_;
 
     bool open_ = true;
     ImGuiTabItemFlags tabItemFlags_ = ImGuiTabItemFlags_SetSelected;
 
 public:
+    Widget() = default;
     Widget(const std::string &title);
     virtual void show(const ImVec2 &size, const ImVec2& position);
-    virtual void show_toolbar();
+    virtual void show_toolbar(const ImVec2 &size, const ImVec2& position);
     inline const std::string& title() const;
-    inline IDType id() const;
+    inline uint64_t id() const;
     inline bool is_open() const;
     inline std::string& title_id();
     virtual ~Widget() = default;
@@ -33,7 +32,7 @@ const std::string &Widget::title() const {
     return title_;
 }
 
-IDType Widget::id() const {
+uint64_t Widget::id() const {
     return id_;
 }
 

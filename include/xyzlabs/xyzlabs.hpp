@@ -8,7 +8,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-#include "xyzlabs/idgenerator.hpp"
+#include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/taskmanager.hpp"
 #include "xyzlabs/widgetmanager.hpp"
 
@@ -18,26 +18,36 @@ class GLFWWindow;
 template<typename T>
 concept DerivedFromWidget = std::derived_from<T, Widget>;
 
+class DefaultIntroWidget: public Widget {
+public:
+    DefaultIntroWidget() = default;
+};
+
 class XYZLabs {
     std::string title_;
 	GLFWwindow *window_ = nullptr;
     TaskManager taskManager_;
     WidgetManager widgetManager_;
-    IDGenerator idGenerator_;
+    RandomGenerator randomGenerator_;
     int32_t width_ = 1000;
     int32_t height_ = 1000;
 
     void init_();
     void exit_();
     void mainloop_();
-    XYZLabs() = default;
+    XYZLabs() {
+        set_initial_widget<DefaultIntroWidget>();
+    };
 public:
     template<DerivedFromWidget T>
+    void set_initial_widget() {
+        widgetManager_.add_intro_widget<T>();
+    };
     void init(const std::string &title);
     static XYZLabs& instance();
     TaskManager &task_manager();
     WidgetManager &widget_manager();
-    IDGenerator& id_generator();
+    RandomGenerator& random_generator();
     void close();
     int exec();
     inline int32_t width() {
@@ -47,11 +57,5 @@ public:
         return height_;
     }
 };
-
-template<DerivedFromWidget T>
-void XYZLabs::init(const std::string &title) {
-    widgetManager_.add_widget<T>();
-    title_ = title;
-}
 
 #endif

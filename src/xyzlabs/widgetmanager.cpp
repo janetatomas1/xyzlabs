@@ -64,7 +64,7 @@ void WidgetManager::show_toolbar(const ImVec2 &size) {
         ImGui::Dummy(ImVec2(0, 10));
     }
 
-    widgets_[currentWidget_]->show_toolbar();
+    widgets_[currentWidget_]->show_toolbar(toolBarSize, ImGui::GetCursorPos());
 
     ImGui::End();
 }

@@ -4,6 +4,7 @@
 
 int main() {
     auto &app = XYZLabs::instance();
-    app.init<IntroWidget>("Burning forest");
+    app.set_initial_widget<IntroWidget>();
+    app.init("Burning forest");
     return app.exec();
 }
