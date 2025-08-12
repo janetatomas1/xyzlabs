@@ -111,10 +111,14 @@ void XYZLabs::exit_() {
 }
 
 int XYZLabs::exec() {
-    init_();
-    mainloop_();
-    exit_();
-    return 0;
+    try {
+        init_();
+        mainloop_();
+        exit_();
+    } catch(std::exception &e) {
+        exitCode_ = 1;
+    }
+    return exitCode_;
 }
 
 XYZLabs& XYZLabs::instance() {
@@ -138,6 +142,7 @@ void XYZLabs::close() {
     glfwSetWindowShouldClose(window_, GLFW_TRUE);
 }
 
-void XYZLabs::init(const std::string &title) {
+XYZLabs& XYZLabs::init(const std::string &title) {
     title_ = title;
+    return instance();
 }

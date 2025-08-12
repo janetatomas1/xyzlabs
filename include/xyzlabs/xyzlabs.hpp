@@ -38,12 +38,15 @@ class XYZLabs {
     XYZLabs() {
         set_initial_widget<DefaultIntroWidget>();
     };
+
+    int exitCode_ = 0;
 public:
     template<DerivedFromWidget T>
-    void set_initial_widget() {
+    XYZLabs& set_initial_widget() {
         widgetManager_.add_intro_widget<T>();
+        return instance();
     };
-    void init(const std::string &title);
+    XYZLabs& init(const std::string &title);
     static XYZLabs& instance();
     TaskManager &task_manager();
     WidgetManager &widget_manager();
@@ -55,6 +58,9 @@ public:
     }
     inline int32_t height() {
         return height_;
+    }
+    int return_code() {
+        return exitCode_;
     }
 };
 
