@@ -35,9 +35,7 @@ class XYZLabs {
     void init_();
     void exit_();
     void mainloop_();
-    XYZLabs() {
-        set_initial_widget<DefaultIntroWidget>();
-    };
+    XYZLabs() = default;
 
     int exitCode_ = 0;
 public:

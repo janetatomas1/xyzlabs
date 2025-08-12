@@ -52,7 +52,6 @@ void XYZLabs::init_() {
         spdlog::info("GLEW initialisation SUCCESS!");
     }
 
-
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -65,6 +64,9 @@ void XYZLabs::init_() {
     ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+    if(widgetManager_.nwidgets() == 0) {
+        set_initial_widget<DefaultIntroWidget>();
+    }
     taskManager_.run();
 }
 

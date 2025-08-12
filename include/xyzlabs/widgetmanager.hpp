@@ -39,6 +39,9 @@ public:
         return toolbarOpen_ ? toolbarOpenRatio_ : toolbarClosedRatio_;
     }
     void close_current_widget();
+    uint64_t nwidgets() {
+        return widgets_.size();
+    }
 };
 
 void WidgetManager::flush_new_widgets() {
