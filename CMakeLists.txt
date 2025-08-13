@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(IMGUI_DIR "${CMAKE_SOURCE_DIR}/submodules/imgui/")
 set(IMGUI_BACKENDS_DIR "${CMAKE_SOURCE_DIR}/submodules/imgui/backends")
 set(IMPLOT_DIR "${CMAKE_SOURCE_DIR}/submodules/implot")
+set(IMPLOT3D_DIR "${CMAKE_SOURCE_DIR}/submodules/implot3d")
 set(STB_DIR "${CMAKE_SOURCE_DIR}/submodules/stb")
 set(PFD_DIR "${CMAKE_SOURCE_DIR}/submodules/portable-file-dialogs")
 set(CONCURRENT_QUEUE_DIR "${CMAKE_SOURCE_DIR}/submodules/concurrentqueue/")
@@ -27,6 +28,7 @@ set(
     "${IMPLOT_DIR}/implot_items.cpp"
 )
 
+file(GLOB IMPLOT3D_SOURCES "${IMPLOT3D_DIR}/*.cpp")
 file(GLOB XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
 add_library(
     xyzlabs
@@ -34,6 +36,7 @@ add_library(
     "${XYZLABS_SOURCES}"
     "${IMGUI_SOURCES}"
     "${IMPLOT_SOURCES}"
+    "${IMPLOT3D_SOURCES}"
 )
 
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
@@ -46,6 +49,7 @@ target_include_directories(
     "${CMAKE_SOURCE_DIR}/include/"
     "${IMGUI_DIR}"
     "${IMGUI_BACKENDS_DIR}"
+    "${IMPLOT3D_DIR}"
     "${IMPLOT_DIR}"
     "${STB_DIR}"
     "${PFD_DIR}"
