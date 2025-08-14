@@ -2,8 +2,8 @@
 cmake_minimum_required(VERSION 3.28)
 project(xyzlabs)
 
-if(DEFINED CMAKE_TOOLCHAIN_FILE AND EXISTS )
-    # include(${CMAKE_TOOLCHAIN_FILE})
+if(DEFINED CMAKE_TOOLCHAIN_FILE_ AND EXISTS ${CMAKE_TOOLCHAIN_FILE_})
+    include(${CMAKE_TOOLCHAIN_FILE_})
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
@@ -44,6 +44,15 @@ add_library(
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
 target_compile_definitions(xyzlabs INTERFACE SPDLOG_FMT_EXTERNAL)
 
+message(    "${CMAKE_INCLUDE_PATH}"
+    "${CMAKE_SOURCE_DIR}/include/"
+    "${IMGUI_DIR}"
+    "${IMGUI_BACKENDS_DIR}"
+    "${IMPLOT3D_DIR}"
+    "${IMPLOT_DIR}"
+    "${STB_DIR}"
+    "${PFD_DIR}"
+    "${CONCURRENT_QUEUE_DIR}")
 target_include_directories(
     xyzlabs
     PUBLIC
