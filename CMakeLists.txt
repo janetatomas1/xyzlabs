@@ -8,63 +8,24 @@ endif()
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(IMGUI_DIR "${CMAKE_SOURCE_DIR}/submodules/imgui/")
-set(IMGUI_BACKENDS_DIR "${CMAKE_SOURCE_DIR}/submodules/imgui/backends")
-set(IMPLOT_DIR "${CMAKE_SOURCE_DIR}/submodules/implot")
-set(IMPLOT3D_DIR "${CMAKE_SOURCE_DIR}/submodules/implot3d")
-set(STB_DIR "${CMAKE_SOURCE_DIR}/submodules/stb")
-set(PFD_DIR "${CMAKE_SOURCE_DIR}/submodules/portable-file-dialogs")
-set(CONCURRENT_QUEUE_DIR "${CMAKE_SOURCE_DIR}/submodules/concurrentqueue/")
-set(
-    IMGUI_SOURCES
-    "${IMGUI_DIR}/imgui.cpp"
-    "${IMGUI_DIR}/imgui_draw.cpp"
-    "${IMGUI_DIR}/imgui_tables.cpp"
-    "${IMGUI_DIR}/imgui_widgets.cpp"
-    "${IMGUI_BACKENDS_DIR}/imgui_impl_glfw.cpp"
-    "${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp"
-)
-set(
-    IMPLOT_SOURCES
-    "${IMPLOT_DIR}/implot.cpp"
-    "${IMPLOT_DIR}/implot_items.cpp"
-)
-
-file(GLOB IMPLOT3D_SOURCES "${IMPLOT3D_DIR}/*.cpp")
 file(GLOB XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
 add_library(
     xyzlabs
     STATIC
     "${XYZLABS_SOURCES}"
-    "${IMGUI_SOURCES}"
-    "${IMPLOT_SOURCES}"
-    "${IMPLOT3D_SOURCES}"
 )
 
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
 target_compile_definitions(xyzlabs INTERFACE SPDLOG_FMT_EXTERNAL)
 
-message(    "${CMAKE_INCLUDE_PATH}"
-    "${CMAKE_SOURCE_DIR}/include/"
-    "${IMGUI_DIR}"
-    "${IMGUI_BACKENDS_DIR}"
-    "${IMPLOT3D_DIR}"
-    "${IMPLOT_DIR}"
-    "${STB_DIR}"
-    "${PFD_DIR}"
-    "${CONCURRENT_QUEUE_DIR}")
 target_include_directories(
     xyzlabs
     PUBLIC
     "${CMAKE_INCLUDE_PATH}"
     "${CMAKE_SOURCE_DIR}/include/"
     "${IMGUI_DIR}"
-    "${IMGUI_BACKENDS_DIR}"
-    "${IMPLOT3D_DIR}"
-    "${IMPLOT_DIR}"
     "${STB_DIR}"
     "${PFD_DIR}"
-    "${CONCURRENT_QUEUE_DIR}"
 )
 target_link_directories(
     xyzlabs
@@ -79,6 +40,9 @@ target_link_libraries(
     GLEW
     fmt
     GL
+    imgui
+    implot
+    implot3d
 )
 
 add_executable(

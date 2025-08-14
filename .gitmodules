@@ -1,21 +1,3 @@
 [submodule "submodules/stb"]
 	path = submodules/stb
 	url = https://github.com/nothings/stb.git
-[submodule "submodules/portable-file-dialogs"]
-	path = submodules/portable-file-dialogs
-	url = https://github.com/samhocevar/portable-file-dialogs.git
-[submodule "submodules/nanovg"]
-	path = submodules/nanovg
-	url = https://github.com/memononen/nanovg.git
-[submodule "submodules/imgui"]
-	path = submodules/imgui
-	url = https://github.com/ocornut/imgui.git
-[submodule "submodules/implot"]
-	path = submodules/implot
-	url = https://github.com/epezent/implot.git
-[submodule "submodules/concurrentqueue"]
-	path = submodules/concurrentqueue
-	url = https://github.com/cameron314/concurrentqueue.git
-[submodule "submodules/implot3d"]
-	path = submodules/implot3d
-	url = https://github.com/brenocq/implot3d.git
