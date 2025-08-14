@@ -2,8 +2,9 @@
 cmake_minimum_required(VERSION 3.28)
 project(xyzlabs)
 
-include(${CMAKE_TOOLCHAIN_FILE})
-
+if(DEFINED CMAKE_TOOLCHAIN_FILE AND EXISTS "${CMAKE_TOOLCHAIN_FILE}")
+    include(${CMAKE_TOOLCHAIN_FILE})
+endif()
 set(CMAKE_CXX_STANDARD 20)
 
 set(IMGUI_DIR "${CMAKE_SOURCE_DIR}/submodules/imgui/")
