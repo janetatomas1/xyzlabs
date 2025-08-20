@@ -10,21 +10,37 @@
 #include <spdlog/spdlog.h>
 
 #include "xyzlabs/widget.hpp"
+#include "xyzlabs/settingsmanager.hpp"
 
 
 template <typename T>
 concept WidgetConcept = std::derived_from<Widget, Widget>;
 
+struct AppSettings: public Settings {
+    ImVec4 mainWindowColor;
+    float mainWindowFontScale;
+
+    ImVec4 toolbarWindowColor;
+    float toolbarWindowFontScale;
+    
+    void show_input_widget() override;
+};
+
 class WidgetManager {
     std::vector<std::unique_ptr<Widget>> newWidgets_;
     std::vector<std::unique_ptr<Widget>> widgets_;
+    
     bool toolbarOpen_ = true;
+    bool settingsOpen_  = true;
+
     int currentWidget_ = 0;
     float toolbarClosedRatio_ = 0.05f;
     float toolbarOpenRatio_ = 0.15;
 
+    AppSettings settings;
 public:
     WidgetManager() = default;
+    void init();
     void show(const ImVec2 &size);
     inline void flush_new_widgets();
     inline void remove_closed_widgets();
@@ -42,6 +58,7 @@ public:
     uint64_t nwidgets() {
         return widgets_.size();
     }
+    void show_settings_window(const ImVec2 &size);
 };
 
 void WidgetManager::flush_new_widgets() {

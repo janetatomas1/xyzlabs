@@ -73,6 +73,7 @@ void XYZLabs::init_() {
         set_initial_widget<DefaultIntroWidget>();
     }
     taskManager_.run();
+    widgetManager_.init();
 }
 
 void XYZLabs::mainloop_() {
@@ -146,6 +147,10 @@ WidgetManager &XYZLabs::widget_manager() {
 
 RandomGenerator &XYZLabs::random_generator() {
     return randomGenerator_;
+}
+
+SettingsManager &XYZLabs::settings_manager() {
+    return settingsManager_;
 }
 
 void XYZLabs::close() {

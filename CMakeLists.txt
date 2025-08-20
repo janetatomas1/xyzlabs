@@ -18,6 +18,8 @@ add_library(
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
 target_compile_definitions(xyzlabs INTERFACE SPDLOG_FMT_EXTERNAL)
 
+find_package(Boost REQUIRED COMPONENTS Json)
+
 target_include_directories(
     xyzlabs
     PUBLIC
@@ -35,6 +37,8 @@ target_link_directories(
 target_link_libraries(
     xyzlabs
     PUBLIC
+    boost_json
+    ${Boost_LIBRARIES}
     glfw3
     spdlog
     GLEW
@@ -59,6 +63,8 @@ target_include_directories(
 target_link_libraries(
     burningforest
     PRIVATE
+    boost_json
+    ${Boost_LIBRARIES}
     xyzlabs
 )
 

@@ -10,7 +10,8 @@ namespace constants {
     const std::string TOOLBAR_ID = "TOOLBAR";
     const std::string EXIT_BTN_TITLE = "Exit";
     const std::string APP_SETTINGS_BTN_TITLE = "App settings";
-    const std::string ANALYSIS_SETTINGS_BTN_TITLE = "Settings";
+    const std::string CLOSE_SETTINGS_BTN_TITLE = "Close settings";
+    const std::string SETTINGS_WINDOW_TITLE = "Settings";
     const std::string CLOSE_CURRENT_SIMULATION_BTN_TITLE = "Close current analysis";
 }
 

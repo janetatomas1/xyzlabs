@@ -9,6 +9,51 @@
 constexpr size_t MAIN_WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 constexpr size_t TOOLBAR_WINDOW_FLAGS = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 
+void AppSettings::show_input_widget() {
+    if(ImGui::BeginTable("##main_window_settings", 2, ImGuiTableFlags_Borders)) {
+        ImGui::TableHeadersRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("Main window");
+
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::Text("Font size");
+        ImGui::TableNextColumn();
+        ImGui::SliderFloat("##main_windows_float_size", &mainWindowFontScale, 0.0, 3.0f);
+
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::Text("Background color");
+        ImGui::TableNextColumn();
+        ImGui::ColorEdit4("Color with Alpha", (float*)&mainWindowColor);
+
+        ImGui::EndTable();
+        ImGui::Dummy({0.0f, 10.0f});
+    }
+
+    if(ImGui::BeginTable("##toolbar_window_settings", 2, ImGuiTableFlags_Borders)) {
+        ImGui::TableHeadersRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("Toolbar window");
+
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::Text("Font size");
+        ImGui::TableNextColumn();
+
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::Text("Background color");
+
+        ImGui::EndTable();
+        ImGui::Dummy({0.0f, 10.0f});
+    }
+}
+
+void WidgetManager::init() {
+    XYZLabs::instance().settings_manager().register_settings<AppSettings>("AppSettings");
+}
+
 void WidgetManager::show(const ImVec2 &size) {
     flush_new_widgets();
     remove_closed_widgets();
@@ -19,54 +64,63 @@ void WidgetManager::show(const ImVec2 &size) {
     const ImVec2 mainWindowSize = {size.x * (1 - ratio), size.y};
     const ImVec2 mainWindowPos = {size.x * ratio, 0.0f};
 
-    ImGui::Begin(constants::MAIN_WINDOW_ID.c_str(), NULL, MAIN_WINDOW_FLAGS);
+    if(ImGui::Begin(constants::MAIN_WINDOW_ID.c_str(), NULL, MAIN_WINDOW_FLAGS)) {
+        ImGui::SetWindowSize(mainWindowSize);
+        ImGui::SetWindowPos(mainWindowPos);
+        widgets_[currentWidget_]->show(size, pos);
+        ImGui::End();
+    }
 
-    ImGui::SetWindowSize(mainWindowSize);
-    ImGui::SetWindowPos(mainWindowPos);
-
-    widgets_[currentWidget_]->show(size, pos);
-
-    ImGui::End();
+    if(settingsOpen_) {
+        show_settings_window(size);
+    }
 }
 
 void WidgetManager::show_toolbar(const ImVec2 &size) {    
-    ImGui::Begin(constants::TOOLBAR_ID.c_str(), NULL, TOOLBAR_WINDOW_FLAGS);
+    if(ImGui::Begin(constants::TOOLBAR_ID.c_str(), NULL, TOOLBAR_WINDOW_FLAGS)) {
+        toolbarOpen_ = !ImGui::IsWindowCollapsed();
 
-    toolbarOpen_ = !ImGui::IsWindowCollapsed();
+        ImVec2 toolBarSize = {size.x * toolbar_window_ratio(), size.y};
+        ImVec2 btnSize = {size.x * 0.14f, size.y * 0.03f};
 
-    ImVec2 toolBarSize = {size.x * toolbar_window_ratio(), size.y};
-    ImVec2 btnSize = {size.x * 0.14f, size.y * 0.03f};
+        ImGui::SetWindowSize(toolBarSize);
+        ImGui::SetWindowPos({0, 0});
 
-    ImGui::SetWindowSize(toolBarSize);
-    ImGui::SetWindowPos({0, 0});
+        if(ImGui::Button(constants::EXIT_BTN_TITLE.c_str(), btnSize)) {
+            XYZLabs::instance().close();
+        }
 
-    if(ImGui::Button(constants::EXIT_BTN_TITLE.c_str(), btnSize)) {
-        XYZLabs::instance().close();
-    }
+        if(settingsOpen_) {
+            if(ImGui::Button(constants::CLOSE_SETTINGS_BTN_TITLE.c_str(), btnSize)) {
+                settingsOpen_ = false;
+            }            
+        } else {
+            if(ImGui::Button(constants::APP_SETTINGS_BTN_TITLE.c_str(), btnSize)) {
+                settingsOpen_ = true;
+            }
+        }
 
-    ImGui::Button(constants::APP_SETTINGS_BTN_TITLE.c_str(), btnSize);
-    ImGui::Button(constants::ANALYSIS_SETTINGS_BTN_TITLE.c_str(), btnSize);
+        if(ImGui::Button(constants::CLOSE_CURRENT_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
+            close_current_widget();
+        }
 
-    if(ImGui::Button(constants::CLOSE_CURRENT_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
-        close_current_widget();
-    }
-    ImGui::Dummy(ImVec2(0, 10));
-    ImGui::Separator();
-
-    if(widgets_.size() > 1) {
-        display_radio_buttons();
-    }
-
-    ImGui::Dummy(ImVec2(0, 10));
-
-    if(widgets_.size() > 1) {
-        ImGui::Separator();
         ImGui::Dummy(ImVec2(0, 10));
+        ImGui::Separator();
+
+        if(widgets_.size() > 1) {
+            display_radio_buttons();
+        }
+
+        ImGui::Dummy(ImVec2(0, 30));
+
+        if(widgets_.size() > 1) {
+            ImGui::Separator();
+            ImGui::Dummy(ImVec2(0, 10));
+        }
+
+        widgets_[currentWidget_]->show_toolbar(toolBarSize, ImGui::GetCursorPos());
+        ImGui::End();
     }
-
-    widgets_[currentWidget_]->show_toolbar(toolBarSize, ImGui::GetCursorPos());
-
-    ImGui::End();
 }
 
 void WidgetManager::close_current_widget() {
@@ -76,3 +130,16 @@ void WidgetManager::close_current_widget() {
         spdlog::info("Closed widget. Title: {}, id: {}", widgets_[currentWidget_]->title(), widgets_[currentWidget_]->id());
     }
 }
+
+void WidgetManager::show_settings_window(const ImVec2 &size) {
+    ImVec2 settingsWindowPos = {size.x * 0.3f, size.y * 0.2f};
+    ImVec2 settingsWindowSize = {size.x * 0.5f, size.y * 0.5f};
+    ImGui::SetNextWindowPos(settingsWindowPos);
+    ImGui::SetNextWindowSize(settingsWindowSize);
+
+    if(ImGui::Begin(constants::SETTINGS_WINDOW_TITLE.c_str(), &settingsOpen_)) {
+        XYZLabs::instance().settings_manager().show_settings_widget(size);
+        ImGui::End();
+    }
+}
+
