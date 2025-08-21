@@ -13,6 +13,8 @@ namespace constants {
     const std::string CLOSE_SETTINGS_BTN_TITLE = "Close settings";
     const std::string SETTINGS_WINDOW_TITLE = "Settings";
     const std::string CLOSE_CURRENT_SIMULATION_BTN_TITLE = "Close current analysis";
+    const std::string SAVE_SETTINGS_BTN_TITLE = "Save settings";
+    const std::string MAIN_APP_SETTINGS_LABEL = "App settings";
 }
 
 #endif

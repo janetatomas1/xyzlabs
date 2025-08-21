@@ -17,13 +17,15 @@ template <typename T>
 concept WidgetConcept = std::derived_from<Widget, Widget>;
 
 struct AppSettings: public Settings {
-    ImVec4 mainWindowColor;
+    float mainWindowColor [4];
     float mainWindowFontScale;
 
-    ImVec4 toolbarWindowColor;
+    float toolbarWindowColor [4];
     float toolbarWindowFontScale;
     
     void show_input_widget() override;
+    json serialize() const override;
+    void deserialize(const json& obj) override;
 };
 
 class WidgetManager {

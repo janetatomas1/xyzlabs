@@ -5,15 +5,17 @@
 #include <memory>
 #include <imgui.h>
 #include <boost/unordered_map.hpp>
-#include <boost/json.hpp>
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 struct Settings {
     void virtual show_input_widget() {};
-    boost::json::object virtual serialize() const {
+    json virtual serialize() const {
         return {};
     };
-    void virtual deserialize(const boost::json::object &obj) {};
+    void virtual deserialize(const json &obj) {};
 };
 
 template<typename T>
@@ -21,6 +23,7 @@ concept SettingsType = std::derived_from<T, Settings> || std::same_as<T, Setting
 
 class SettingsManager {
     boost::unordered_map<std::string, std::unique_ptr<Settings>> store_;
+    bool settingsOpen_ = true;
 
 public:
     SettingsManager();
@@ -29,6 +32,9 @@ public:
     void load(const std::string &filepath) {};
     void save(const std::string &filepath) {};
     void show_settings_widget(const ImVec2 &size);
+    bool settings_open() const {
+        return settingsOpen_;
+    }
 };
 
 template <SettingsType S>

@@ -50,8 +50,26 @@ void AppSettings::show_input_widget() {
     }
 }
 
+json AppSettings::serialize() const {
+    return json{
+        {"main_window_color", mainWindowColor},
+        {"main_window_font", mainWindowFontScale},
+        {"toolbar_window_color", toolbarWindowColor},
+        {"toolbar_window_font", toolbarWindowFontScale},
+    };
+}
+
+void AppSettings::deserialize(const json& obj) {
+    obj.at("main_window_color").get_to(mainWindowColor);
+    obj.at("main_window_font").get_to(mainWindowFontScale);
+    obj.at("toolbar_window_color").get_to(toolbarWindowColor);
+    obj.at("toolbar_window_font").get_to(toolbarWindowFontScale);
+}
+
 void WidgetManager::init() {
-    XYZLabs::instance().settings_manager().register_settings<AppSettings>("AppSettings");
+    XYZLabs::instance()
+    .settings_manager()
+    .register_settings<AppSettings>(constants::MAIN_APP_SETTINGS_LABEL);
 }
 
 void WidgetManager::show(const ImVec2 &size) {
@@ -71,9 +89,7 @@ void WidgetManager::show(const ImVec2 &size) {
         ImGui::End();
     }
 
-    if(settingsOpen_) {
-        show_settings_window(size);
-    }
+    XYZLabs::instance().settings_manager().show_settings_widget(size);
 }
 
 void WidgetManager::show_toolbar(const ImVec2 &size) {    
@@ -132,14 +148,4 @@ void WidgetManager::close_current_widget() {
 }
 
 void WidgetManager::show_settings_window(const ImVec2 &size) {
-    ImVec2 settingsWindowPos = {size.x * 0.3f, size.y * 0.2f};
-    ImVec2 settingsWindowSize = {size.x * 0.5f, size.y * 0.5f};
-    ImGui::SetNextWindowPos(settingsWindowPos);
-    ImGui::SetNextWindowSize(settingsWindowSize);
-
-    if(ImGui::Begin(constants::SETTINGS_WINDOW_TITLE.c_str(), &settingsOpen_)) {
-        XYZLabs::instance().settings_manager().show_settings_widget(size);
-        ImGui::End();
-    }
 }
-
