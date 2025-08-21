@@ -4,7 +4,7 @@
 
 SettingsManager::SettingsManager() {}
 
-void SettingsManager::show_settings_widget(const ImVec2 &size) {
+void SettingsManager::show_settings_window(const ImVec2 &size) {
     ImVec2 settingsWindowSize = {size.x * 0.5f, size.y * 0.5f};
     ImVec2 settingsWindowPos = {settingsWindowSize.x * 0.65f, settingsWindowSize.y * 0.4f};
 
@@ -15,7 +15,7 @@ void SettingsManager::show_settings_widget(const ImVec2 &size) {
     ImGui::SetNextWindowPos(settingsWindowPos);
     ImGui::SetNextWindowSize(settingsWindowSize);
 
-    if(ImGui::Begin(constants::SETTINGS_WINDOW_TITLE.c_str(), &settingsOpen_)) {
+    if(settingsOpen_ && ImGui::Begin(constants::SETTINGS_WINDOW_TITLE.c_str(), &settingsOpen_)) {
         ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
         for(auto &ref: store_) {
             if(ImGui::TreeNode(ref.first.c_str())) {
@@ -27,7 +27,7 @@ void SettingsManager::show_settings_widget(const ImVec2 &size) {
 
         ImGui::SetCursorPos(saveBtnPos);
         if(ImGui::Button(constants::SAVE_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
-
+            
         }
         
         ImGui::End();

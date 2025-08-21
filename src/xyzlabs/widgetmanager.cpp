@@ -89,7 +89,7 @@ void WidgetManager::show(const ImVec2 &size) {
         ImGui::End();
     }
 
-    XYZLabs::instance().settings_manager().show_settings_widget(size);
+    XYZLabs::instance().settings_manager().show_settings_window(size);
 }
 
 void WidgetManager::show_toolbar(const ImVec2 &size) {    
@@ -106,13 +106,13 @@ void WidgetManager::show_toolbar(const ImVec2 &size) {
             XYZLabs::instance().close();
         }
 
-        if(settingsOpen_) {
+        if(XYZLabs::instance().settings_manager().settings_open()) {
             if(ImGui::Button(constants::CLOSE_SETTINGS_BTN_TITLE.c_str(), btnSize)) {
-                settingsOpen_ = false;
+                XYZLabs::instance().settings_manager().set_settings_open(false);
             }            
         } else {
             if(ImGui::Button(constants::APP_SETTINGS_BTN_TITLE.c_str(), btnSize)) {
-                settingsOpen_ = true;
+                XYZLabs::instance().settings_manager().set_settings_open(true);
             }
         }
 
@@ -145,7 +145,4 @@ void WidgetManager::close_current_widget() {
         widgets_[currentWidget_]->destroy();
         spdlog::info("Closed widget. Title: {}, id: {}", widgets_[currentWidget_]->title(), widgets_[currentWidget_]->id());
     }
-}
-
-void WidgetManager::show_settings_window(const ImVec2 &size) {
 }

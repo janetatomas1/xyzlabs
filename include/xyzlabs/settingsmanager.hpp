@@ -22,6 +22,7 @@ template<typename T>
 concept SettingsType = std::derived_from<T, Settings> || std::same_as<T, Settings>;
 
 class SettingsManager {
+    json cache_;
     boost::unordered_map<std::string, std::unique_ptr<Settings>> store_;
     bool settingsOpen_ = true;
 
@@ -31,9 +32,12 @@ public:
     void register_settings(const std::string &label);
     void load(const std::string &filepath) {};
     void save(const std::string &filepath) {};
-    void show_settings_widget(const ImVec2 &size);
+    void show_settings_window(const ImVec2 &size);
     bool settings_open() const {
         return settingsOpen_;
+    }
+    void set_settings_open(bool value) {
+        settingsOpen_ = value;
     }
 };
 
