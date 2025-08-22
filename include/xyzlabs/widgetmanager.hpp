@@ -34,6 +34,7 @@ class WidgetManager {
     
     bool toolbarOpen_ = true;
     bool settingsOpen_  = true;
+    bool reloadSettingsRequested_ = false;
 
     int currentWidget_ = 0;
     float toolbarClosedRatio_ = 0.05f;
@@ -60,7 +61,8 @@ public:
     uint64_t nwidgets() {
         return widgets_.size();
     }
-    void show_settings_window(const ImVec2 &size);
+    void reload_settings();
+    void enable_settings_reload();
 };
 
 void WidgetManager::flush_new_widgets() {

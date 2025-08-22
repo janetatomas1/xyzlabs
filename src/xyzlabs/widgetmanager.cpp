@@ -73,6 +73,10 @@ void WidgetManager::init() {
 }
 
 void WidgetManager::show(const ImVec2 &size) {
+    if(reloadSettingsRequested_) {
+        reload_settings();
+    }
+
     flush_new_widgets();
     remove_closed_widgets();
     show_toolbar(size);
@@ -106,20 +110,34 @@ void WidgetManager::show_toolbar(const ImVec2 &size) {
             XYZLabs::instance().close();
         }
 
-        if(XYZLabs::instance().settings_manager().settings_open()) {
-            if(ImGui::Button(constants::CLOSE_SETTINGS_BTN_TITLE.c_str(), btnSize)) {
-                XYZLabs::instance().settings_manager().set_settings_open(false);
-            }            
-        } else {
-            if(ImGui::Button(constants::APP_SETTINGS_BTN_TITLE.c_str(), btnSize)) {
-                XYZLabs::instance().settings_manager().set_settings_open(true);
-            }
+        bool settingsOpen = XYZLabs::instance()
+        .settings_manager()
+        .settings_open();
+        
+        if(settingsOpen) {
+            ImGui::BeginDisabled();
         }
 
-        if(ImGui::Button(constants::CLOSE_CURRENT_SIMULATION_BTN_TITLE.c_str(), btnSize)) {
+        if(ImGui::Button(constants::APP_SETTINGS_BTN_TITLE.c_str(), btnSize)) {
+            XYZLabs::instance().settings_manager().set_settings_open(true);
+        }
+
+        if(settingsOpen) {
+            ImGui::EndDisabled();
+        }
+
+        if(widgets_.size() == 1) {
+            ImGui::BeginDisabled();
+        }
+        
+        if(ImGui::Button(constants::CLOSE_CURRENT_WIDGET_BTN_TITLE.c_str(), btnSize)) {
             close_current_widget();
         }
 
+        if(widgets_.size() == 1) {
+            ImGui::EndDisabled();
+        }
+        
         ImGui::Dummy(ImVec2(0, 10));
         ImGui::Separator();
 
@@ -145,4 +163,16 @@ void WidgetManager::close_current_widget() {
         widgets_[currentWidget_]->destroy();
         spdlog::info("Closed widget. Title: {}, id: {}", widgets_[currentWidget_]->title(), widgets_[currentWidget_]->id());
     }
+}
+
+void WidgetManager::reload_settings() {
+    settings = XYZLabs::instance()
+    .settings_manager()
+    .fetch_settings<AppSettings>(
+        constants::MAIN_APP_SETTINGS_LABEL
+    );
+}
+
+void WidgetManager::enable_settings_reload() {
+    reloadSettingsRequested_ = true;
 }

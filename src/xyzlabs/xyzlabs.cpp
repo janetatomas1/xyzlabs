@@ -14,6 +14,8 @@
 
 #include <stb_image.h>
 #include <stdexcept>
+#include <cstdlib>
+#include <fmt/format.h>
 
 #include "xyzlabs/utils.hpp"
 #include "xyzlabs/constants.hpp"
@@ -72,6 +74,8 @@ void XYZLabs::init_() {
     if(widgetManager_.nwidgets() == 0) {
         set_initial_widget<DefaultIntroWidget>();
     }
+
+    create_app_directory();
     taskManager_.run();
     widgetManager_.init();
 }
@@ -160,4 +164,26 @@ void XYZLabs::close() {
 XYZLabs& XYZLabs::init(const std::string &title) {
     title_ = title;
     return instance();
+}
+
+const std::string& XYZLabs::title() {
+    return title_;
+}
+
+std::filesystem::path XYZLabs::app_directory() {
+    auto titleStandardized = utils::standardize(title());
+    
+    #ifdef __unix__
+        return std::filesystem::path(std::getenv("HOME")) / fmt::format(".{}", titleStandardized);
+    #endif
+}
+
+std::filesystem::path XYZLabs::create_app_directory() {
+    auto appDirectory = app_directory();
+
+    if(!std::filesystem::is_directory(appDirectory)) {
+        std::filesystem::create_directory(appDirectory);
+    }
+
+    return appDirectory;
 }

@@ -15,6 +15,13 @@ namespace utils {
             throw std::runtime_error(std::format("{} : FAIL", message));
         }
     }
+
+    std::string standardize(const std::string &ss) {
+        std::string s = ss;
+        std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return std::tolower(c); });
+        s.erase(std::remove_if(s.begin(), s.end(), [](unsigned char c){ return std::isspace(c); }), s.end());
+        return s;
+    }
 }
 
 #endif

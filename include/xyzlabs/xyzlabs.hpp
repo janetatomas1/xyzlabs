@@ -3,6 +3,7 @@
 #define XYZLABS_HPP
 
 #include <concepts>
+#include <filesystem>
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -61,9 +62,12 @@ public:
     inline int32_t height() {
         return height_;
     }
+    const std::string& title();
     int return_code() {
         return exitCode_;
     }
+    std::filesystem::path app_directory();
+    std::filesystem::path create_app_directory();
 };
 
 #endif

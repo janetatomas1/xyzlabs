@@ -39,11 +39,26 @@ public:
     void set_settings_open(bool value) {
         settingsOpen_ = value;
     }
+    const std::string config_file();
+    void init();
+    void save();
+    json serialize();
+    template <SettingsType S>
+    S fetch_settings(const std::string &label);
+    // void load();
+    // void reload();
 };
 
 template <SettingsType S>
 void SettingsManager::register_settings(const std::string &label) {
     store_[label] = std::make_unique<S>();
+}
+
+template <SettingsType S>
+S SettingsManager::fetch_settings(const std::string &label) {
+    S *ptr = (S*)store_[label].get();
+    S instance = *ptr;
+    return instance;
 }
 
 #endif
