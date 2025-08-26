@@ -42,11 +42,13 @@ public:
     const std::string config_file();
     void init();
     void save();
+    void save_safe();
     json serialize();
+    void deserialize(const json& jv);
     template <SettingsType S>
     S fetch_settings(const std::string &label);
-    // void load();
-    // void reload();
+    void load();
+    void load_safe();
 };
 
 template <SettingsType S>

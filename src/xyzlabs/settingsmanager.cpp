@@ -34,13 +34,14 @@ void SettingsManager::show_settings_window(const ImVec2 &size) {
         ImGui::SetCursorPos(discardBtnPos);
 
         if(ImGui::Button(constants::DISCARD_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
+            load_safe();
             settingsOpen_ = false;
         }
 
         ImGui::SetCursorPos(saveBtnPos);
 
         if(ImGui::Button(constants::SAVE_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
-            save();
+            save_safe();
             XYZLabs::instance().widget_manager().enable_settings_reload();
             settingsOpen_ = false;
         }
@@ -56,11 +57,25 @@ const std::string SettingsManager::config_file() {
 void SettingsManager::init() {
     auto appDirectory = XYZLabs::instance().create_app_directory();
     auto configFile = config_file();
+
+    if(std::filesystem::exists(configFile)) {
+        
+    }
 }
 
 void SettingsManager::save() {
     std::fstream config(config_file(), std::ios::out);
     config << serialize().dump(2);
+    config.close();
+}
+
+void SettingsManager::save_safe() {
+    auto appDirectory = XYZLabs::instance().app_directory();
+    if(!std::filesystem::exists(appDirectory)) {
+        XYZLabs::instance().create_app_directory();
+    }
+
+    save();
 }
 
 json SettingsManager::serialize() {
@@ -71,4 +86,26 @@ json SettingsManager::serialize() {
     }
 
     return jv;
+}
+
+void SettingsManager::deserialize(const json &jv) {
+    for(auto &ref: store_) {
+        ref.second->deserialize(jv[ref.first]);
+    }
+}
+
+void SettingsManager::load() {
+    json jv;
+    std::fstream config(config_file(), std::ios::in);
+    config >> jv;
+    deserialize(jv);
+    config.close();
+}
+
+void SettingsManager::load_safe() {
+    if(!std::filesystem::exists(config_file())) {
+        save_safe();
+    }
+
+    load();
 }
