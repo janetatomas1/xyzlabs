@@ -78,6 +78,7 @@ void XYZLabs::init_() {
     create_app_directory();
     taskManager_.run();
     widgetManager_.init();
+    settingsManager_.init();
 }
 
 void XYZLabs::mainloop_() {
@@ -155,6 +156,10 @@ RandomGenerator &XYZLabs::random_generator() {
 
 SettingsManager &XYZLabs::settings_manager() {
     return settingsManager_;
+}
+
+EventManager& XYZLabs::event_manager() {
+    return eventManager_;
 }
 
 void XYZLabs::close() {

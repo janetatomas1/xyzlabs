@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 
+
 #include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/settingsmanager.hpp"
 #include "xyzlabs/constants.hpp"
@@ -42,7 +43,6 @@ void SettingsManager::show_settings_window(const ImVec2 &size) {
 
         if(ImGui::Button(constants::SAVE_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
             save_safe();
-            XYZLabs::instance().widget_manager().enable_settings_reload();
             settingsOpen_ = false;
         }
 
@@ -55,12 +55,7 @@ const std::string SettingsManager::config_file() {
 }
 
 void SettingsManager::init() {
-    auto appDirectory = XYZLabs::instance().create_app_directory();
-    auto configFile = config_file();
-
-    if(std::filesystem::exists(configFile)) {
-        
-    }
+    load_safe();
 }
 
 void SettingsManager::save() {

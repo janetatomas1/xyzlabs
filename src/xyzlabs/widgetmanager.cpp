@@ -86,7 +86,9 @@ void WidgetManager::show(const ImVec2 &size) {
     const ImVec2 mainWindowSize = {size.x * (1 - ratio), size.y};
     const ImVec2 mainWindowPos = {size.x * ratio, 0.0f};
 
+
     if(ImGui::Begin(constants::MAIN_WINDOW_ID.c_str(), NULL, MAIN_WINDOW_FLAGS)) {
+        ImGui::SetWindowFontScale(settings_.mainWindowFontScale);
         ImGui::SetWindowSize(mainWindowSize);
         ImGui::SetWindowPos(mainWindowPos);
         widgets_[currentWidget_]->show(size, pos);
@@ -166,13 +168,9 @@ void WidgetManager::close_current_widget() {
 }
 
 void WidgetManager::reload_settings() {
-    settings = XYZLabs::instance()
+    settings_ = XYZLabs::instance()
     .settings_manager()
     .fetch_settings<AppSettings>(
         constants::MAIN_APP_SETTINGS_LABEL
     );
-}
-
-void WidgetManager::enable_settings_reload() {
-    reloadSettingsRequested_ = true;
 }

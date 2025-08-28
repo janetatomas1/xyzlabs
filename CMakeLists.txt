@@ -76,3 +76,7 @@ install(
     DIRECTORY include/
     DESTINATION include
 )
+
+add_compile_options(
+    -Wfatal-errors
+)

@@ -34,13 +34,12 @@ class WidgetManager {
     
     bool toolbarOpen_ = true;
     bool settingsOpen_  = true;
-    bool reloadSettingsRequested_ = false;
 
     int currentWidget_ = 0;
     float toolbarClosedRatio_ = 0.05f;
     float toolbarOpenRatio_ = 0.15;
 
-    AppSettings settings;
+    AppSettings settings_;
 public:
     WidgetManager() = default;
     void init();
@@ -62,7 +61,6 @@ public:
         return widgets_.size();
     }
     void reload_settings();
-    void enable_settings_reload();
 };
 
 void WidgetManager::flush_new_widgets() {
