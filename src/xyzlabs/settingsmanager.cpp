@@ -43,6 +43,7 @@ void SettingsManager::show_settings_window(const ImVec2 &size) {
 
         if(ImGui::Button(constants::SAVE_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
             save_safe();
+            propagate();
             settingsOpen_ = false;
         }
 
@@ -56,6 +57,7 @@ const std::string SettingsManager::config_file() {
 
 void SettingsManager::init() {
     load_safe();
+    propagate();
 }
 
 void SettingsManager::save() {
@@ -103,4 +105,8 @@ void SettingsManager::load_safe() {
     }
 
     load();
+}
+
+void SettingsManager::propagate() {
+    XYZLabs::instance().event_manager().add_event(std::make_unique<Event>(constants::MAIN_APP_SETTINGS_LABEL));
 }

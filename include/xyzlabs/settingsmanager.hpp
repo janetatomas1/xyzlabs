@@ -49,6 +49,7 @@ public:
     S fetch_settings(const std::string &label);
     void load();
     void load_safe();
+    void propagate();
 };
 
 template <SettingsType S>

@@ -83,6 +83,7 @@ void XYZLabs::init_() {
 
 void XYZLabs::mainloop_() {
     while(true) {
+        eventManager_.dispatch();
         glfwPollEvents();
 
         if(glfwGetKey(window_, GLFW_KEY_ESCAPE)) {

@@ -20,9 +20,6 @@ struct AppSettings: public Settings {
     float mainWindowColor [4];
     float mainWindowFontScale;
 
-    float toolbarWindowColor [4];
-    float toolbarWindowFontScale;
-    
     void show_input_widget() override;
     json serialize() const override;
     void deserialize(const json& obj) override;

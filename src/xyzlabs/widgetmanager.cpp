@@ -53,30 +53,33 @@ void AppSettings::show_input_widget() {
 json AppSettings::serialize() const {
     return json{
         {"main_window_color", mainWindowColor},
-        {"main_window_font", mainWindowFontScale},
-        {"toolbar_window_color", toolbarWindowColor},
-        {"toolbar_window_font", toolbarWindowFontScale},
+        {"main_window_font", mainWindowFontScale}
     };
 }
 
 void AppSettings::deserialize(const json& obj) {
     obj.at("main_window_color").get_to(mainWindowColor);
     obj.at("main_window_font").get_to(mainWindowFontScale);
-    obj.at("toolbar_window_color").get_to(toolbarWindowColor);
-    obj.at("toolbar_window_font").get_to(toolbarWindowFontScale);
 }
 
 void WidgetManager::init() {
     XYZLabs::instance()
     .settings_manager()
     .register_settings<AppSettings>(constants::MAIN_APP_SETTINGS_LABEL);
+
+    auto settingsReloadCallback = [this](std::unique_ptr<Event> event) {
+        spdlog::info("abcd");
+        reload_settings();
+    };
+
+    auto callbackPtr = std::make_unique<std::function<void(std::unique_ptr<Event>)>>(
+        std::move(settingsReloadCallback)
+    );
+
+    XYZLabs::instance().event_manager().subscribe(constants::MAIN_APP_SETTINGS_LABEL, std::move(callbackPtr));
 }
 
 void WidgetManager::show(const ImVec2 &size) {
-    if(reloadSettingsRequested_) {
-        reload_settings();
-    }
-
     flush_new_widgets();
     remove_closed_widgets();
     show_toolbar(size);
@@ -173,4 +176,11 @@ void WidgetManager::reload_settings() {
     .fetch_settings<AppSettings>(
         constants::MAIN_APP_SETTINGS_LABEL
     );
+
+    auto [r, g, b, a] = settings_.mainWindowColor;
+    ImGui::PopStyleColor();
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(r * 255, g * 255, b * 255, 255));
+    
+    ImGuiIO& io = ImGui::GetIO();
+    io.FontGlobalScale = settings_.mainWindowFontScale;
 }

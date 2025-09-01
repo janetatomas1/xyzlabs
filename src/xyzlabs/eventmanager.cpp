@@ -17,26 +17,20 @@ void EventManager::dispatch() {
         if(!eventFound) {
             return;
         } else {
-            if(listeners_.contains(event->label)) {
-                for(auto &ref: listeners_.at(event->label)) {
-                    event->run(ref);
-                }
+            if(callbacks_.contains(event->label)) {
+                auto &ptr = callbacks_[event->label];
+                (*ptr)(std::move(event));
             }
         }
     }
 }
 
-void EventManager::subscribe(const std::string &label, Listener *listener) {
-    if(listeners_.contains(label)) {
-        listeners_[label].push_back(listener);
-    } else {
-        listeners_[label] = {listener};
-    }
+void EventManager::subscribe(const std::string &label, callback_ptr callback) {
+    callbacks_[label] = std::move(callback);
 }
 
-void EventManager::unsubscribe(const std::string &label, Listener *listener) {
-    if(listeners_.contains(label)) {
-        auto &ptrs = listeners_[label];
-        std::remove(ptrs.begin(), ptrs.end(), listener);
+void EventManager::unsubscribe(const std::string &label) {
+    if(callbacks_.contains(label)) {
+        callbacks_.erase(label);
     }
 }
