@@ -30,7 +30,7 @@ class WidgetManager {
     std::vector<std::unique_ptr<Widget>> widgets_;
     
     bool toolbarOpen_ = true;
-    bool settingsOpen_  = true;
+    bool settingsOpen_  = false;
 
     int currentWidget_ = 0;
     float toolbarClosedRatio_ = 0.05f;
