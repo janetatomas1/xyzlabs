@@ -17,8 +17,9 @@ template <typename T>
 concept WidgetConcept = std::derived_from<Widget, Widget>;
 
 struct AppSettings: public Settings {
-    float mainWindowColor [4];
-    float mainWindowFontScale;
+    float backgroundColor [4];
+    float textColor [4] = {1.0f, 1.0f, 1.0f, 1.0f};
+    float fontScale = 1.0f;
 
     void show_input_widget() override;
     json serialize() const override;

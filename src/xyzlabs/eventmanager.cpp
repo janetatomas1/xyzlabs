@@ -1,9 +1,12 @@
 
 #include <algorithm>
+#include <spdlog/spdlog.h>
 
 #include "xyzlabs/eventmanager.hpp"
 
+
 void EventManager::add_event(std::unique_ptr<Event> event) {
+    spdlog::info("Adding event {}", event->label);
     events_.enqueue(std::move(event));
 }
 
@@ -27,10 +30,12 @@ void EventManager::dispatch() {
 
 void EventManager::subscribe(const std::string &label, callback_ptr callback) {
     callbacks_[label] = std::move(callback);
+    spdlog::info("Subscribed to event {}", label);
 }
 
 void EventManager::unsubscribe(const std::string &label) {
     if(callbacks_.contains(label)) {
         callbacks_.erase(label);
+        spdlog::info("Unsubscribed from event {}", label);
     }
 }

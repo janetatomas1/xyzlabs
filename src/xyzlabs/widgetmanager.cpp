@@ -19,31 +19,19 @@ void AppSettings::show_input_widget() {
         ImGui::TableNextColumn();
         ImGui::Text("Font size");
         ImGui::TableNextColumn();
-        ImGui::SliderFloat("##main_windows_float_size", &mainWindowFontScale, 0.0, 3.0f);
+        ImGui::SliderFloat("##main_windows_float_size", &fontScale, 0.0, 3.0f);
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
         ImGui::Text("Background color");
         ImGui::TableNextColumn();
-        ImGui::ColorEdit4("Color with Alpha", (float*)&mainWindowColor);
-
-        ImGui::EndTable();
-        ImGui::Dummy({0.0f, 10.0f});
-    }
-
-    if(ImGui::BeginTable("##toolbar_window_settings", 2, ImGuiTableFlags_Borders)) {
-        ImGui::TableHeadersRow();
-        ImGui::TableSetColumnIndex(0);
-        ImGui::Text("Toolbar window");
+        ImGui::ColorEdit4("##background_color", (float*)&backgroundColor);
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        ImGui::Text("Font size");
+        ImGui::Text("Text color");
         ImGui::TableNextColumn();
-
-        ImGui::TableNextRow();
-        ImGui::TableNextColumn();
-        ImGui::Text("Background color");
+        ImGui::ColorEdit4("#text_color", (float*)&textColor);
 
         ImGui::EndTable();
         ImGui::Dummy({0.0f, 10.0f});
@@ -52,14 +40,16 @@ void AppSettings::show_input_widget() {
 
 json AppSettings::serialize() const {
     return json{
-        {"main_window_color", mainWindowColor},
-        {"main_window_font", mainWindowFontScale}
+        {"background_color", backgroundColor},
+        {"text_color", textColor},
+        {"font_scale", fontScale}
     };
 }
 
 void AppSettings::deserialize(const json& obj) {
-    obj.at("main_window_color").get_to(mainWindowColor);
-    obj.at("main_window_font").get_to(mainWindowFontScale);
+    obj.at("background_color").get_to(backgroundColor);
+    obj.at("text_color").get_to(textColor);
+    obj.at("font_scale").get_to(fontScale);
 }
 
 void WidgetManager::init() {
@@ -68,7 +58,6 @@ void WidgetManager::init() {
     .register_settings<AppSettings>(constants::MAIN_APP_SETTINGS_LABEL);
 
     auto settingsReloadCallback = [this](std::unique_ptr<Event> event) {
-        spdlog::info("abcd");
         reload_settings();
     };
 
@@ -76,7 +65,12 @@ void WidgetManager::init() {
         std::move(settingsReloadCallback)
     );
 
-    XYZLabs::instance().event_manager().subscribe(constants::MAIN_APP_SETTINGS_LABEL, std::move(callbackPtr));
+    XYZLabs::instance()
+    .event_manager()
+    .subscribe(
+        constants::MAIN_APP_SETTINGS_LABEL,
+        std::move(callbackPtr)
+    );
 }
 
 void WidgetManager::show(const ImVec2 &size) {
@@ -91,7 +85,6 @@ void WidgetManager::show(const ImVec2 &size) {
 
 
     if(ImGui::Begin(constants::MAIN_WINDOW_ID.c_str(), NULL, MAIN_WINDOW_FLAGS)) {
-        ImGui::SetWindowFontScale(settings_.mainWindowFontScale);
         ImGui::SetWindowSize(mainWindowSize);
         ImGui::SetWindowPos(mainWindowPos);
         widgets_[currentWidget_]->show(size, pos);
@@ -177,10 +170,15 @@ void WidgetManager::reload_settings() {
         constants::MAIN_APP_SETTINGS_LABEL
     );
 
-    auto [r, g, b, a] = settings_.mainWindowColor;
     ImGui::PopStyleColor();
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(r * 255, g * 255, b * 255, 255));
+    ImGui::PopStyleColor();
+
+    auto [r0, g0, b0, a0] = settings_.backgroundColor;
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(r0 * 255, g0 * 255, b0 * 255, 255));
     
+    auto [r1, g1, b1, a1] = settings_.textColor;
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(r1 * 255, g1 * 255, b1 * 255, 255));
+
     ImGuiIO& io = ImGui::GetIO();
-    io.FontGlobalScale = settings_.mainWindowFontScale;
+    io.FontGlobalScale = settings_.fontScale;
 }

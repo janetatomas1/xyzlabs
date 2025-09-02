@@ -80,6 +80,3 @@ install(
 add_compile_options(
     -Wfatal-errors
 )
-message(
-    "${CMAKE_INCLUDE_PATH}"
-)
