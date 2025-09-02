@@ -46,7 +46,6 @@ target_link_libraries(
     GL
     imgui
     implot
-    implot3d
 )
 
 add_executable(

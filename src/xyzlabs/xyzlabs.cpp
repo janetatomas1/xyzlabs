@@ -3,7 +3,6 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <implot.h>
-#include <implot3d.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -59,7 +58,6 @@ void XYZLabs::init_() {
 
     ImGui::CreateContext();
     ImPlot::CreateContext();
-    ImPlot3D::CreateContext();
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; 
@@ -118,7 +116,6 @@ void XYZLabs::exit_() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
 
-    ImPlot3D::DestroyContext();
     ImPlot::DestroyContext();
     ImGui::DestroyContext();
 
