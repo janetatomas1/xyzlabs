@@ -24,7 +24,7 @@ concept SettingsType = std::derived_from<T, Settings> || std::same_as<T, Setting
 class SettingsManager {
     json cache_;
     boost::unordered_map<std::string, std::unique_ptr<Settings>> store_;
-    bool settingsOpen_ = true;
+    bool settingsOpen_ = false;
 
 public:
     SettingsManager();
