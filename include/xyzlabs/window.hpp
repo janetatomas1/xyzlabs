@@ -2,8 +2,6 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <memory>
-
 #ifndef USE_GLFW
 #include <GLFW/glfw3.h>
 #endif
@@ -12,7 +10,7 @@
 
 class Window {
 #ifndef USE_GLFW
-    GLFWwindow *window_ = nullptr;
+    GLFWwindow *handle_ = nullptr;
 #endif
 
     std::string title_;    
@@ -21,7 +19,7 @@ class Window {
     int32_t height_ = 1000;
 public:
     Window();
-    ~Window() = default;
+    ~Window();
 };
 
 #endif

@@ -22,34 +22,12 @@
 
 
 void XYZLabs::init_() {
-    if (!glfwInit()) {
-        spdlog::error("GLFW initialisation failed!");
-        glfwTerminate();
-    } else {
-        spdlog::info("GLFW initialisation SUCCESS!");
-    }
+    windowManager_.init();
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-    window_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
-    if (!window_) {
-        spdlog::error("GLFW creation failed!");
-        glfwTerminate();
-    } else {
-        spdlog::info("GLFW creation SUCCESS!");
-    }
-    glfwMaximizeWindow(window_);
-
-    glfwMakeContextCurrent(window_);
     glewExperimental = GL_TRUE;
 
     if (glewInit() != GLEW_OK) {
         spdlog::error("GLEW initialisation failed!");
-        glfwDestroyWindow(window_);
-        glfwTerminate();
     } else {
         spdlog::info("GLEW initialisation SUCCESS!");
     }
@@ -66,7 +44,7 @@ void XYZLabs::init_() {
     ImGui::StyleColorsDark();
     ImGuiStyle& style = ImGui::GetStyle();
 
-    ImGui_ImplGlfw_InitForOpenGL(window_, true);
+    ImGui_ImplGlfw_InitForOpenGL(windowManager_.window_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
     if(widgetManager_.nwidgets() == 0) {
@@ -84,16 +62,16 @@ void XYZLabs::mainloop_() {
         eventManager_.dispatch();
         glfwPollEvents();
 
-        if(glfwGetKey(window_, GLFW_KEY_ESCAPE)) {
+        if(glfwGetKey(windowManager_.window_, GLFW_KEY_ESCAPE)) {
             spdlog::info("ESC key pressed, closing!");
-            glfwSetWindowShouldClose(window_, GLFW_TRUE);
+            glfwSetWindowShouldClose(windowManager_.window_, GLFW_TRUE);
         }
 
-        if(glfwWindowShouldClose(window_)) {
+        if(glfwWindowShouldClose(windowManager_.window_)) {
             break;
         }
 
-        glfwGetWindowSize(window_, &width_, &height_);
+        glfwGetWindowSize(windowManager_.window_, &width_, &height_);
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();    
@@ -106,7 +84,7 @@ void XYZLabs::mainloop_() {
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
-        glfwSwapBuffers(window_);
+        glfwSwapBuffers(windowManager_.window_);
     }
 }
 
@@ -119,7 +97,7 @@ void XYZLabs::exit_() {
     ImPlot::DestroyContext();
     ImGui::DestroyContext();
 
-    glfwDestroyWindow(window_);
+    glfwDestroyWindow(windowManager_.window_);
     glfwTerminate();
     spdlog::info("Closed {}", title_);
 }
@@ -161,7 +139,7 @@ EventManager& XYZLabs::event_manager() {
 }
 
 void XYZLabs::close() {
-    glfwSetWindowShouldClose(window_, GLFW_TRUE);
+    glfwSetWindowShouldClose(windowManager_.window_, GLFW_TRUE);
 }
 
 XYZLabs& XYZLabs::init(const std::string &title) {
