@@ -14,6 +14,7 @@
 #include "xyzlabs/widgetmanager.hpp"
 #include "xyzlabs/settingsmanager.hpp"
 #include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/windowmanager.hpp"
 
 
 class GLFWWindow;
@@ -28,13 +29,13 @@ public:
 
 class XYZLabs {
     std::string title_;
-	GLFWwindow *window_ = nullptr;
     
     TaskManager taskManager_;
     WidgetManager widgetManager_;
     RandomGenerator randomGenerator_;
     SettingsManager settingsManager_;
     EventManager eventManager_;
+    WindowManager windowManager_;
 
     int32_t width_ = 1000;
     int32_t height_ = 1000;
