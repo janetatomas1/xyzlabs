@@ -7,8 +7,6 @@
 class ImGuiContext;
 class GLFWwindow;
 
-using WindowHandle = GLFWwindow*;
-
 class Window {
     GLFWwindow *handle_ = nullptr;
     ImGuiContext *ctx;
@@ -23,6 +21,8 @@ public:
     void update();
     bool should_close() const;
     GLFWwindow* handle();
+    virtual void key_callback(int key);
+    void reset_key_callback();
 };
 
 #endif
