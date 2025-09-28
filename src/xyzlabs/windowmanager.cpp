@@ -10,6 +10,7 @@
 
 
 void WindowManager::init() {
+
     if (!glfwInit()) {
         spdlog::error("GLFW initialisation failed!");
         glfwTerminate();

@@ -1,4 +1,7 @@
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 #include <imgui.h>
@@ -32,7 +35,7 @@ Window::Window() {
 
     ImGui_ImplGlfw_InitForOpenGL(handle_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-
+    glfwSetWindowUserPointer(handle_, this);
 }
 
 Window::~Window() {
@@ -73,4 +76,8 @@ void Window::update() {
 
 bool Window::should_close() const {
     return glfwWindowShouldClose(handle_) != 0;
+}
+
+GLFWwindow* Window::handle() {
+    return handle_;
 }

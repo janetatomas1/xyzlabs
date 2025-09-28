@@ -7,11 +7,11 @@
 
 #include "xyzlabs/window.hpp"
 
+class WindowHandle;
 
 class WindowManager {
-public:
 	std::vector<std::unique_ptr<Window>> windows_;
-
+public:
     void init();
     void add_window();
     void update();

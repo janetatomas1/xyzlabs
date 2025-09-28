@@ -1,7 +1,6 @@
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
-#include <implot.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -26,7 +25,6 @@ void XYZLabs::init_() {
     IMGUI_CHECKVERSION();
 
     ImGui::CreateContext();
-    ImPlot::CreateContext();
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; 
