@@ -1,7 +1,6 @@
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
 #include <implot.h>
 
 #include <GL/glew.h>
@@ -24,14 +23,6 @@
 void XYZLabs::init_() {
     windowManager_.init();
 
-    glewExperimental = GL_TRUE;
-
-    if (glewInit() != GLEW_OK) {
-        spdlog::error("GLEW initialisation failed!");
-    } else {
-        spdlog::info("GLEW initialisation SUCCESS!");
-    }
-
     IMGUI_CHECKVERSION();
 
     ImGui::CreateContext();
@@ -44,61 +35,24 @@ void XYZLabs::init_() {
     ImGui::StyleColorsDark();
     ImGuiStyle& style = ImGui::GetStyle();
 
-    ImGui_ImplGlfw_InitForOpenGL(windowManager_.window_, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
-
-    if(widgetManager_.nwidgets() == 0) {
-        set_initial_widget<DefaultIntroWidget>();
-    }
-
     create_app_directory();
     taskManager_.run();
-    widgetManager_.init();
     settingsManager_.init();
 }
 
 void XYZLabs::mainloop_() {
     while(true) {
+        if(windowManager_.nwindows() == 0) {
+            return;
+        }
+
         eventManager_.dispatch();
-        glfwPollEvents();
-
-        if(glfwGetKey(windowManager_.window_, GLFW_KEY_ESCAPE)) {
-            spdlog::info("ESC key pressed, closing!");
-            glfwSetWindowShouldClose(windowManager_.window_, GLFW_TRUE);
-        }
-
-        if(glfwWindowShouldClose(windowManager_.window_)) {
-            break;
-        }
-
-        glfwGetWindowSize(windowManager_.window_, &width_, &height_);
-
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();    
-        
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        ImGui::NewFrame();
-        widgetManager_.show({static_cast<float>(width_), static_cast<float>(height_)});
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
-        glfwSwapBuffers(windowManager_.window_);
+        windowManager_.update();
     }
 }
 
 void XYZLabs::exit_() {
     taskManager_.stop();
-    
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-
-    ImPlot::DestroyContext();
-    ImGui::DestroyContext();
-
-    glfwDestroyWindow(windowManager_.window_);
-    glfwTerminate();
     spdlog::info("Closed {}", title_);
 }
 
@@ -139,7 +93,6 @@ EventManager& XYZLabs::event_manager() {
 }
 
 void XYZLabs::close() {
-    glfwSetWindowShouldClose(windowManager_.window_, GLFW_TRUE);
 }
 
 XYZLabs& XYZLabs::init(const std::string &title) {
