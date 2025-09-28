@@ -8,7 +8,6 @@
 
 #include "xyzlabs/windowmanager.hpp"
 
-
 void WindowManager::init() {
 
     if (!glfwInit()) {

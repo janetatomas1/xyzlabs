@@ -36,6 +36,11 @@ Window::Window() {
     ImGui_ImplGlfw_InitForOpenGL(handle_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
     glfwSetWindowUserPointer(handle_, this);
+
+    glfwSetKeyCallback(handle_, [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
+        Window *win = (Window*)glfwGetWindowUserPointer(handle);
+        win->key_callback(key);
+    });
 }
 
 Window::~Window() {
@@ -80,4 +85,14 @@ bool Window::should_close() const {
 
 GLFWwindow* Window::handle() {
     return handle_;
+}
+
+void Window::key_callback(int key) {
+    if(key == GLFW_KEY_ESCAPE) {
+        glfwSetWindowShouldClose(handle_, 1);
+    }
+}
+
+void Window::reset_key_callback() {
+    glfwSetKeyCallback(handle_, nullptr);
 }
