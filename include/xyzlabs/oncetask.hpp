@@ -9,8 +9,15 @@
 class OnceTaskInterface {
 protected:
     std::string error_;
+    std::atomic<bool> finished_ = false;
 
 public:
+    inline bool finished() {
+        return finished_;
+    }
+    void finish() {
+        finished_ = true;
+    }
     virtual void execute() {};
     const std::string& error() { return error_; };
     void set_error(const std::string &error) { error_ = error; };
@@ -23,12 +30,7 @@ template <typename T>
 class OnceTask: public OnceTaskInterface {
 protected:
     T result_;
-    std::atomic<bool> finished_ = false;
-
 public:
-    inline bool finished() {
-        return finished_;
-    }
     const T& get_value() {
         return result_;
     };

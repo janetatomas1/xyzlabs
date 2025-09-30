@@ -74,10 +74,6 @@ TaskManager &XYZLabs::task_manager() {
     return taskManager_;
 }
 
-WidgetManager &XYZLabs::widget_manager() {
-    return widgetManager_;
-}
-
 RandomGenerator &XYZLabs::random_generator() {
     return randomGenerator_;
 }

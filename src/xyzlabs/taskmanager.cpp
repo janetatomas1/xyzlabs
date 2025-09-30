@@ -11,6 +11,7 @@ TaskManager::TaskManager():
 void TaskManager::execute_task(std::shared_ptr<OnceTaskInterface> task) {
     asio::post(pool_, [task]() mutable {
         task->execute();
+        task->finish();
     });
 }
 

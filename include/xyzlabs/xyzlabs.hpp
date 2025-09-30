@@ -7,11 +7,9 @@
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
-// #include <imgui_impl_opengl3.h>
 
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/taskmanager.hpp"
-#include "xyzlabs/widgetmanager.hpp"
 #include "xyzlabs/settingsmanager.hpp"
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
@@ -31,7 +29,6 @@ class XYZLabs {
     std::string title_;
     
     TaskManager taskManager_;
-    WidgetManager widgetManager_;
     RandomGenerator randomGenerator_;
     SettingsManager settingsManager_;
     EventManager eventManager_;
@@ -49,13 +46,11 @@ class XYZLabs {
 public:
     template<DerivedFromWidget T>
     XYZLabs& set_initial_widget() {
-        widgetManager_.add_intro_widget<T>();
         return instance();
     };
     XYZLabs& init(const std::string &title);
     static XYZLabs& instance();
     TaskManager &task_manager();
-    WidgetManager &widget_manager();
     RandomGenerator& random_generator();
     SettingsManager& settings_manager();
     EventManager& event_manager();

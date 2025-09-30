@@ -17,6 +17,9 @@ public:
     void update();
     void destroy();
     size_t nwindows();
+    Window *get_main_window();
+    Window *get_window_from_id();
+    Window *get_window_from_title();
 };
 
 #endif
