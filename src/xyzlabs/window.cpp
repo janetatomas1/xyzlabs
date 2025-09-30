@@ -7,8 +7,16 @@
 #include <imgui.h>
 
 #include "xyzlabs/window.hpp"
+#include "xyzlabs/xyzlabs.hpp"
 
-Window::Window() {
+
+constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
+    ImGuiWindowFlags_NoResize |
+    ImGuiWindowFlags_NoMove |
+    ImGuiWindowFlags_NoCollapse;
+
+void Window::init() {
+    id_ = XYZLabs::instance().random_generator().random();
     handle_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
     if(!handle_) {
         spdlog::error("GLFW window creation failed!");
@@ -68,13 +76,15 @@ void Window::update() {
 
     ImGui::NewFrame();
 
-    ImGui::Begin("abcd");
-    
-    ImGui::SetWindowSize({1000, 1000});
-    ImGui::Button("abcd", {200, 100});
+    ImVec2 size = {static_cast<float>(width_), static_cast<float>(height_)};
+    ImVec2 pos = {0.0f, 0.0f};
+    ImGui::SetNextWindowSize(size);
+    ImGui::SetNextWindowPos(pos);
+    ImGui::Begin("##window", nullptr,  WINDOW_FLAGS);
+    centralWidget_->show(size, pos);
     ImGui::End();
-
     ImGui::Render();
+
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
     glfwSwapBuffers(handle_);
 }

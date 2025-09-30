@@ -5,8 +5,6 @@
 #include <cinttypes>
 #include <random>
 
-using uint64_t = uint64_t;
-
 class RandomGenerator {
     std::mt19937_64 gen;
     std::uniform_int_distribution<uint64_t> dist;
@@ -16,11 +14,11 @@ public:
         gen = std::mt19937_64(std::random_device{}());
     };
     ~RandomGenerator() = default;
-    inline uint64_t get_id() {
+    inline uint64_t random() {
         return dist(gen);
     };
     inline uint64_t operator()() {
-        return get_id();
+        return random();
     }
 };
 

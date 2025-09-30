@@ -7,7 +7,7 @@
 
 
 Widget::Widget(const std::string &title):
-    title_(title), id_(XYZLabs::instance().random_generator().get_id()), open_(true) {
+    title_(title), id_(XYZLabs::instance().random_generator().random()), open_(true) {
     titleID_ = std::format("{}##{}", title_, id_);
 }
 

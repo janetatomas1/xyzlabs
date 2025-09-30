@@ -9,7 +9,6 @@
 #include "xyzlabs/windowmanager.hpp"
 
 void WindowManager::init() {
-
     if (!glfwInit()) {
         spdlog::error("GLFW initialisation failed!");
         glfwTerminate();
