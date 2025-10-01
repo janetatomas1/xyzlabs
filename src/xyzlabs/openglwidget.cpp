@@ -4,7 +4,10 @@
 
 OpenGLWidget::OpenGLWidget(const std::string &title): Widget(title) {
     auto &app = XYZLabs::instance();
-    backend_.create_framebuffer(app.width(), app.height());
+    backend_.create_framebuffer(
+        app.window_manager().get_main_window()->width(),
+        app.window_manager().get_main_window()->height()
+    );
 }
 
 void OpenGLWidget::show(const ImVec2 &size, const ImVec2 &pos) {

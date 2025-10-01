@@ -26,9 +26,6 @@ class XYZLabs {
     EventManager eventManager_;
     WindowManager windowManager_;
 
-    int32_t width_ = 1000;
-    int32_t height_ = 1000;
-
     void init_();
     void exit_();
     void mainloop_();
@@ -49,12 +46,6 @@ public:
 
     void close();
     int exec();
-    inline int32_t width() {
-        return width_;
-    }
-    inline int32_t height() {
-        return height_;
-    }
     const std::string& title();
     int return_code() {
         return exitCode_;

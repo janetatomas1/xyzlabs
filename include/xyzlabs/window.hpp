@@ -26,6 +26,12 @@ class Window {
     std::unique_ptr<Widget> centralWidget_;
     void init();
 public:
+    int32_t width() {
+        return width_;
+    }
+    int32_t height() {
+        return height_;
+    }
     template<WidgetType W = Widget, typename... Args>
     Window(const std::string &title = "", Args... args);
     ~Window();
