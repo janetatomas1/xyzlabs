@@ -56,10 +56,4 @@ public:
     void destroy() override;
 };
 
-class IntroWidget: public Widget {
-public:
-    void show(const ImVec2 &size, const ImVec2& position) override;
-    IntroWidget();
-};
-
 #endif

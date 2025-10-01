@@ -22,7 +22,6 @@ void WindowManager::init() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     windows_.push_back(std::make_unique<Window>());
-    windows_.push_back(std::make_unique<Window>());
 }
 
 void WindowManager::update() {
@@ -42,6 +41,47 @@ void WindowManager::destroy() {
     glfwTerminate();
 }
 
-size_t WindowManager::nwindows() {
+size_t WindowManager::nwindows() const {
     return windows_.size();
+}
+
+
+Window* WindowManager::get_main_window() const {
+    if(windows_.empty()) {
+        return nullptr;
+    }
+
+    return windows_[0].get();
+}
+
+Window* WindowManager::get_window_by_id(uint64_t id) const {
+    auto it = std::find_if(
+        windows_.begin(),
+        windows_.end(),
+        [id](const auto &win) {
+            return win->id() == id;
+        }
+    );
+
+    if(it == windows_.end()) {
+        return nullptr;
+    } else {
+        return it->get();
+    }
+}
+
+Window* WindowManager::get_window_by_title(const std::string &title) const {
+    auto it = std::find_if(
+        windows_.begin(),
+        windows_.end(),
+        [title](const auto &win) {
+            return win->title() == title;
+        }
+    );
+
+    if(it == windows_.end()) {
+        return nullptr;
+    } else {
+        return it->get();
+    }
 }

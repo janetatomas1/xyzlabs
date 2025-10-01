@@ -3,8 +3,7 @@
 #include "burningforest.hpp"
 
 int main() {
-    XYZLabs::instance()
-    .set_initial_widget<IntroWidget>()
-    .init("Burning forest")
-    .exec();
+    auto &app = XYZLabs::instance();
+    app.init<BurningForest>("Burning forest");
+    return app.exec();
 }
