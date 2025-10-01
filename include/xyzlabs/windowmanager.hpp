@@ -16,10 +16,10 @@ public:
     void add_window();
     void update();
     void destroy();
-    size_t nwindows();
-    Window *get_main_window();
-    Window *get_window_from_id();
-    Window *get_window_from_title();
+    size_t nwindows() const;
+    Window *get_main_window() const;
+    Window *get_window_by_id(uint64_t id) const;
+    Window *get_window_by_title(const std::string &title) const;
 };
 
 #endif

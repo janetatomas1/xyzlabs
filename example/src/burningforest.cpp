@@ -75,12 +75,3 @@ void BurningForest::destroy() {
         }
     }
 }
-
-IntroWidget::IntroWidget(): Widget("Intro") {}
-
-void IntroWidget::show(const ImVec2 &size, const ImVec2& position) {
-    ImGui::SetWindowFontScale(1.3);
-
-    ImGui::SetCursorPos({size.x * 0.37f, size.y * 0.45f});
-    ImVec2 btnSize = {size.x * 0.15f, size.y * 0.035f};
-}

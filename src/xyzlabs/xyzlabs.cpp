@@ -56,7 +56,6 @@ void XYZLabs::exit_() {
 
 int XYZLabs::exec() {
     try {
-        init_();
         mainloop_();
         exit_();
     } catch(std::exception &e) {
@@ -86,12 +85,11 @@ EventManager& XYZLabs::event_manager() {
     return eventManager_;
 }
 
-void XYZLabs::close() {
+WindowManager &XYZLabs::window_manager() {
+    return windowManager_;
 }
 
-XYZLabs& XYZLabs::init(const std::string &title) {
-    title_ = title;
-    return instance();
+void XYZLabs::close() {
 }
 
 const std::string& XYZLabs::title() {
