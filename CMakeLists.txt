@@ -6,7 +6,7 @@ if(DEFINED CMAKE_TOOLCHAIN_FILE_ AND EXISTS ${CMAKE_TOOLCHAIN_FILE_})
     include(${CMAKE_TOOLCHAIN_FILE_})
 endif()
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 if(MSVC)
     add_compile_options(/utf-8)

@@ -5,31 +5,47 @@
 #include "xyzlabs/eventmanager.hpp"
 
 
-void EventManager::add_event(std::unique_ptr<Event> event) {
+void EventManager::add_event(event_ptr event) {
     spdlog::info("Adding event {}", event->label);
     events_.enqueue(std::move(event));
 }
 
+void EventManager::add_action(action act) {
+    actions_.enqueue(std::move(act));
+}
+
 void EventManager::dispatch() {
-    std::unique_ptr<Event> event = nullptr;
+    event_ptr event = nullptr;
     bool eventFound = false;
 
     while(true) {
         eventFound = events_.try_dequeue(event);
 
-        if(!eventFound) {
-            return;
-        } else {
+        if(eventFound) {
             if(callbacks_.contains(event->label)) {
                 auto &ptr = callbacks_[event->label];
-                (*ptr)(std::move(event));
+                ptr(std::move(event));
             }
+        } else {
+            break;
+        }
+    }
+
+    action act = nullptr;
+    bool actionFound = false;
+    while(true) {
+        actionFound = actions_.try_dequeue(act);
+
+        if(actionFound) {
+            act();
+        } else {
+            break;
         }
     }
 }
 
-void EventManager::subscribe(const std::string &label, callback_ptr callback) {
-    callbacks_[label] = std::move(callback);
+void EventManager::subscribe(const std::string &label, callback call) {
+    callbacks_[label] = std::move(call);
     spdlog::info("Subscribed to event {}", label);
 }
 

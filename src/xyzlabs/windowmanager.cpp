@@ -7,6 +7,20 @@
 #include <algorithm>
 
 #include "xyzlabs/windowmanager.hpp"
+#include "xyzlabs/xyzlabs.hpp"
+
+uint64_t WindowManager::add_window(std::unique_ptr<Window> window) {
+    return submit_new_window(std::move(window));
+}
+
+uint64_t WindowManager::submit_new_window(std::unique_ptr<Window> window) {
+    auto id = window->id();
+    auto action = [this, window = std::move(window)] () mutable {
+        windows_.push_back(std::move(window));
+    };
+    XYZLabs::instance().event_manager().add_action(std::move(action));
+    return id;
+} 
 
 void WindowManager::init() {
     if (!glfwInit()) {

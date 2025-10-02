@@ -10,9 +10,6 @@
 class ImGuiContext;
 class GLFWwindow;
 
-template <typename T>
-concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
-
 class Window {
     GLFWwindow *handle_ = nullptr;
     ImGuiContext *ctx;
@@ -62,5 +59,8 @@ uint64_t Window::set_central_widget(Args... args) {
     centralWidget_ = std::make_unique<W>(std::forward<Args>(args)...);
     return centralWidget_->id();
 }
+
+template <typename T>
+concept WindowType = std::derived_from<T, Window> || std::same_as<T, Window>;
 
 #endif
