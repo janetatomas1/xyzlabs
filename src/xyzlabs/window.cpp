@@ -106,3 +106,16 @@ void Window::key_callback(int key) {
 void Window::reset_key_callback() {
     glfwSetKeyCallback(handle_, nullptr);
 }
+
+uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
+    auto id = widget->id();
+    auto action = [this, widget = std::move(widget)]() mutable {
+        centralWidget_ = std::move(widget);
+    };
+    XYZLabs::instance().event_manager().add_action(std::move(action));
+    return id;
+}
+
+uint64_t Window::set_central_widget(std::unique_ptr<Widget> widget) {
+    return submit_widget(std::move(widget));
+}
