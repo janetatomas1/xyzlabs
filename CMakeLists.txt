@@ -24,7 +24,6 @@ add_library(
     STATIC
     "${XYZLABS_SOURCES}"
 )
-
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
 target_compile_definitions(xyzlabs INTERFACE SPDLOG_FMT_EXTERNAL)
 target_compile_definitions(xyzlabs PUBLIC USE_GLFW)
