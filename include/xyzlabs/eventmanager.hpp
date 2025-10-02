@@ -1,6 +1,6 @@
 
-#ifndef ACTIONMANAGER_HPP
-#define ACTIONMANAGER_HPP
+#ifndef EVENTMANAGER_HPP
+#define EVENTMANAGER_HPP
 
 #include <boost/unordered/unordered_flat_map.hpp>
 #include <moodycamel/concurrentqueue.h>
