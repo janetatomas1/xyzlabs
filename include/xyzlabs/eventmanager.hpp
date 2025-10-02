@@ -6,7 +6,6 @@
 #include <moodycamel/concurrentqueue.h>
 #include <vector>
 #include <memory>
-#include <functional>
 
 #include "xyzlabs/event.hpp"
 

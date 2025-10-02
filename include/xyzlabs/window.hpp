@@ -22,6 +22,7 @@ class Window {
 
     std::unique_ptr<Widget> centralWidget_;
     void init();
+    uint64_t submit_widget(std::unique_ptr<Widget> widget);    
 public:
     int32_t width() {
         return width_;
@@ -45,6 +46,7 @@ public:
     }
     template<WidgetType W = Widget, typename... Args>
     uint64_t set_central_widget(Args... args);
+    uint64_t set_central_widget(std::unique_ptr<Widget> widget);
 };
 
 template<WidgetType W, typename... Args>
@@ -56,8 +58,8 @@ Window::Window(const std::string &title, Args... args):
 
 template<WidgetType W, typename... Args>
 uint64_t Window::set_central_widget(Args... args) {
-    centralWidget_ = std::make_unique<W>(std::forward<Args>(args)...);
-    return centralWidget_->id();
+    auto widget = std::make_unique<W>(std::forward<Args>(args)...);
+    return submit_widget(std::move(widget));
 }
 
 template <typename T>
