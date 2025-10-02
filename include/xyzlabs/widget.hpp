@@ -44,4 +44,7 @@ std::string &Widget::title_id() {
     return titleID_;
 }
 
+template <typename T>
+concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
+
 #endif

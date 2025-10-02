@@ -8,27 +8,19 @@
 #include <memory>
 #include <functional>
 
-
-struct Event {
-    std::string label;
-    Event(const std::string &label): label(label) {};
-};
-
-struct Callback {
-    virtual void operator()(std::unique_ptr<Event> ptr) {};
-};
-
-using callback_ptr = std::unique_ptr<std::function<void(std::unique_ptr<Event>)>>;
+#include "xyzlabs/event.hpp"
 
 class EventManager {
-    moodycamel::ConcurrentQueue<std::unique_ptr<Event>> events_;
-    boost::unordered::unordered_flat_map <std::string, callback_ptr> callbacks_;
+    moodycamel::ConcurrentQueue<event_ptr> events_;
+    moodycamel::ConcurrentQueue<action> actions_;
+    boost::unordered::unordered_flat_map <std::string, callback> callbacks_;
 
 public:
     EventManager() = default;
     void dispatch();
-    void add_event(std::unique_ptr<Event> ptr);
-    void subscribe(const std::string &label, callback_ptr callback);
+    void add_event(event_ptr event);
+    void add_action(action act);
+    void subscribe(const std::string &label, callback call);
     void unsubscribe(const std::string &label);
 };
 
