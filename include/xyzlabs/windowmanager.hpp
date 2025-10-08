@@ -8,8 +8,6 @@
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/event.hpp"
 
-class WindowHandle;
-
 class WindowManager {
     std::vector<std::unique_ptr<Window>> windows_;
     uint64_t submit_new_window(std::unique_ptr<Window> window);

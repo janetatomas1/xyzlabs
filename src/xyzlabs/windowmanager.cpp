@@ -1,7 +1,12 @@
 
 #include <GL/glew.h>
 
+#ifdef USE_GLFW
 #include <GLFW/glfw3.h>
+#else
+#include <SDL3/SDL.h>
+#endif
+
 #include <spdlog/spdlog.h>
 #include <imgui_impl_glfw.h>
 #include <algorithm>
@@ -23,6 +28,8 @@ uint64_t WindowManager::submit_new_window(std::unique_ptr<Window> window) {
 } 
 
 void WindowManager::init() {
+    #ifdef USE_GLFW
+
     if (!glfwInit()) {
         spdlog::error("GLFW initialisation failed!");
         glfwTerminate();
@@ -35,15 +42,50 @@ void WindowManager::init() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
+    #else
+
+    if(!SDL_Init(SDL_INIT_VIDEO)) {
+        spdlog::error("SDL init failed");
+    }
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    
+    #endif
     windows_.push_back(std::make_unique<Window>());
 }
 
 void WindowManager::update() {
+    #ifdef USE_GLFW
     glfwPollEvents();
+    #else
+    #endif
 
     std::erase_if(windows_, [](const auto& window) {
         return window->should_close();
     });
+
+    SDL_Event e;
+    while (SDL_PollEvent(&e)) {
+        if(e.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {
+            Window *window = (Window*) SDL_GetPointerProperty(
+                SDL_GetWindowProperties(
+                    SDL_GetWindowFromID(e.window.windowID)
+                ), "WINDOW", NULL
+            );
+            window->close();
+        }
+
+        if(e.type == SDL_EVENT_KEY_DOWN) {
+            Window *window = (Window*) SDL_GetPointerProperty(
+                SDL_GetWindowProperties(
+                    SDL_GetWindowFromID(e.window.windowID)
+                ), "WINDOW", NULL
+            );
+            window->key_callback(e.key.key);            
+        }
+    }
 
     for(auto &w: windows_) {
         w->update();
@@ -52,7 +94,11 @@ void WindowManager::update() {
 
 void WindowManager::destroy() {
     ImGui::DestroyContext();
+    #ifdef USE_GLFW
     glfwTerminate();
+    #else
+    SDL_Quit();
+    #endif
 }
 
 size_t WindowManager::nwindows() const {
