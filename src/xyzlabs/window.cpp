@@ -1,9 +1,7 @@
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include <imgui_impl_opengl3.h>
-#include <imgui_impl_glfw.h>
 #include <imgui.h>
 
 #include "xyzlabs/window.hpp"
@@ -14,6 +12,11 @@ constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
     ImGuiWindowFlags_NoResize |
     ImGuiWindowFlags_NoMove |
     ImGuiWindowFlags_NoCollapse;
+
+#ifdef USE_GLFW
+
+#include <GLFW/glfw3.h>
+#include <imgui_impl_glfw.h>
 
 void Window::init() {
     id_ = XYZLabs::instance().random_generator().random();
@@ -103,9 +106,63 @@ void Window::key_callback(int key) {
     }
 }
 
-void Window::reset_key_callback() {
-    glfwSetKeyCallback(handle_, nullptr);
+#else
+
+#include <SDL3/SDL.h>
+
+void Window::close() {
+    XYZLabs::instance().event_manager().add_action([this]() {
+        SDL_DestroyWindow(handle_);
+        open_ = false;
+    });
 }
+
+void Window::init() {
+    handle_ = SDL_CreateWindow(
+        title_.c_str(), width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
+    );
+
+    glContext = SDL_GL_CreateContext(handle_);
+    if (!glContext) {
+        spdlog::error("SDL_GL_CreateContext failed: {}", SDL_GetError());
+
+    }
+
+    glewExperimental = GL_TRUE;
+    GLenum err = glewInit();
+    if (err != GLEW_OK) {
+        spdlog::error("GLEW init failed");
+    }
+
+    SDL_ShowWindow(handle_);
+    SDL_MaximizeWindow(handle_);
+    SDL_SetPointerProperty(SDL_GetWindowProperties(handle_), "WINDOW", this);
+}
+
+Window::~Window() {
+}
+
+void Window::update() {
+    glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    SDL_GL_SwapWindow(handle_);
+}
+
+bool Window::should_close() const {
+    return !open_;
+}
+
+WindowHandle Window::handle() {
+    return handle_;
+}
+
+void Window::key_callback(int key) {
+    if(key == SDLK_ESCAPE) {
+        close();
+    }
+}
+
+#endif
 
 uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
     auto id = widget->id();

@@ -24,9 +24,6 @@ add_library(
     STATIC
     "${XYZLABS_SOURCES}"
 )
-target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
-target_compile_definitions(xyzlabs INTERFACE SPDLOG_FMT_EXTERNAL)
-target_compile_definitions(xyzlabs PUBLIC USE_GLFW)
 
 target_include_directories(
     xyzlabs
@@ -86,6 +83,21 @@ target_link_libraries(
     PUBLIC
     xyzlabs
 )
+
+target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
+
+set(USE_GLFW 0)
+set(USE_SDL 0)
+
+if(USE_GLFW EQUAL 1)
+    target_compile_definitions(xyzlabs PUBLIC USE_GLFW)
+    target_link_libraries(xyzlabs PUBLIC glfw3)
+else()
+    target_compile_definitions(xyzlabs PUBLIC USE_SDL)
+    target_link_libraries(xyzlabs PUBLIC SDL3)
+endif()
+
+
 install(
     TARGETS xyzlabs
     ARCHIVE DESTINATION lib

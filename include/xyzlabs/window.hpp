@@ -8,10 +8,28 @@
 #include "xyzlabs/widget.hpp"
 
 class ImGuiContext;
-class GLFWwindow;
+
+#ifdef USE_GLFW
+
+struct GLFWwindow;
+using WindowHandle = GLFWwindow*;
+
+#else
+
+struct SDL_Window;
+struct SDL_GLContextState;
+
+using WindowHandle = SDL_Window*;
+
+#endif
 
 class Window {
-    GLFWwindow *handle_ = nullptr;
+    #ifndef USE_GLFW
+    SDL_GLContextState *glContext;
+    bool open_ = true;
+    #endif
+
+    WindowHandle handle_ = nullptr;
     ImGuiContext *ctx;
 
     std::string title_;
@@ -30,14 +48,14 @@ public:
     int32_t height() {
         return height_;
     }
+    void close();
     template<WidgetType W = Widget, typename... Args>
     Window(const std::string &title = "", Args... args);
     ~Window();
     void update();
     bool should_close() const;
-    GLFWwindow* handle();
+    WindowHandle handle();
     virtual void key_callback(int key);
-    void reset_key_callback();
     const std::string& title() const {
         return title_;
     }
