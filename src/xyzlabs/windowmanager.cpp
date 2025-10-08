@@ -14,10 +14,6 @@
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
-uint64_t WindowManager::add_window(std::unique_ptr<Window> window) {
-    return submit_new_window(std::move(window));
-}
-
 uint64_t WindowManager::submit_new_window(std::unique_ptr<Window> window) {
     auto id = window->id();
     auto action = [this, window = std::move(window)] () mutable {
@@ -57,14 +53,13 @@ void WindowManager::init() {
 }
 
 void WindowManager::update() {
-    #ifdef USE_GLFW
-    glfwPollEvents();
-    #else
-    #endif
-
     std::erase_if(windows_, [](const auto& window) {
         return window->should_close();
     });
+
+    #ifdef USE_GLFW
+    glfwPollEvents();
+    #else
 
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
@@ -86,6 +81,8 @@ void WindowManager::update() {
             window->key_callback(e.key.key);            
         }
     }
+
+    #endif
 
     for(auto &w: windows_) {
         w->update();

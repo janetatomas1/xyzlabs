@@ -11,7 +11,9 @@ Widget::Widget(const std::string &title):
     titleID_ = std::format("{}##{}", title_, id_);
 }
 
-void Widget::show(const ImVec2 &size, const ImVec2& position) {}
+void Widget::show(const ImVec2 &size, const ImVec2& position) {
+    int x = 1;
+}
 
 void Widget::show_toolbar(const ImVec2 &size, const ImVec2& position) {}
 
