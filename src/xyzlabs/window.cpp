@@ -83,11 +83,13 @@ void Window::update() {
     ImVec2 pos = {0.0f, 0.0f};
     ImGui::SetNextWindowSize(size);
     ImGui::SetNextWindowPos(pos);
-    ImGui::Begin("##window", nullptr,  WINDOW_FLAGS);
-    centralWidget_->show(size, pos);
-    ImGui::End();
-    ImGui::Render();
 
+    if(ImGui::Begin("##window", nullptr,  WINDOW_FLAGS)) {
+        centralWidget_->show(size, pos);
+        ImGui::End();
+    }
+
+    ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
     glfwSwapBuffers(handle_);
 }
@@ -109,6 +111,7 @@ void Window::key_callback(int key) {
 #else
 
 #include <SDL3/SDL.h>
+#include <imgui_impl_sdl3.h>
 
 void Window::close() {
     XYZLabs::instance().event_manager().add_action([this]() {
@@ -137,14 +140,21 @@ void Window::init() {
     SDL_ShowWindow(handle_);
     SDL_MaximizeWindow(handle_);
     SDL_SetPointerProperty(SDL_GetWindowProperties(handle_), "WINDOW", this);
+    ImGui_ImplSDL3_InitForOpenGL(handle_, glContext);
 }
 
 Window::~Window() {
 }
 
 void Window::update() {
-    glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL3_NewFrame();
+    ImGui::NewFrame();
+
+    centralWidget_->show({static_cast<float>(width_), static_cast<float>(height_)}, {0.0f, 0.0f});
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(handle_);
 }
 
