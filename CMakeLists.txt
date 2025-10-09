@@ -42,6 +42,12 @@ target_link_directories(
     PUBLIC
     ${CMAKE_LIBRARY_PATH}
 )
+
+if(MSVS) 
+    set(GLEW_LIBRARY "libglew32")
+else()
+    set(GLEW_LIBRARY GLEW)
+endif()
 target_link_libraries(
     xyzlabs
     PUBLIC
@@ -49,7 +55,7 @@ target_link_libraries(
     fmt
     spdlog
     OpenGL::GL
-    libglew32
+    ${GLEW_LIBRARY}
     glfw3
     imgui
     implot
