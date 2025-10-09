@@ -65,7 +65,6 @@ target_include_directories(
 target_link_libraries(
     burningforest
     PRIVATE
-    boost_json
     ${Boost_LIBRARIES}
     xyzlabs
 )
