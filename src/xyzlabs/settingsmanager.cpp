@@ -52,7 +52,7 @@ void SettingsManager::show_settings_window(const ImVec2 &size) {
 };
 
 const std::string SettingsManager::config_file() {
-    return XYZLabs::instance().app_directory() / "config.json";
+    return (XYZLabs::instance().app_directory() / "config.json").string();
 }
 
 void SettingsManager::init() {
