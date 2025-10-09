@@ -45,8 +45,11 @@ target_link_directories(
 
 if(MSVS) 
     set(GLEW_LIBRARY "libglew32")
+    set(OPENGL_LIBRARY OpenGL::GL)
 else()
     set(GLEW_LIBRARY GLEW)
+    set(OPENGL_LIBRARY GL)
+
 endif()
 target_link_libraries(
     xyzlabs
