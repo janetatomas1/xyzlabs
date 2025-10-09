@@ -6,7 +6,6 @@
 #include <filesystem>
 
 #include <imgui.h>
-#include <imgui_impl_glfw.h>
 
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/taskmanager.hpp"
@@ -14,8 +13,6 @@
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
 
-
-class GLFWWindow;
 
 class XYZLabs {
     std::string title_;
