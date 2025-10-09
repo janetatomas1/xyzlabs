@@ -178,6 +178,8 @@ std::filesystem::path XYZLabs::app_directory() {
     
     #ifdef __unix__
         return std::filesystem::path(std::getenv("HOME")) / fmt::format(".{}", titleStandardized);
+    #else
+        return (std::filesystem::path(std::getenv("USERPROFILE")) / fmt::format(".{}", titleStandardized)).string();
     #endif
 }
 

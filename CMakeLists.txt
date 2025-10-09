@@ -13,6 +13,12 @@ if(MSVC)
 endif()
 
 file(GLOB XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
+
+find_package(GLEW REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(fmt REQUIRED)
+find_package(GLFW3 REQUIRED)
+
 add_library(
     xyzlabs
     STATIC
@@ -21,8 +27,6 @@ add_library(
 
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
 target_compile_definitions(xyzlabs INTERFACE SPDLOG_FMT_EXTERNAL)
-
-find_package(Boost REQUIRED COMPONENTS Json)
 
 target_include_directories(
     xyzlabs
@@ -42,10 +46,11 @@ target_link_libraries(
     xyzlabs
     PUBLIC
     glfw3
-    spdlog
-    GLEW
     fmt
-    GL
+    spdlog
+    OpenGL::GL
+    libglew32
+    glfw3
     imgui
     implot
 )
@@ -61,12 +66,18 @@ target_include_directories(
     ${CMAKE_SOURCE_DIR}/example/include
     ${CMAKE_SOURCE_DIR}/include
 )
+target_link_directories(
+    burningforest
+    PUBLIC
+    ${CMAKE_LIBRARY_PATH}
+)
+add_definitions(-DGLEW_STATIC)
+
 target_link_libraries(
     burningforest
-    PRIVATE
+    PUBLIC
     xyzlabs
 )
-
 install(
     TARGETS xyzlabs
     ARCHIVE DESTINATION lib
@@ -75,7 +86,6 @@ install(
     DIRECTORY include/
     DESTINATION include
 )
-
 add_compile_options(
     -Wfatal-errors
 )
