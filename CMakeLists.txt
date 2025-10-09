@@ -8,6 +8,10 @@ endif()
 
 set(CMAKE_CXX_STANDARD 20)
 
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
 file(GLOB XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
 add_library(
     xyzlabs
