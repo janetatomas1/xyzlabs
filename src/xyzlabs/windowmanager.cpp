@@ -3,12 +3,13 @@
 
 #ifdef USE_GLFW
 #include <GLFW/glfw3.h>
+#include <imgui_impl_glfw.h>
 #else
 #include <SDL3/SDL.h>
+#include <imgui_impl_sdl3.h>
 #endif
 
 #include <spdlog/spdlog.h>
-#include <imgui_impl_glfw.h>
 #include <algorithm>
 
 #include "xyzlabs/windowmanager.hpp"
