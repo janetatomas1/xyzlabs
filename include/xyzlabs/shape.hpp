@@ -88,14 +88,12 @@ struct Shape {
 		glGetProgramiv(program, GL_LINK_STATUS, &result);
 		if (!result) {
 			glGetProgramInfoLog(program, sizeof(log), NULL, log);
-			spdlog::error("Error linking program:", log);
 		}
 
 		glValidateProgram(program);
 		glGetProgramiv(program, GL_VALIDATE_STATUS, &result);
 		if (!result) {
 			glGetProgramInfoLog(program, sizeof(log), NULL, log);
-			spdlog::error("Error validating program:", log);
 		}
 	}
 
@@ -117,7 +115,6 @@ struct Shape {
 		glGetShaderiv(current_shader, GL_COMPILE_STATUS, &result);
 		if (!result) {
 			glGetShaderInfoLog(current_shader, sizeof(log), NULL, log);
-			spdlog::error("Error compiling shader:", log);
 		}
 
 		glAttachShader(program, current_shader);
