@@ -41,7 +41,6 @@ target_link_directories(
 target_link_libraries(
     xyzlabs
     PUBLIC
-    boost_json
     glfw3
     spdlog
     GLEW
