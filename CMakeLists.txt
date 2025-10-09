@@ -49,7 +49,6 @@ if(MSVS)
 else()
     set(GLEW_LIBRARY GLEW)
     set(OPENGL_LIBRARY GL)
-
 endif()
 target_link_libraries(
     xyzlabs
@@ -57,7 +56,7 @@ target_link_libraries(
     glfw3
     fmt
     spdlog
-    OpenGL::GL
+    ${OPENGL_LIBRARY}
     ${GLEW_LIBRARY}
     glfw3
     imgui
