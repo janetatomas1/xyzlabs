@@ -75,7 +75,6 @@ struct Shape {
 	void init() {
 		program = glCreateProgram();
 		if(!program) {
-			spdlog::error("Error creating program:", log);
 		}
 
 		add_shader(program, vertex_shader_code.c_str(), GL_VERTEX_SHADER);
