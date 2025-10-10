@@ -2,9 +2,7 @@
 #include <algorithm>
 #include <spdlog/spdlog.h>
 
-#include "xyzlabs/event.hpp"
 #include "xyzlabs/eventmanager.hpp"
-
 
 void EventManager::add_event(event_ptr event) {
     spdlog::info("Adding event {}", event->label);

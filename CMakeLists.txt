@@ -6,6 +6,15 @@ if(DEFINED CMAKE_TOOLCHAIN_FILE_ AND EXISTS ${CMAKE_TOOLCHAIN_FILE_})
     include(${CMAKE_TOOLCHAIN_FILE_})
 endif()
 
+option(USE_GLFW "Enable GLFW backend" ON)
+option(USE_SDL "Enable SDL backend" OFF)
+
+if(USE_GLFW)
+    set(BACKEND_LIBRARY glfw3)
+elseif(USE_SDL)
+    set(BACKEND_LIBRARY SDL3)
+endif()
+
 set(CMAKE_CXX_STANDARD 23)
 
 if(MSVC)
@@ -24,8 +33,6 @@ add_library(
     STATIC
     "${XYZLABS_SOURCES}"
 )
-set(USE_GLFW 1)
-set(USE_SDL 0)
 
 target_include_directories(
     xyzlabs
@@ -57,7 +64,6 @@ target_link_libraries(
     spdlog
     ${OPENGL_LIBRARY}
     ${GLEW_LIBRARY}
-    glfw3
     imgui
     implot
 )
