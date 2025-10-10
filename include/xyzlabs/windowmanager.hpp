@@ -11,6 +11,16 @@
 class WindowManager {
     std::vector<std::unique_ptr<Window>> windows_;
     uint64_t submit_new_window(std::unique_ptr<Window> window);
+    inline void flush_closed_windows() {
+        std::erase_if(windows_, [](const auto& window) {
+            return !window->is_open();
+        });
+    };
+    inline void update_windows() {
+        for(auto &w: windows_) {
+            w->update();
+        }
+    };
 public:
     void init();
     template<WindowType W = Widget, typename... Args>

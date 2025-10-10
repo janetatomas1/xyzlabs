@@ -115,7 +115,6 @@ void Window::key_callback(int key) {
 
 void Window::close() {
     XYZLabs::instance().event_manager().add_action([this]() {
-        SDL_DestroyWindow(handle_);
         open_ = false;
     });
 }
@@ -147,6 +146,11 @@ void Window::init() {
 }
 
 Window::~Window() {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL3_Shutdown();
+    ImGui::DestroyContext();
+    SDL_GL_DestroyContext(glContext);
+    SDL_DestroyWindow(handle_);
 }
 
 void Window::update() {
@@ -170,8 +174,8 @@ void Window::update() {
     SDL_GL_SwapWindow(handle_);
 }
 
-bool Window::should_close() const {
-    return !open_;
+bool Window::is_open() const {
+    return open_;
 }
 
 WindowHandle Window::handle() {

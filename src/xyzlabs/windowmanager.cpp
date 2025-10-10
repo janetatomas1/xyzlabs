@@ -1,32 +1,16 @@
 
 #include <GL/glew.h>
-
-#ifdef USE_GLFW
-#include <GLFW/glfw3.h>
-#include <imgui_impl_glfw.h>
-#else
-#include <SDL3/SDL.h>
-#include <imgui_impl_sdl3.h>
-#endif
-
 #include <spdlog/spdlog.h>
 #include <algorithm>
 
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
-uint64_t WindowManager::submit_new_window(std::unique_ptr<Window> window) {
-    auto id = window->id();
-    auto action = [this, window = std::move(window)] () mutable {
-        windows_.push_back(std::move(window));
-    };
-    XYZLabs::instance().event_manager().add_action(std::move(action));
-    return id;
-} 
+#ifdef USE_GLFW
+#include <GLFW/glfw3.h>
+#include <imgui_impl_glfw.h>
 
 void WindowManager::init() {
-    #ifdef USE_GLFW
-
     if (!glfwInit()) {
         spdlog::error("GLFW initialisation failed!");
         glfwTerminate();
@@ -39,8 +23,26 @@ void WindowManager::init() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    #else
+    windows_.push_back(std::make_unique<Window>());
+}
 
+void WindowManager::update() {
+    flush_closed_windows();
+    update_windows();
+    glfwPollEvents();
+}
+
+void WindowManager::destroy() {
+    ImGui::DestroyContext();
+    glfwTerminate();
+}
+
+#else
+
+#include <SDL3/SDL.h>
+#include <imgui_impl_sdl3.h>
+
+void WindowManager::init() {
     if(!SDL_Init(SDL_INIT_VIDEO)) {
         spdlog::error("SDL init failed");
     }
@@ -49,22 +51,12 @@ void WindowManager::init() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     
-    #endif
     windows_.push_back(std::make_unique<Window>());
 }
 
 void WindowManager::update() {
-    std::erase_if(windows_, [](const auto& window) {
-        return window->should_close();
-    });
-
-    for(auto &w: windows_) {
-        w->update();
-    }
-
-    #ifdef USE_GLFW
-    glfwPollEvents();
-    #else
+    flush_closed_windows();
+    update_windows();
 
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
@@ -86,18 +78,24 @@ void WindowManager::update() {
             window->key_callback(e.key.key);            
         }
     }
-
-    #endif
 }
 
 void WindowManager::destroy() {
     ImGui::DestroyContext();
-    #ifdef USE_GLFW
-    glfwTerminate();
-    #else
     SDL_Quit();
-    #endif
 }
+
+#endif
+
+
+uint64_t WindowManager::submit_new_window(std::unique_ptr<Window> window) {
+    auto id = window->id();
+    auto action = [this, window = std::move(window)] () mutable {
+        windows_.push_back(std::move(window));
+    };
+    XYZLabs::instance().event_manager().add_action(std::move(action));
+    return id;
+} 
 
 size_t WindowManager::nwindows() const {
     return windows_.size();
