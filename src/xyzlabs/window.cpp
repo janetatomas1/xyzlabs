@@ -52,6 +52,7 @@ void Window::init() {
         Window *win = (Window*)glfwGetWindowUserPointer(handle);
         win->key_callback(key);
     });
+    spdlog::info("Opened new window. Title: {}, id: {}", title_, id_);
 }
 
 Window::~Window() {
@@ -63,6 +64,7 @@ Window::~Window() {
     ImGui::DestroyContext(ctx);
 
     glfwDestroyWindow(handle_);
+    spdlog::info("Closed window. Title: {}, id: {}", title_, id_);
 }
 
 void Window::update() {
@@ -123,7 +125,7 @@ void Window::init() {
     handle_ = SDL_CreateWindow(
         title_.c_str(), width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
     );
-
+    id_ = XYZLabs::instance().random_generator()();
     glContext = SDL_GL_CreateContext(handle_);
     SDL_GL_MakeCurrent(handle_, glContext);
     SDL_GL_SetSwapInterval(1);
@@ -143,6 +145,7 @@ void Window::init() {
     } else {
         spdlog::info("GLEW initialisation SUCCESS!");
     }
+    spdlog::info("Opened new window. Title: {}, id: {}", title_, id_);
 }
 
 Window::~Window() {
@@ -150,7 +153,8 @@ Window::~Window() {
     ImGui_ImplSDL3_Shutdown();
     ImGui::DestroyContext();
     SDL_GL_DestroyContext(glContext);
-    SDL_DestroyWindow(handle_);
+    SDL_DestroyWindow(handle_);\
+    spdlog::info("Closed window. Title: {}, id: {}", title_, id_);
 }
 
 void Window::update() {
