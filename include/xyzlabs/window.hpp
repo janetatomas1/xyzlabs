@@ -26,8 +26,8 @@ using WindowHandle = SDL_Window*;
 class Window {
     #ifndef USE_GLFW
     SDL_GLContextState *glContext;
-    bool open_ = true;
     #endif
+    bool open_ = true;
 
     WindowHandle handle_ = nullptr;
     ImGuiContext *ctx;

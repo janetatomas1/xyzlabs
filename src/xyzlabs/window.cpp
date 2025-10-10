@@ -40,7 +40,6 @@ void Window::init() {
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
     ctx = ImGui::CreateContext();
     ImGui::SetCurrentContext(ctx);
 
@@ -94,10 +93,10 @@ void Window::update() {
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
     glfwSwapBuffers(handle_);
-}
 
-bool Window::should_close() const {
-    return glfwWindowShouldClose(handle_) != 0;
+    if(glfwWindowShouldClose(handle_)) {
+        open_ = false;
+    }
 }
 
 GLFWwindow* Window::handle() {
@@ -107,6 +106,10 @@ GLFWwindow* Window::handle() {
 void Window::key_callback(int key) {
     if(key == GLFW_KEY_ESCAPE) {
         glfwSetWindowShouldClose(handle_, 1);
+    }
+
+    if(key == GLFW_KEY_N) {
+        XYZLabs::instance().window_manager().add_window<Window>();
     }
 }
 
@@ -133,8 +136,12 @@ void Window::init() {
     IMGUI_CHECKVERSION();
     ctx = ImGui::CreateContext();
 
+    SDL_GL_MakeCurrent(handle_, glContext);
+    ImGui::SetCurrentContext(ctx);
+
     SDL_ShowWindow(handle_);
     SDL_MaximizeWindow(handle_);
+
     SDL_SetPointerProperty(SDL_GetWindowProperties(handle_), "WINDOW", this);
     ImGui_ImplSDL3_InitForOpenGL(handle_, glContext);
     ImGui_ImplOpenGL3_Init("#version 330 core");
@@ -149,16 +156,25 @@ void Window::init() {
 }
 
 Window::~Window() {
+    SDL_GL_MakeCurrent(handle_, glContext);
+    ImGui::SetCurrentContext(ctx);
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL3_Shutdown();
+    
     ImGui::DestroyContext();
     SDL_GL_DestroyContext(glContext);
     SDL_DestroyWindow(handle_);\
+    
     spdlog::info("Closed window. Title: {}, id: {}", title_, id_);
 }
 
 void Window::update() {
+    SDL_GL_MakeCurrent(handle_, glContext);
+    ImGui::SetCurrentContext(ctx);
+
     SDL_GetWindowSize(handle_, &width_, &height_);
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL3_NewFrame();
     ImGui::NewFrame();
@@ -178,10 +194,6 @@ void Window::update() {
     SDL_GL_SwapWindow(handle_);
 }
 
-bool Window::is_open() const {
-    return open_;
-}
-
 WindowHandle Window::handle() {
     return handle_;
 }
@@ -189,6 +201,10 @@ WindowHandle Window::handle() {
 void Window::key_callback(int key) {
     if(key == SDLK_ESCAPE) {
         close();
+    }
+
+    if(key == SDLK_N) {
+        XYZLabs::instance().window_manager().add_window<Window>();
     }
 }
 
@@ -205,4 +221,8 @@ uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
 
 uint64_t Window::set_central_widget(std::unique_ptr<Widget> widget) {
     return submit_widget(std::move(widget));
+}
+
+bool Window::is_open() const {
+    return open_;
 }
