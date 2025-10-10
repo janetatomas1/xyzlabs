@@ -140,3 +140,7 @@ Window* WindowManager::get_window_by_title(const std::string &title) const {
         return it->get();
     }
 }
+
+uint64_t WindowManager::add_window(std::unique_ptr<Window> window) {
+    return submit_new_window(std::move(window));
+}

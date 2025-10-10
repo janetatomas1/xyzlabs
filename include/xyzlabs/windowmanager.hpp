@@ -23,8 +23,9 @@ class WindowManager {
     };
 public:
     void init();
-    template<WindowType W = Widget, typename... Args>
+    template<WindowType W = Window, typename... Args>
     uint64_t add_window(Args... args);
+    uint64_t add_window(std::unique_ptr<Window> window);
     void update();
     void destroy();
     size_t nwindows() const;
