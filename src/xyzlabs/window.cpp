@@ -7,7 +7,6 @@
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
-
 constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
     ImGuiWindowFlags_NoResize |
     ImGuiWindowFlags_NoMove |
@@ -107,10 +106,6 @@ void Window::key_callback(int key) {
     if(key == GLFW_KEY_ESCAPE) {
         glfwSetWindowShouldClose(handle_, 1);
     }
-
-    if(key == GLFW_KEY_N) {
-        XYZLabs::instance().window_manager().add_window<Window>();
-    }
 }
 
 #else
@@ -201,10 +196,6 @@ WindowHandle Window::handle() {
 void Window::key_callback(int key) {
     if(key == SDLK_ESCAPE) {
         close();
-    }
-
-    if(key == SDLK_N) {
-        XYZLabs::instance().window_manager().add_window<Window>();
     }
 }
 
