@@ -53,7 +53,7 @@ public:
     Window(const std::string &title = "", Args... args);
     ~Window();
     void update();
-    bool should_close() const;
+    bool is_open() const;
     WindowHandle handle();
     virtual void key_callback(int key);
     const std::string& title() const {
