@@ -126,33 +126,45 @@ void Window::init() {
     );
 
     glContext = SDL_GL_CreateContext(handle_);
-    if (!glContext) {
-        spdlog::error("SDL_GL_CreateContext failed: {}", SDL_GetError());
+    SDL_GL_MakeCurrent(handle_, glContext);
+    SDL_GL_SetSwapInterval(1);
 
-    }
-
-    glewExperimental = GL_TRUE;
-    GLenum err = glewInit();
-    if (err != GLEW_OK) {
-        spdlog::error("GLEW init failed");
-    }
+    IMGUI_CHECKVERSION();
+    ctx = ImGui::CreateContext();
 
     SDL_ShowWindow(handle_);
     SDL_MaximizeWindow(handle_);
     SDL_SetPointerProperty(SDL_GetWindowProperties(handle_), "WINDOW", this);
     ImGui_ImplSDL3_InitForOpenGL(handle_, glContext);
+    ImGui_ImplOpenGL3_Init("#version 330 core");
+
+    glewExperimental = GL_TRUE;
+    if(glewInit() != GLEW_OK) {
+        spdlog::error("GLEW initialisation failed!");
+    } else {
+        spdlog::info("GLEW initialisation SUCCESS!");
+    }
 }
 
 Window::~Window() {
 }
 
 void Window::update() {
+    SDL_GetWindowSize(handle_, &width_, &height_);
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL3_NewFrame();
     ImGui::NewFrame();
 
-    centralWidget_->show({static_cast<float>(width_), static_cast<float>(height_)}, {0.0f, 0.0f});
+    ImVec2 size = {static_cast<float>(width_), static_cast<float>(height_)};
+    ImVec2 pos = {0.0f, 0.0f};
+    ImGui::SetNextWindowSize(size);
+    ImGui::SetNextWindowPos(pos);
 
+    if(ImGui::Begin("##window", nullptr,  WINDOW_FLAGS)) {
+        centralWidget_->show(size, pos);
+        ImGui::End();
+    }
+    
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(handle_);

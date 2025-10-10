@@ -58,6 +58,10 @@ void WindowManager::update() {
         return window->should_close();
     });
 
+    for(auto &w: windows_) {
+        w->update();
+    }
+
     #ifdef USE_GLFW
     glfwPollEvents();
     #else
@@ -84,10 +88,6 @@ void WindowManager::update() {
     }
 
     #endif
-
-    for(auto &w: windows_) {
-        w->update();
-    }
 }
 
 void WindowManager::destroy() {
