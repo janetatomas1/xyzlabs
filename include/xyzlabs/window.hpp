@@ -42,6 +42,9 @@ class Window {
     void init();
     uint64_t submit_widget(std::unique_ptr<Widget> widget);    
 public:
+    void set_id(uint64_t id) {
+        id_ = id;
+    };
     int32_t width() {
         return width_;
     }

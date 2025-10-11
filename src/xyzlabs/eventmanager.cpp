@@ -34,7 +34,6 @@ void EventManager::dispatch() {
     bool actionFound = false;
     while(true) {
         actionFound = actions_.try_dequeue(act);
-
         if(actionFound) {
             act();
         } else {
