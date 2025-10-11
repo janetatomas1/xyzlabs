@@ -87,14 +87,9 @@ void WindowManager::destroy() {
 
 #endif
 
-uint64_t WindowManager::submit_new_window(std::unique_ptr<Window> window) {
-    auto id = window->id();
-    auto action = [this, window = std::move(window)] () mutable {
-        windows_.push_back(std::move(window));
-    };
-    XYZLabs::instance().event_manager().add_action(std::move(action));
-    return id;
-} 
+void WindowManager::add_window_action(action act) {
+    XYZLabs::instance().event_manager().add_action(std::move(act));
+}
 
 size_t WindowManager::nwindows() const {
     return windows_.size();
@@ -139,8 +134,4 @@ Window* WindowManager::get_window_by_title(const std::string &title) const {
     } else {
         return it->get();
     }
-}
-
-uint64_t WindowManager::add_window(std::unique_ptr<Window> window) {
-    return submit_new_window(std::move(window));
 }
