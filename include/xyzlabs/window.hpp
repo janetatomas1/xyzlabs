@@ -68,7 +68,6 @@ public:
     template<WidgetType W = Widget, typename... Args>
     uint64_t set_central_widget(Args... args);
     uint64_t set_central_widget(std::unique_ptr<Widget> widget);
-    uint64_t set_central_widget_unsafe(std::unique_ptr<Widget> widget);
 };
 
 template<WidgetType W, typename... Args>
