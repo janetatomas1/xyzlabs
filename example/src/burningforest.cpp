@@ -65,10 +65,6 @@ void BurningForest::update() {
             tiles_[i][j].render(get_color(state[i][j]));
         }
     }
-
-    if(ImGui::IsKeyDown(ImGuiKey_N)) {
-        XYZLabs::instance().window_manager().add_window<Window, BurningForest>();
-    }
 }
 
 void BurningForest::destroy() {

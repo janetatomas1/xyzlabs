@@ -8,7 +8,8 @@
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/event.hpp"
 #include "xyzlabs/globals.hpp"
-#include "xyzlabs/globals.hpp"
+#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/eventmanager.hpp"
 
 
 class WindowManager {
