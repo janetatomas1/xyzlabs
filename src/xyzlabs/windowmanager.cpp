@@ -96,7 +96,6 @@ size_t WindowManager::nwindows() const {
     return windows_.size();
 }
 
-
 Window* WindowManager::get_main_window() const {
     if(windows_.empty()) {
         return nullptr;

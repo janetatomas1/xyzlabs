@@ -52,8 +52,8 @@ public:
         return height_;
     }
     void close();
-    template<WidgetType W = Widget, typename... Args>
-    Window(const std::string &title = "", Args... args);
+    Window(const std::string &title = "");
+    Window(std::unique_ptr<Widget> widget, const std::string &title = "");
     ~Window();
     void update();
     bool is_open() const;
@@ -68,14 +68,8 @@ public:
     template<WidgetType W = Widget, typename... Args>
     uint64_t set_central_widget(Args... args);
     uint64_t set_central_widget(std::unique_ptr<Widget> widget);
+    uint64_t set_central_widget_unsafe(std::unique_ptr<Widget> widget);
 };
-
-template<WidgetType W, typename... Args>
-Window::Window(const std::string &title, Args... args):
-    title_(title) {
-    init();
-    set_central_widget<W>(std::forward<Args>(args)...);
-}
 
 template<WidgetType W, typename... Args>
 uint64_t Window::set_central_widget(Args... args) {

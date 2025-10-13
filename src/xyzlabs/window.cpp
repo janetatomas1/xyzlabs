@@ -46,10 +46,10 @@ void Window::init() {
     ImGui_ImplOpenGL3_Init("#version 330");
     glfwSetWindowUserPointer(handle_, this);
 
-    glfwSetKeyCallback(handle_, [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
-        Window *win = (Window*)glfwGetWindowUserPointer(handle);
-        win->key_callback(key);
-    });
+    // glfwSetKeyCallback(handle_, [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
+    //     Window *win = (Window*)glfwGetWindowUserPointer(handle);
+    //     win->key_callback(key);
+    // });
     spdlog::info("Opened new window. Title: {}, id: {}", title_, id_);
 }
 
@@ -201,6 +201,18 @@ void Window::key_callback(int key) {
 
 #endif
 
+Window::Window(const std::string &title):
+    title_(title) {
+    init();
+    set_central_widget<Widget>();
+}
+
+Window::Window(std::unique_ptr<Widget> widget, const std::string &title):
+    title_(title) {
+    init();
+    set_central_widget(std::move(widget));
+}
+
 uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
     auto id = widget->id();
     auto action = [this, widget = std::move(widget)]() mutable {
@@ -212,6 +224,10 @@ uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
 
 uint64_t Window::set_central_widget(std::unique_ptr<Widget> widget) {
     return submit_widget(std::move(widget));
+}
+
+uint64_t Window::set_central_widget_unsafe(std::unique_ptr<Widget> widget) {
+    centralWidget_ = std::move(widget);
 }
 
 bool Window::is_open() const {
