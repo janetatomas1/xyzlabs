@@ -23,7 +23,6 @@ void OpenGLWidget::show(const ImVec2 &size, const ImVec2 &pos) {
 			ImVec2(0, 1), 
 			ImVec2(1, 0)
     );
-
 }
 
 OpenGLWidget::~OpenGLWidget() {

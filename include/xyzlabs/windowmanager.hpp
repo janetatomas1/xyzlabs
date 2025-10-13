@@ -11,6 +11,7 @@
 
 class WindowManager {
     std::vector<std::unique_ptr<Window>> windows_;
+    size_t renderTimeout_ = 30;
 
     template<WindowType W = Window, typename... Args>
     uint64_t submit_new_window(Args... args);
@@ -48,7 +49,6 @@ uint64_t WindowManager::submit_new_window(Args... args) {
     add_window_action(std::move(action));
     return id;
 } 
-
 
 template<WindowType W, typename... Args>
 uint64_t WindowManager::add_window(Args... args) {

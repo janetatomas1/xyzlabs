@@ -30,6 +30,7 @@ void WindowManager::update() {
     flush_closed_windows();
     update_windows();
     glfwPollEvents();
+    std::this_thread::sleep_for(std::chrono::milliseconds(renderTimeout_));
 }
 
 void WindowManager::destroy() {
