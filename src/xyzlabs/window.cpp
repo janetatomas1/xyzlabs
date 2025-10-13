@@ -67,6 +67,7 @@ Window::~Window() {
 
 void Window::update() {
     glfwMakeContextCurrent(handle_);
+    glfwSwapInterval(0);
 
     ImGui::SetCurrentContext(ctx);
     glfwGetWindowSize(handle_, &width_, &height_);
@@ -126,7 +127,6 @@ void Window::init() {
     id_ = XYZLabs::instance().random_generator()();
     glContext = SDL_GL_CreateContext(handle_);
     SDL_GL_MakeCurrent(handle_, glContext);
-    SDL_GL_SetSwapInterval(1);
 
     IMGUI_CHECKVERSION();
     ctx = ImGui::CreateContext();
