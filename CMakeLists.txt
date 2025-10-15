@@ -94,7 +94,7 @@ target_link_libraries(
 
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
 
-if(USE_GLFW EQUAL 1)
+if(USE_GLFW)
     target_compile_definitions(xyzlabs PUBLIC USE_GLFW)
     target_link_libraries(xyzlabs PUBLIC glfw3)
 else()
