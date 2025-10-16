@@ -88,10 +88,6 @@ void WindowManager::destroy() {
 
 #endif
 
-void WindowManager::add_window_action(action act) {
-    XYZLabs::instance().event_manager().add_action(std::move(act));
-}
-
 size_t WindowManager::nwindows() const {
     return windows_.size();
 }
@@ -134,4 +130,12 @@ Window* WindowManager::get_window_by_title(const std::string &title) const {
     } else {
         return it->get();
     }
+}
+
+Window* WindowManager::get_current_window() {
+    if(currentWindowIDx_ >= 0 && windows_.size() < currentWindowIDx_) {
+        return windows_[currentWindowIDx_].get();
+    }
+
+    return nullptr;
 }

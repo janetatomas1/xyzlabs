@@ -8,9 +8,7 @@
 #include "xyzlabs/settingsmanager.hpp"
 #include "xyzlabs/constants.hpp"
 
-SettingsManager::SettingsManager() {}
-
-void SettingsManager::show_settings_window(const ImVec2 &size) {
+void SettingsWidget::show(const ImVec2& size, const ImVec2& pos) {
     ImVec2 settingsWindowSize = {size.x * 0.5f, size.y * 0.5f};
     ImVec2 settingsWindowPos = {settingsWindowSize.x * 0.65f, settingsWindowSize.y * 0.4f};
 
@@ -22,35 +20,38 @@ void SettingsManager::show_settings_window(const ImVec2 &size) {
     ImGui::SetNextWindowPos(settingsWindowPos);
     ImGui::SetNextWindowSize(settingsWindowSize);
 
-    if(settingsOpen_) {
-        if(ImGui::Begin(constants::SETTINGS_WINDOW_TITLE.c_str())) {
-            ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
-            for(auto &ref: store_) {
-                if(ImGui::TreeNode(ref.first.c_str())) {
-                    ref.second->show_input_widget();
-                    ImGui::TreePop();
-                }
+    if(ImGui::Begin(constants::SETTINGS_WINDOW_TITLE.c_str())) {
+        ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
+        for(auto &ref: store_) {
+            if(ImGui::TreeNode(ref.first.c_str())) {
+                ref.second->show_input_widget();
+                ImGui::TreePop();
             }
-            ImGui::EndChild();
-
-            ImGui::SetCursorPos(discardBtnPos);
-
-            if(ImGui::Button(constants::DISCARD_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
-                load_safe();
-                settingsOpen_ = false;
-            }
-
-            ImGui::SetCursorPos(saveBtnPos);
-
-            if(ImGui::Button(constants::SAVE_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
-                save_safe();
-                propagate();
-                settingsOpen_ = false;
-            }
-
         }
-        ImGui::End();
+        ImGui::EndChild();
+
+        ImGui::SetCursorPos(discardBtnPos);
+
+        if(ImGui::Button(constants::DISCARD_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
+            // load_safe();
+            // settingsOpen_ = false;
+        }
+
+        ImGui::SetCursorPos(saveBtnPos);
+
+        if(ImGui::Button(constants::SAVE_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
+            // save_safe();
+            // propagate();
+            // settingsOpen_ = false;
+        }
+
     }
+    ImGui::End();
+}
+
+SettingsManager::SettingsManager() {}
+
+void SettingsManager::show_settings_window(const ImVec2 &size) {
 };
 
 const std::string SettingsManager::config_file() {
