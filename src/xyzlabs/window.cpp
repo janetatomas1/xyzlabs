@@ -203,13 +203,11 @@ void Window::key_callback(int key) {
 
 Window::Window(const std::string &title):
     title_(title) {
-    init();
     set_central_widget<Widget>();
 }
 
 Window::Window(std::unique_ptr<Widget> widget, const std::string &title):
     title_(title) {
-    init();
     set_central_widget(std::move(widget));
 }
 
