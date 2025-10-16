@@ -68,29 +68,7 @@ target_link_libraries(
     implot
 )
 
-add_executable(
-    burningforest
-    ${CMAKE_SOURCE_DIR}/example/src/burningforest.cpp
-    ${CMAKE_SOURCE_DIR}/example/src/main.cpp
-)
-target_include_directories(
-    burningforest
-    PRIVATE
-    ${CMAKE_SOURCE_DIR}/example/include
-    ${CMAKE_SOURCE_DIR}/include
-)
-target_link_directories(
-    burningforest
-    PUBLIC
-    ${CMAKE_LIBRARY_PATH}
-)
 add_definitions(-DGLEW_STATIC)
-
-target_link_libraries(
-    burningforest
-    PUBLIC
-    xyzlabs
-)
 
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
 
@@ -114,3 +92,5 @@ install(
 add_compile_options(
     -Wfatal-errors
 )
+
+add_subdirectory(example)
