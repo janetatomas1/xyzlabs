@@ -29,6 +29,7 @@ class WindowManager {
             windows_[currentWindowIDx_]->update();
         }
     };
+    void init_main_window();
 public:
     void init();
     template<WindowType W = Window, WidgetType Wid = Widget, typename... Args>
@@ -44,10 +45,10 @@ public:
 
 template<WindowType W, WidgetType Wid, typename... Args>
 uint64_t WindowManager::submit_new_window(Args... args) {
-    auto id = random_generator().random();
-    event_manager().add_action(std::move([this, id] () mutable {
-        auto window = std::make_unique<W>();
-        window->set_id(id);
+    auto window = std::make_unique<W>();
+    auto id = window->id();
+    event_manager().add_action(std::move([window = std::move(window), this] () mutable {
+        window->init();
         windows_.push_back(std::move(window));
     }));
 

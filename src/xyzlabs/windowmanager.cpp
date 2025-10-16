@@ -10,6 +10,12 @@
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
 
+void WindowManager::init_main_window() {
+    auto mainWindow = std::make_unique<Window>(XYZLabs::instance().title());
+    mainWindow->init();
+    windows_.push_back(std::move(mainWindow));
+}
+
 void WindowManager::init() {
     if (!glfwInit()) {
         spdlog::error("GLFW initialisation failed!");
@@ -22,8 +28,7 @@ void WindowManager::init() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-    windows_.push_back(std::make_unique<Window>(XYZLabs::instance().title()));
+    init_main_window();
 }
 
 void WindowManager::update() {
@@ -52,7 +57,7 @@ void WindowManager::init() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     
-    windows_.push_back(std::make_unique<Window>(XYZLabs::instance().title()));
+    init_main_window();
 }
 
 void WindowManager::update() {

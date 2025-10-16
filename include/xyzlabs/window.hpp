@@ -39,12 +39,9 @@ class Window {
     int32_t height_ = 1000;
 
     std::unique_ptr<Widget> centralWidget_;
-    void init();
     uint64_t submit_widget(std::unique_ptr<Widget> widget);    
 public:
-    void set_id(uint64_t id) {
-        id_ = id;
-    };
+    void init();
     int32_t width() {
         return width_;
     }
