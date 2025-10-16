@@ -22,31 +22,33 @@ void SettingsManager::show_settings_window(const ImVec2 &size) {
     ImGui::SetNextWindowPos(settingsWindowPos);
     ImGui::SetNextWindowSize(settingsWindowSize);
 
-    if(settingsOpen_ && ImGui::Begin(constants::SETTINGS_WINDOW_TITLE.c_str())) {
-        ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
-        for(auto &ref: store_) {
-            if(ImGui::TreeNode(ref.first.c_str())) {
-                ref.second->show_input_widget();
-                ImGui::TreePop();
+    if(settingsOpen_) {
+        if(ImGui::Begin(constants::SETTINGS_WINDOW_TITLE.c_str())) {
+            ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
+            for(auto &ref: store_) {
+                if(ImGui::TreeNode(ref.first.c_str())) {
+                    ref.second->show_input_widget();
+                    ImGui::TreePop();
+                }
             }
+            ImGui::EndChild();
+
+            ImGui::SetCursorPos(discardBtnPos);
+
+            if(ImGui::Button(constants::DISCARD_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
+                load_safe();
+                settingsOpen_ = false;
+            }
+
+            ImGui::SetCursorPos(saveBtnPos);
+
+            if(ImGui::Button(constants::SAVE_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
+                save_safe();
+                propagate();
+                settingsOpen_ = false;
+            }
+
         }
-        ImGui::EndChild();
-
-        ImGui::SetCursorPos(discardBtnPos);
-
-        if(ImGui::Button(constants::DISCARD_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
-            load_safe();
-            settingsOpen_ = false;
-        }
-
-        ImGui::SetCursorPos(saveBtnPos);
-
-        if(ImGui::Button(constants::SAVE_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
-            save_safe();
-            propagate();
-            settingsOpen_ = false;
-        }
-
         ImGui::End();
     }
 };

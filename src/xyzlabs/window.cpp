@@ -87,8 +87,8 @@ void Window::update() {
 
     if(ImGui::Begin("##window", nullptr,  WINDOW_FLAGS)) {
         centralWidget_->show(size, pos);
-        ImGui::End();
     }
+    ImGui::End();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
@@ -181,8 +181,8 @@ void Window::update() {
 
     if(ImGui::Begin("##window", nullptr,  WINDOW_FLAGS)) {
         centralWidget_->show(size, pos);
-        ImGui::End();
     }
+    ImGui::End();
     
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
