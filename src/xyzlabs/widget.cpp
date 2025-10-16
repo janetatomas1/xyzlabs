@@ -2,12 +2,13 @@
 #include <spdlog/spdlog.h>
 #include <format>
 
-#include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/widget.hpp"
+#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/globals.hpp"
 
 
 Widget::Widget(const std::string &title):
-    title_(title), id_(XYZLabs::instance().random_generator().random()), open_(true) {
+    title_(title), id_(random_generator().random()), open_(true) {
     titleID_ = std::format("{}##{}", title_, id_);
 }
 

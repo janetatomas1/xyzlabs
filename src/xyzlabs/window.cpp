@@ -3,9 +3,12 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui.h>
+#include <spdlog/spdlog.h>
 
 #include "xyzlabs/window.hpp"
-#include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/globals.hpp"
 
 constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
     ImGuiWindowFlags_NoResize |
@@ -18,7 +21,7 @@ constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
 #include <imgui_impl_glfw.h>
 
 void Window::init() {
-    id_ = XYZLabs::instance().random_generator().random();
+    id_ = random_generator().random();
     handle_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
     if(!handle_) {
         spdlog::error("GLFW window creation failed!");
@@ -115,7 +118,7 @@ void Window::key_callback(int key) {
 #include <imgui_impl_sdl3.h>
 
 void Window::close() {
-    XYZLabs::instance().event_manager().add_action([this]() {
+    event_manager().add_action([this]() {
         open_ = false;
     });
 }
@@ -124,7 +127,7 @@ void Window::init() {
     handle_ = SDL_CreateWindow(
         title_.c_str(), width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
     );
-    id_ = XYZLabs::instance().random_generator()();
+    id_ = random_generator()();
     glContext = SDL_GL_CreateContext(handle_);
     SDL_GL_MakeCurrent(handle_, glContext);
 
@@ -216,7 +219,7 @@ uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
     auto action = [this, widget = std::move(widget)]() mutable {
         centralWidget_ = std::move(widget);
     };
-    XYZLabs::instance().event_manager().add_action(std::move(action));
+    event_manager().add_action(std::move(action));
     return id;
 }
 

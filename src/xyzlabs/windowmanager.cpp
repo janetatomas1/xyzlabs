@@ -5,13 +5,14 @@
 
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/globals.hpp"
 
 #ifdef USE_GLFW
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
 
 void WindowManager::init_main_window() {
-    auto mainWindow = std::make_unique<Window>(XYZLabs::instance().title());
+    auto mainWindow = std::make_unique<Window>(app().title());
     mainWindow->init();
     windows_.push_back(std::move(mainWindow));
 }

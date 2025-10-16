@@ -1,10 +1,8 @@
 
 #include "burningforest.hpp"
-#include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/constants.hpp"
-#include "xyzlabs/xyzlabs.hpp"
-
 #include "xyzlabs/periodictask.hpp"
+
 
 const std::array<float, 3> RED = {1.0f, 0.0f, 0.0f};
 const std::array<float, 3> GREEN = {0.0f, 1.0f, 0.0f};
@@ -44,7 +42,7 @@ BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
     }
 
     task_ = std::make_shared<BurningForestTask>();
-    XYZLabs::instance().task_manager().execute_periodic_task(task_);
+    task_manager().execute_periodic_task(task_);
 }
 
 void BurningForest::update() {

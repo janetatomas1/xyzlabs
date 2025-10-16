@@ -1,12 +1,13 @@
 
 #include "xyzlabs/openglwidget.hpp"
-#include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/globals.hpp"
+#include "xyzlabs/windowmanager.hpp"
+
 
 OpenGLWidget::OpenGLWidget(const std::string &title): Widget(title) {
-    auto &app = XYZLabs::instance();
     backend_.create_framebuffer(
-        app.window_manager().get_main_window()->width(),
-        app.window_manager().get_main_window()->height()
+        window_manager().get_main_window()->width(),
+        window_manager().get_main_window()->height()
     );
 }
 
