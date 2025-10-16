@@ -3,10 +3,12 @@
 #include <filesystem>
 #include <fstream>
 
-
-#include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/settingsmanager.hpp"
+#include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/globals.hpp"
 #include "xyzlabs/constants.hpp"
+
 
 void SettingsWidget::show(const ImVec2& size, const ImVec2& pos) {
     ImVec2 settingsWindowSize = {size.x * 0.5f, size.y * 0.5f};
@@ -70,9 +72,9 @@ void SettingsManager::save() {
 }
 
 void SettingsManager::save_safe() {
-    auto appDirectory = XYZLabs::instance().app_directory();
+    auto appDirectory = app().app_directory();
     if(!std::filesystem::exists(appDirectory)) {
-        XYZLabs::instance().create_app_directory();
+        app().create_app_directory();
     }
 
     save();
@@ -111,5 +113,5 @@ void SettingsManager::load_safe() {
 }
 
 void SettingsManager::propagate() {
-    XYZLabs::instance().event_manager().add_event(std::make_unique<Event>(constants::MAIN_APP_SETTINGS_LABEL));
+    event_manager().add_event(std::make_unique<Event>(constants::MAIN_APP_SETTINGS_LABEL));
 }

@@ -2,7 +2,6 @@
 #include <spdlog/spdlog.h>
 
 #include "xyzlabs/taskmanager.hpp"
-#include "xyzlabs/xyzlabs.hpp"
 
 TaskManager::TaskManager(): 
     pool_(asio::thread_pool(threadCount_)),
