@@ -5,8 +5,9 @@
 #include <memory>
 #include <imgui.h>
 #include <boost/unordered_map.hpp>
-
 #include <nlohmann/json.hpp>
+
+#include "xyzlabs/widget.hpp"
 
 using json = nlohmann::json;
 
@@ -20,6 +21,11 @@ struct Settings {
 
 template<typename T>
 concept SettingsType = std::derived_from<T, Settings> || std::same_as<T, Settings>;
+
+struct SettingsWidget: public Widget {
+    boost::unordered_map<std::string, std::unique_ptr<Settings>> store_;
+    void show(const ImVec2& size, const ImVec2& pos) override;
+};
 
 class SettingsManager {
     json cache_;

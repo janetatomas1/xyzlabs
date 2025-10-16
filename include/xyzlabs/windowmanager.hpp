@@ -15,6 +15,7 @@
 class WindowManager {
     std::vector<std::unique_ptr<Window>> windows_;
     size_t renderTimeout_ = 30;
+    int64_t currentWindowIDx_ = -1;
 
     template<WindowType W = Window, WidgetType Wid = Widget, typename... Args>
     uint64_t submit_new_window(Args... args);
@@ -24,11 +25,10 @@ class WindowManager {
         });
     };
     inline void update_windows() {
-        for(auto &w: windows_) {
-            w->update();
+        for(currentWindowIDx_ = 0;currentWindowIDx_ < windows_.size();currentWindowIDx_++) {
+            windows_[currentWindowIDx_]->update();
         }
     };
-    void add_window_action(action act);
 public:
     void init();
     template<WindowType W = Window, WidgetType Wid = Widget, typename... Args>
@@ -39,6 +39,7 @@ public:
     Window *get_main_window() const;
     Window *get_window_by_id(uint64_t id) const;
     Window *get_window_by_title(const std::string &title) const;
+    Window *get_current_window();
 };
 
 template<WindowType W, WidgetType Wid, typename... Args>
