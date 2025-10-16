@@ -21,7 +21,6 @@ constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
 #include <imgui_impl_glfw.h>
 
 void Window::init() {
-    id_ = random_generator().random();
     handle_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
     if(!handle_) {
         spdlog::error("GLFW window creation failed!");
@@ -127,7 +126,6 @@ void Window::init() {
     handle_ = SDL_CreateWindow(
         title_.c_str(), width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
     );
-    id_ = random_generator()();
     glContext = SDL_GL_CreateContext(handle_);
     SDL_GL_MakeCurrent(handle_, glContext);
 
@@ -204,15 +202,13 @@ void Window::key_callback(int key) {
 
 #endif
 
-Window::Window(const std::string &title):
-    title_(title) {
-    set_central_widget<Widget>();
-}
-
-Window::Window(std::unique_ptr<Widget> widget, const std::string &title):
-    title_(title) {
-    set_central_widget(std::move(widget));
-}
+Window::Window(const std::string &title, int32_t width, int32_t height):
+    title_(title),
+    id_(random_generator()()),
+    centralWidget_(std::move(std::make_unique<Widget>())),
+    width_(width),
+    height_(height)
+{}
 
 uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
     auto id = widget->id();
