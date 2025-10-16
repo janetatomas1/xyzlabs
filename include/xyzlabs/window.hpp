@@ -35,8 +35,8 @@ class Window {
     std::string title_;
     uint64_t id_ = 0;
 
-    int32_t width_ = 1000;
-    int32_t height_ = 1000;
+    int32_t width_ = 0;
+    int32_t height_ = 0;
 
     std::unique_ptr<Widget> centralWidget_;
     uint64_t submit_widget(std::unique_ptr<Widget> widget);    
@@ -49,8 +49,11 @@ public:
         return height_;
     }
     void close();
-    Window(const std::string &title = "");
-    Window(std::unique_ptr<Widget> widget, const std::string &title = "");
+    Window(
+        const std::string &title = "",
+        int32_t width = 0,
+        int32_t height = 0
+    );
     ~Window();
     void update();
     bool is_open() const;
