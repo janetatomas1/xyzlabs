@@ -21,6 +21,12 @@ constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
 #include <imgui_impl_glfw.h>
 
 void Window::init() {
+    bool maximize = false;
+    if(height_ == 0 || width_ == 0) {
+        width_ = 1000;
+        height_ = 1000;
+        maximize = true;
+    }
     handle_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
     if(!handle_) {
         spdlog::error("GLFW window creation failed!");
@@ -29,7 +35,9 @@ void Window::init() {
         spdlog::info("GLFW window creation SUCCESS!");
     }
 
-    glfwMaximizeWindow(handle_);
+    if(maximize) {
+        glfwMaximizeWindow(handle_);
+    }
     glfwMakeContextCurrent(handle_);
 
     glewExperimental = GL_TRUE;
