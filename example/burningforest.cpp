@@ -44,7 +44,11 @@ BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
     task_ = std::make_shared<BurningForestTask>();
     task_manager().execute_periodic_task(task_);
 }
-
+class W: public Widget {
+    virtual void show(const ImVec2& size, const ImVec2& pos) {
+        ImGui::Button("abcd", {200, 200});
+    }
+};
 void BurningForest::update() {
     auto get_color = [](uint8_t c){
         if(c == 0) {
@@ -62,6 +66,11 @@ void BurningForest::update() {
         for(uint32_t j=0;j < height_;j++) {
             tiles_[i][j].render(get_color(state[i][j]));
         }
+    }
+    if(ImGui::IsKeyDown(ImGuiKey_N) && !x) {
+        x = true;
+        auto window = window_manager().add_window<Window>();
+        window->set_central_widget<BurningForest>();
     }
 }
 

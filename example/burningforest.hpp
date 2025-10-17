@@ -49,6 +49,7 @@ class BurningForest: public OpenGLWidget {
     std::vector<std::vector<uint8_t>> colors_;
     float begin_ = -0.95f, end_ = 0.95f;
     std::shared_ptr<BurningForestTask> task_ = nullptr;
+    bool x = false;
 
 public:
     BurningForest();
