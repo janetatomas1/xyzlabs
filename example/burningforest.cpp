@@ -46,18 +46,6 @@ void BurningForest::update() {
             tiles_[i][j].render(get_color(state[i][j]));
         }
     }
-    
-    static uint64_t window = 0;
-    
-    if(ImGui::IsKeyDown(ImGuiKey_N) && !x) {
-        x = true;
-        window = window_manager().add_window<Window, BurningForest>();
-    }
-
-    if(!y && window != 0 && ImGui::IsKeyDown(ImGuiKey_M)) {
-        window_manager().get_window_by_id(window)->set_central_widget<BurningForest>();
-        y = true;
-    }
 }
 
 void BurningForest::destroy() {
