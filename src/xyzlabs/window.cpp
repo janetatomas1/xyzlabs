@@ -228,8 +228,8 @@ Window::Window(const std::string &title, int32_t width, int32_t height):
     height_(height)
 {}
 
-uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
-    auto id = widget->id();
+Widget* Window::submit_widget(std::unique_ptr<Widget> widget) {
+    auto ptr = widget.get();
     auto action = [this, widget = std::move(widget)]() mutable {
         make_context_current();
         if(centralWidget_ != nullptr) {
@@ -240,10 +240,10 @@ uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
         centralWidget_->init();
     };
     event_manager().add_action(std::move(action));
-    return id;
+    return ptr;
 }
 
-uint64_t Window::set_central_widget(std::unique_ptr<Widget> widget) {
+Widget* Window::set_central_widget(std::unique_ptr<Widget> widget) {
     return submit_widget(std::move(widget));
 }
 

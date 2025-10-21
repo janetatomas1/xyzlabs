@@ -39,7 +39,7 @@ class Window {
     int32_t height_ = 0;
 
     std::unique_ptr<Widget> centralWidget_;
-    uint64_t submit_widget(std::unique_ptr<Widget> widget);    
+    Widget* submit_widget(std::unique_ptr<Widget> widget);    
     void make_context_current();
 public:
     void init();
@@ -67,12 +67,12 @@ public:
         return id_;
     }
     template<WidgetType W = Widget, typename... Args>
-    uint64_t set_central_widget(Args... args);
-    uint64_t set_central_widget(std::unique_ptr<Widget> widget);
+    Widget* set_central_widget(Args... args);
+    Widget* set_central_widget(std::unique_ptr<Widget> widget);
 };
 
 template<WidgetType W, typename... Args>
-uint64_t Window::set_central_widget(Args... args) {
+Widget* Window::set_central_widget(Args... args) {
     auto widget = std::make_unique<W>(std::forward<Args>(args)...);
     return submit_widget(std::move(widget));
 }
