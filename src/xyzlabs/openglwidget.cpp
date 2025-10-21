@@ -4,7 +4,9 @@
 #include "xyzlabs/windowmanager.hpp"
 
 
-OpenGLWidget::OpenGLWidget(const std::string &title): Widget(title) {
+OpenGLWidget::OpenGLWidget(const std::string &title): Widget(title) {}
+
+void OpenGLWidget::init() {
     backend_.create_framebuffer(
         window_manager().get_main_window()->width(),
         window_manager().get_main_window()->height()

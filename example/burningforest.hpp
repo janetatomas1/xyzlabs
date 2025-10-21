@@ -41,7 +41,6 @@ public:
     }
 };
 
-
 class BurningForest: public OpenGLWidget {
     const uint32_t height_ = 50;
     const uint32_t width_ = 50;
@@ -49,14 +48,14 @@ class BurningForest: public OpenGLWidget {
     std::vector<std::vector<uint8_t>> colors_;
     float begin_ = -0.95f, end_ = 0.95f;
     std::shared_ptr<BurningForestTask> task_ = nullptr;
-    bool x = false;
-    bool y = false;
 
 public:
     BurningForest();
     void update() override;
     void destroy() override;
     void init() override {
+        OpenGLWidget::init();
+
         tiles_.resize(height_);
 
         float x = begin_, y = begin_;

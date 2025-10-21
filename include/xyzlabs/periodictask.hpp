@@ -51,7 +51,6 @@ public:
         running_ = false;
         timer_.cancel();
         timer_.wait();
-        spdlog::info("stop");
     }
     void start() {
         running_ = true;
