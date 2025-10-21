@@ -52,7 +52,8 @@ void Window::init() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ctx = ImGui::CreateContext();
-    ImGui::SetCurrentContext(ctx);
+
+    make_context_current();
 
     ImGui_ImplGlfw_InitForOpenGL(handle_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
@@ -66,8 +67,7 @@ void Window::init() {
 }
 
 Window::~Window() {
-    glfwMakeContextCurrent(handle_);
-    ImGui::SetCurrentContext(ctx);
+    make_context_current();
 
     centralWidget_->destroy();
 
@@ -80,10 +80,9 @@ Window::~Window() {
 }
 
 void Window::update() {
-    glfwMakeContextCurrent(handle_);
+    make_context_current();
     glfwSwapInterval(0);
 
-    ImGui::SetCurrentContext(ctx);
     glfwGetWindowSize(handle_, &width_, &height_);
 
     ImGui_ImplOpenGL3_NewFrame();
@@ -123,6 +122,11 @@ void Window::key_callback(int key) {
     }
 }
 
+void Window::make_context_current() {
+    glfwMakeContextCurrent(handle_);
+    ImGui::SetCurrentContext(ctx);
+}
+
 #else
 
 #include <SDL3/SDL.h>
@@ -144,8 +148,7 @@ void Window::init() {
     IMGUI_CHECKVERSION();
     ctx = ImGui::CreateContext();
 
-    SDL_GL_MakeCurrent(handle_, glContext);
-    ImGui::SetCurrentContext(ctx);
+    make_context_current();
 
     SDL_ShowWindow(handle_);
     SDL_MaximizeWindow(handle_);
@@ -164,8 +167,7 @@ void Window::init() {
 }
 
 Window::~Window() {
-    SDL_GL_MakeCurrent(handle_, glContext);
-    ImGui::SetCurrentContext(ctx);
+    make_context_current();
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL3_Shutdown();
@@ -178,8 +180,7 @@ Window::~Window() {
 }
 
 void Window::update() {
-    SDL_GL_MakeCurrent(handle_, glContext);
-    ImGui::SetCurrentContext(ctx);
+    make_context_current();
 
     SDL_GetWindowSize(handle_, &width_, &height_);
 
@@ -212,6 +213,11 @@ void Window::key_callback(int key) {
     }
 }
 
+void Window::make_context_current() {
+    SDL_GL_MakeCurrent(handle_, glContext);
+    ImGui::SetCurrentContext(ctx);
+}
+
 #endif
 
 Window::Window(const std::string &title, int32_t width, int32_t height):
@@ -225,9 +231,7 @@ Window::Window(const std::string &title, int32_t width, int32_t height):
 uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
     auto id = widget->id();
     auto action = [this, widget = std::move(widget)]() mutable {
-        glfwMakeContextCurrent(handle_);
-        ImGui::SetCurrentContext(ctx);
-
+        make_context_current();
         if(centralWidget_ != nullptr) {
             centralWidget_->destroy();
         }

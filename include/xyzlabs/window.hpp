@@ -40,6 +40,7 @@ class Window {
 
     std::unique_ptr<Widget> centralWidget_;
     uint64_t submit_widget(std::unique_ptr<Widget> widget);    
+    void make_context_current();
 public:
     void init();
     int32_t width() {
