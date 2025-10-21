@@ -94,6 +94,17 @@ void WindowManager::destroy() {
 
 #endif
 
+Window* WindowManager::add_window(std::unique_ptr<Window> window) {
+    auto id = window->id();
+    auto ptr = window.get();
+    event_manager().add_action(std::move([window = std::move(window), this] () mutable {
+        window->init();
+        windows_.push_back(std::move(window));
+    }));
+
+    return ptr;
+}
+
 size_t WindowManager::nwindows() const {
     return windows_.size();
 }
@@ -139,7 +150,7 @@ Window* WindowManager::get_window_by_title(const std::string &title) const {
 }
 
 Window* WindowManager::get_current_window() {
-    if(currentWindowIDx_ >= 0 && windows_.size() < currentWindowIDx_) {
+    if(currentWindowIDx_ >= 0 && windows_.size() > currentWindowIDx_) {
         return windows_[currentWindowIDx_].get();
     }
 

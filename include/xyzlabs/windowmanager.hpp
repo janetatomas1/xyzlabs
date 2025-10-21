@@ -17,8 +17,6 @@ class WindowManager {
     size_t renderTimeout_ = 30;
     int64_t currentWindowIDx_ = -1;
 
-    template<WindowType W = Window, WidgetType Wid = Widget, typename... Args>
-    uint64_t submit_new_window(Args... args);
     inline void flush_closed_windows() {
         std::erase_if(windows_, [](const auto& window) {
             return !window->is_open();
@@ -32,8 +30,9 @@ class WindowManager {
     void init_main_window();
 public:
     void init();
-    template<WindowType W = Window, WidgetType Wid = Widget, typename... Args>
-    uint64_t add_window(Args... args);
+    template<WindowType W = Window, typename... Args>
+    Window* add_window(Args... args);
+    Window* add_window(std::unique_ptr<Window> window);
     void update();
     void destroy();
     size_t nwindows() const;
@@ -43,27 +42,10 @@ public:
     Window *get_current_window();
 };
 
-template<WindowType W, WidgetType Wid, typename... Args>
-uint64_t WindowManager::submit_new_window(Args... args) {
-    auto window = std::make_unique<W>();
-    auto id = window->id();
-    event_manager().add_action(std::move([window = std::move(window), this] () mutable {
-        window->init();
-        windows_.push_back(std::move(window));
-    }));
-
-    event_manager().add_action(std::move([this, id, ...args = std::move(args)] () {
-        auto window = get_window_by_id(id);
-        std::unique_ptr<Widget> widget = std::make_unique<Wid>(std::forward(args)...);
-        window->set_central_widget(std::move(widget));
-    }));
-
-    return id;
-} 
-
-template<WindowType W, WidgetType Wid, typename... Args>
-uint64_t WindowManager::add_window(Args... args) {
-    return submit_new_window<W, Wid, Args...>(std::forward<Args>(args)...);
+template<WindowType W, typename... Args>
+Window* WindowManager::add_window(Args... args) {
+    auto window = std::make_unique<W>(std::forward<Args>(args)...);
+    return add_window(std::move(window));
 }
 
 #endif
