@@ -8,6 +8,7 @@
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/globals.hpp"
 
 constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
@@ -23,10 +24,11 @@ constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
 void Window::init() {
     bool maximize = false;
     if(height_ == 0 || width_ == 0) {
-        width_ = 1000;
-        height_ = 1000;
+        width_ = 5000;
+        height_ = 5000;
         maximize = true;
     }
+
     handle_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
     if(!handle_) {
         spdlog::error("GLFW window creation failed!");
@@ -56,16 +58,18 @@ void Window::init() {
     ImGui_ImplOpenGL3_Init("#version 330");
     glfwSetWindowUserPointer(handle_, this);
 
-    glfwSetKeyCallback(handle_, [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
-        Window *win = (Window*)glfwGetWindowUserPointer(handle);
-        win->key_callback(key);
-    });
+    // glfwSetKeyCallback(handle_, [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
+    //     Window *win = (Window*)glfwGetWindowUserPointer(handle);
+    //     win->key_callback(key);
+    // });
     spdlog::info("Opened new window. Title: {}, id: {}", title_, id_);
 }
 
 Window::~Window() {
     glfwMakeContextCurrent(handle_);
     ImGui::SetCurrentContext(ctx);
+
+    centralWidget_->destroy();
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
@@ -221,7 +225,15 @@ Window::Window(const std::string &title, int32_t width, int32_t height):
 uint64_t Window::submit_widget(std::unique_ptr<Widget> widget) {
     auto id = widget->id();
     auto action = [this, widget = std::move(widget)]() mutable {
+        glfwMakeContextCurrent(handle_);
+        ImGui::SetCurrentContext(ctx);
+
+        if(centralWidget_ != nullptr) {
+            centralWidget_->destroy();
+        }
+
         centralWidget_ = std::move(widget);
+        centralWidget_->init();
     };
     event_manager().add_action(std::move(action));
     return id;

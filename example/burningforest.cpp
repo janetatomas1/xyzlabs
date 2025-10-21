@@ -21,29 +21,8 @@ std::array<std::array<uint8_t, 50>, 50> zeroes() {
 }
 
 BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
-    tiles_.resize(height_);
-
-    float x = begin_, y = begin_;
-    float x_step = (end_ - begin_) / width_;
-    float y_step = (end_ - begin_) / height_;
-
-    for(uint32_t i=0;i < height_;i++) {
-        tiles_[i].resize(width_);
-        for(uint32_t j=0;j < height_;j++) {
-            tiles_[i][j] = {{
-                begin_ + j * x_step, begin_ + i * y_step, 0,
-                begin_ + (j + 1) * x_step, begin_ + i * y_step, 0,
-                begin_ + (j + 1) * x_step, begin_ + (i + 1) * y_step, 0,
-                begin_ + j * x_step, begin_ + (i + 1) * y_step, 0
-            }};
-            tiles_[i][j].init();
-            tiles_[i][j].draw();
-        }
-    }
-
-    task_ = std::make_shared<BurningForestTask>();
-    task_manager().execute_periodic_task(task_);
 }
+
 class W: public Widget {
     virtual void show(const ImVec2& size, const ImVec2& pos) {
         ImGui::Button("abcd", {200, 200});
@@ -67,10 +46,17 @@ void BurningForest::update() {
             tiles_[i][j].render(get_color(state[i][j]));
         }
     }
+    
+    static uint64_t window = 0;
+    
     if(ImGui::IsKeyDown(ImGuiKey_N) && !x) {
         x = true;
-        auto window = window_manager().add_window<Window>();
-        window->set_central_widget<BurningForest>();
+        window = window_manager().add_window<Window, BurningForest>();
+    }
+
+    if(!y && window != 0 && ImGui::IsKeyDown(ImGuiKey_M)) {
+        window_manager().get_window_by_id(window)->set_central_widget<BurningForest>();
+        y = true;
     }
 }
 
