@@ -26,7 +26,8 @@ public:
     virtual ~Widget() = default;
     void close();
     virtual void destroy() {};
-};  
+    virtual void init() {};
+};
 
 const std::string &Widget::title() const {
     return title_;
