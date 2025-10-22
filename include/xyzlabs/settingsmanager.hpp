@@ -11,6 +11,8 @@
 
 using json = nlohmann::json;
 
+const std::string MAIN_APP_SETTINGS_LABEL = "App settings";
+
 struct Settings {
     void virtual show_input_widget() {};
     json virtual serialize() const {

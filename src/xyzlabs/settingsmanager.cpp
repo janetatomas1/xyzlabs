@@ -7,7 +7,6 @@
 #include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/globals.hpp"
-#include "xyzlabs/constants.hpp"
 
 
 void SettingsWidget::show(const ImVec2& size, const ImVec2& pos) {
@@ -22,33 +21,29 @@ void SettingsWidget::show(const ImVec2& size, const ImVec2& pos) {
     ImGui::SetNextWindowPos(settingsWindowPos);
     ImGui::SetNextWindowSize(settingsWindowSize);
 
-    if(ImGui::Begin(constants::SETTINGS_WINDOW_TITLE.c_str())) {
-        ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
-        for(auto &ref: store_) {
-            if(ImGui::TreeNode(ref.first.c_str())) {
-                ref.second->show_input_widget();
-                ImGui::TreePop();
-            }
+    ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
+    for(auto &ref: store_) {
+        if(ImGui::TreeNode(ref.first.c_str())) {
+            ref.second->show_input_widget();
+            ImGui::TreePop();
         }
-        ImGui::EndChild();
-
-        ImGui::SetCursorPos(discardBtnPos);
-
-        if(ImGui::Button(constants::DISCARD_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
-            // load_safe();
-            // settingsOpen_ = false;
-        }
-
-        ImGui::SetCursorPos(saveBtnPos);
-
-        if(ImGui::Button(constants::SAVE_SETTINGS_BTN_TITLE.c_str(), saveBtnSize)) {
-            // save_safe();
-            // propagate();
-            // settingsOpen_ = false;
-        }
-
     }
-    ImGui::End();
+    ImGui::EndChild();
+
+    ImGui::SetCursorPos(discardBtnPos);
+
+    if(ImGui::Button("Discard changes", saveBtnSize)) {
+        // load_safe();
+        // settingsOpen_ = false;
+    }
+
+    ImGui::SetCursorPos(saveBtnPos);
+
+    if(ImGui::Button("Save changes", saveBtnSize)) {
+        // save_safe();
+        // propagate();
+        // settingsOpen_ = false;
+    }
 }
 
 SettingsManager::SettingsManager() {}
@@ -113,5 +108,5 @@ void SettingsManager::load_safe() {
 }
 
 void SettingsManager::propagate() {
-    event_manager().add_event(std::make_unique<Event>(constants::MAIN_APP_SETTINGS_LABEL));
+    event_manager().add_event(std::make_unique<Event>(MAIN_APP_SETTINGS_LABEL));
 }
