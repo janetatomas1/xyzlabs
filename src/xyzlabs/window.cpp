@@ -174,7 +174,7 @@ Window::~Window() {
     
     ImGui::DestroyContext();
     SDL_GL_DestroyContext(glContext);
-    SDL_DestroyWindow(handle_);\
+    SDL_DestroyWindow(handle_);
     
     spdlog::info("Closed window. Title: {}, id: {}", title_, id_);
 }
