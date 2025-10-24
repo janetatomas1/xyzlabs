@@ -1,112 +1,74 @@
 
-#include <fmt/format.h>
-#include <filesystem>
-#include <fstream>
-
 #include "xyzlabs/settingsmanager.hpp"
-#include "xyzlabs/xyzlabs.hpp"
-#include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/globals.hpp"
+#include "xyzlabs/windowmanager.hpp"
+#include "xyzlabs/widget.hpp"
 
+class SettingsWidget: public Widget {
+    SettingsGroup *mainGroup_;
+public:
+    void show(const ImVec2 &size, const ImVec2 &pos) override;
+    SettingsWidget(
+        SettingsGroup *group
+    ): Widget("Settings"), mainGroup_(group) {}
+};
 
-void SettingsWidget::show(const ImVec2& size, const ImVec2& pos) {
-    ImVec2 settingsWindowSize = {size.x * 0.5f, size.y * 0.5f};
-    ImVec2 settingsWindowPos = {settingsWindowSize.x * 0.65f, settingsWindowSize.y * 0.4f};
-
-    const ImVec2 scrollRegionSize = {settingsWindowSize.x * 0.98f, settingsWindowSize.y * 0.8f};
-    const ImVec2 saveBtnSize = {settingsWindowSize.x * 0.2f, settingsWindowSize.y * 0.07f};
-    const ImVec2 discardBtnPos = {settingsWindowSize.x * 0.52f, settingsWindowSize.y * 0.9f};
-    const ImVec2 saveBtnPos = {settingsWindowSize.x * 0.75f, settingsWindowSize.y * 0.9f};
-
-    ImGui::SetNextWindowPos(settingsWindowPos);
-    ImGui::SetNextWindowSize(settingsWindowSize);
+void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {    
+    const ImVec2 settingsWindowPos = {size.x * 0.65f, size.y * 0.4f};
+    const ImVec2 scrollRegionSize = {size.x * 0.98f, size.y * 0.8f};
+    const ImVec2 saveBtnSize = {size.x * 0.2f, size.y * 0.07f};
+    const ImVec2 discardBtnPos = {size.x * 0.52f, size.y * 0.9f};
+    const ImVec2 saveBtnPos = {size.x * 0.75f, size.y * 0.9f};
 
     ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
-    for(auto &ref: store_) {
+    for(auto &ref: mainGroup_->settings_) {
         if(ImGui::TreeNode(ref.first.c_str())) {
-            ref.second->show_input_widget();
+            ref.second->show();
             ImGui::TreePop();
         }
     }
     ImGui::EndChild();
 
     ImGui::SetCursorPos(discardBtnPos);
-
-    if(ImGui::Button("Discard changes", saveBtnSize)) {
-        // load_safe();
-        // settingsOpen_ = false;
-    }
+    if(ImGui::Button("Discard changes", saveBtnSize)) {}
 
     ImGui::SetCursorPos(saveBtnPos);
+    if(ImGui::Button("Save changes", saveBtnSize)) {}
+}
 
-    if(ImGui::Button("Save changes", saveBtnSize)) {
-        // save_safe();
-        // propagate();
-        // settingsOpen_ = false;
+SettingsInterface* SettingsGroup::add_setting(const std::string &path, std::unique_ptr<SettingsInterface> setting) {
+}
+
+std::pair<SettingsGroup*, std::string> SettingsGroup::find_group(const std::string &path) {
+    auto idx = path.find(".");
+    
+    if(idx == std::string::npos) {
+        return {this, ""};
+    } else {
+        std::string prefix = path.substr(0, idx);
+        std::string suffix = path.substr(idx + 1);
+        if(groups_.contains(prefix)) {
+            return groups_[prefix].find_group(suffix);
+        } else {
+            return {this, path};
+        }
     }
 }
 
-SettingsManager::SettingsManager() {}
+void SettingsManager::init() {}
 
-void SettingsManager::show_settings_window(const ImVec2 &size) {
-};
-
-const std::string SettingsManager::config_file() {
-    return (XYZLabs::instance().app_directory() / "config.json").string();
+SettingsInterface* SettingsManager::add_setting(const std::string &path, std::unique_ptr<SettingsInterface> ptr) {
+    return mainGroup_.add_setting(path, std::move(ptr));
 }
 
-void SettingsManager::init() {
-    load_safe();
-    propagate();
-}
-
-void SettingsManager::save() {
-    std::fstream config(config_file(), std::ios::out);
-    config << serialize().dump(2);
-    config.close();
-}
-
-void SettingsManager::save_safe() {
-    auto appDirectory = app().app_directory();
-    if(!std::filesystem::exists(appDirectory)) {
-        app().create_app_directory();
+void SettingsManager::open_settings() {
+    if(!settingsOpen_) {
+        settingsOpen_ = true;
+        Window *currentWindow = window_manager().get_current_window();
+        Window *window = window_manager().add_window<Window>(
+            "Settings", currentWindow->width() * 0.8
+            , currentWindow->height() * 0.8
+        );
+        window->set_central_widget<SettingsWidget>(&mainGroup_);
     }
-
-    save();
-}
-
-json SettingsManager::serialize() {
-    json jv;
-
-    for(const auto& ref: store_) {
-        jv[ref.first] = ref.second->serialize();
-    }
-
-    return jv;
-}
-
-void SettingsManager::deserialize(const json &jv) {
-    for(auto &ref: store_) {
-        ref.second->deserialize(jv[ref.first]);
-    }
-}
-
-void SettingsManager::load() {
-    json jv;
-    std::fstream config(config_file(), std::ios::in);
-    config >> jv;
-    deserialize(jv);
-    config.close();
-}
-
-void SettingsManager::load_safe() {
-    if(!std::filesystem::exists(config_file())) {
-        save_safe();
-    }
-
-    load();
-}
-
-void SettingsManager::propagate() {
-    event_manager().add_event(std::make_unique<Event>(MAIN_APP_SETTINGS_LABEL));
 }

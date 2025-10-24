@@ -59,10 +59,10 @@ void Window::init() {
     ImGui_ImplOpenGL3_Init("#version 330");
     glfwSetWindowUserPointer(handle_, this);
 
-    glfwSetKeyCallback(handle_, [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
-        Window *win = (Window*)glfwGetWindowUserPointer(handle);
-        win->key_callback(key);
-    });
+    // glfwSetKeyCallback(handle_, [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
+    //     Window *win = (Window*)glfwGetWindowUserPointer(handle);
+    //     win->key_callback(key);
+    // });
     spdlog::info("Opened new window. Title: {}, id: {}", title_, id_);
 }
 
