@@ -21,3 +21,7 @@ EventManager &event_manager() {
 TaskManager &task_manager() {
     return XYZLabs::instance().task_manager();
 }
+
+SettingsManager &settings_manager() {
+    return XYZLabs::instance().settings_manager();
+}

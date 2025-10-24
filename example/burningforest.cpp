@@ -1,6 +1,8 @@
 
 #include "burningforest.hpp"
 #include "xyzlabs/periodictask.hpp"
+#include "xyzlabs/globals.hpp"
+#include "xyzlabs/settingsmanager.hpp"
 
 
 const std::array<float, 3> RED = {1.0f, 0.0f, 0.0f};
@@ -19,14 +21,8 @@ std::array<std::array<uint8_t, 50>, 50> zeroes() {
     return x;
 }
 
-BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {
-}
+BurningForest::BurningForest(): OpenGLWidget("Burning forest simulation") {}
 
-class W: public Widget {
-    virtual void show(const ImVec2& size, const ImVec2& pos) {
-        ImGui::Button("abcd", {200, 200});
-    }
-};
 void BurningForest::update() {
     auto get_color = [](uint8_t c){
         if(c == 0) {
@@ -44,6 +40,11 @@ void BurningForest::update() {
         for(uint32_t j=0;j < height_;j++) {
             tiles_[i][j].render(get_color(state[i][j]));
         }
+    }
+
+    if(ImGui::IsKeyDown(ImGuiKey_N)) {
+        settings_manager();
+        settings_manager().open_settings();
     }
 }
 
