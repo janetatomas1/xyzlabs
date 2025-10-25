@@ -36,7 +36,7 @@ void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {
     if(ImGui::Button("Save changes", saveBtnSize)) {}
 }
 
-SettingsInterface* SettingsGroup::add_setting(const std::string &path, std::unique_ptr<SettingsInterface> setting) {
+SettingInterface* SettingsGroup::add_setting(const std::string &path, std::unique_ptr<SettingInterface> setting) {
 }
 
 std::pair<SettingsGroup*, std::string> SettingsGroup::find_group(const std::string &path) {
@@ -57,7 +57,7 @@ std::pair<SettingsGroup*, std::string> SettingsGroup::find_group(const std::stri
 
 void SettingsManager::init() {}
 
-SettingsInterface* SettingsManager::add_setting(const std::string &path, std::unique_ptr<SettingsInterface> ptr) {
+SettingInterface* SettingsManager::add_setting(const std::string &path, std::unique_ptr<SettingInterface> ptr) {
     return mainGroup_.add_setting(path, std::move(ptr));
 }
 
