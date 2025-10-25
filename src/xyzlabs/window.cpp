@@ -50,8 +50,8 @@ void Window::init() {
     }
 
     IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
     ctx = ImGui::CreateContext();
+    ImGui::GetIO().IniFilename = nullptr;
 
     make_context_current();
 
@@ -146,7 +146,9 @@ void Window::init() {
     SDL_GL_MakeCurrent(handle_, glContext);
 
     IMGUI_CHECKVERSION();
+    ImGui::GetIO().IniFilename = nullptr;
     ctx = ImGui::CreateContext();
+    ImGui::GetIO().IniFilename = nullptr;
 
     make_context_current();
 
