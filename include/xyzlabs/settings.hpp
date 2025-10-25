@@ -6,31 +6,33 @@
 
 using json = nlohmann::json;
 
-class SettingsInterface {
+class SettingInterface {
 protected:
-    std::string label_;
 public:
-    virtual ~SettingsInterface() = default;
+    virtual ~SettingInterface() = default;
     virtual json to_json() const = 0;
     virtual void from_json(const nlohmann::json& j) = 0;
-    virtual void show();
-    const std::string label() { return label_; };
+    virtual void show() = 0;
+    virtual std::unique_ptr<SettingInterface> clone() = 0;
 };
 
 template<typename T>
-class Setting: public SettingsInterface {
+class Setting: public SettingInterface {
 protected:
     T value_;
+    std::string label_;
 
 public:
     Setting(const std::string &label, T &value):
-        SettingsInterface(label),
+        SettingInterface(label),
         value_(value) {};
     T* get() { return &value_; };
     T& get_ref() { return value_; };
     json to_json() const override;
     void from_json(const json& j) override;
     void show() override;
+    
+    const std::string label() { return label_; };
 };
 
 template<typename T>
