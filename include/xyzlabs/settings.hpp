@@ -25,15 +25,15 @@ protected:
     std::string label_;
 
 public:
-    Setting(const std::string &label, T &value):
-        SettingInterface(label),
-        value_(value) {};
+    Setting(const std::string &label, const T &value):
+        SettingInterface(),
+        value_(value), label_(label) {};
     T* get() { return &value_; };
     T& get_ref() { return value_; };
     json to_json() const override;
     void from_json(const json& j) override;
     void show() override;
-    std::unique_ptr<Setting<T>> clone() const override;
+    std::unique_ptr<SettingInterface> clone() const override;
     const std::string label() { return label_; };
 };
 
@@ -54,7 +54,7 @@ void Setting<T>::show() {
 }
 
 template<typename T>
-std::unique_ptr<Setting<T>> Setting<T>::clone() const {
+std::unique_ptr<SettingInterface> Setting<T>::clone() const {
     return std::make_unique<Setting<T>>(label_, value_);
 }
 

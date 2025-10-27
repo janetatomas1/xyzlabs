@@ -51,8 +51,8 @@ SettingInterface* SettingsGroup::get_child(const std::string &path) {
 
 SettingInterface* SettingsGroup::add_child(const std::string &path, std::unique_ptr<SettingInterface> child) {
     auto idx = path.find(".");
-    auto prefix = idx == std::string::npos ? path.substr(0, idx) : path;
-    auto suffix = idx == std::string::npos ? path.substr(idx + 1, path.size() - idx - 1) : "";
+    auto prefix = idx == std::string::npos ? path : path.substr(0, idx);
+    auto suffix = idx == std::string::npos ? "" : path.substr(idx + 1, path.size() - idx - 1);
 
     if(settings_.contains(prefix)) {
         if(suffix.empty()) {
