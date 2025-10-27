@@ -10,19 +10,25 @@
 
 using json = nlohmann::json;
 
-struct SettingsGroup {
+class SettingsGroup: public SettingInterface {
     boost::unordered_map<std::string, std::unique_ptr<SettingInterface>> settings_;
-    boost::unordered_map<std::string, SettingsGroup> groups_;
 
+
+public:
     SettingInterface* add_setting(const std::string &path, std::unique_ptr<SettingInterface> ptr);
     SettingInterface* get(const std::string &path);
-    std::pair<SettingsGroup*, std::string> find_group(const std::string &path);
+    SettingInterface* add_child(const std::string &path, std::unique_ptr<SettingInterface> child);
+    SettingInterface* get_child(const std::string &path) override;
+    json to_json() const override;
+    void from_json(const json& j) override;
+    void show() override;
+    std::unique_ptr<SettingInterface> clone() const override;
     SettingsGroup() = default;
 };
 
 class SettingsManager {
     bool settingsOpen_ = false;
-    SettingsGroup mainGroup_;
+    std::unique_ptr<SettingsGroup> mainGroup_;
 
 public:
     SettingInterface* add_setting(const std::string &path, std::unique_ptr<SettingInterface> ptr);
