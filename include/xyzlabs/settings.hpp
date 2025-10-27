@@ -13,9 +13,10 @@ public:
     virtual SettingInterface* add_child(const std::string &key, std::unique_ptr<SettingInterface> child) { return nullptr; };
     virtual json to_json() const = 0;
     virtual void from_json(const nlohmann::json& j) = 0;
-    virtual void show() = 0;
+    virtual void show(const std::string &label) = 0;
     virtual std::unique_ptr<SettingInterface> clone() const = 0;
     virtual SettingInterface* get_child(const std::string &path) { return nullptr; }
+    virtual const char* label() { return nullptr; };
 };
 
 template<typename T>
@@ -32,9 +33,9 @@ public:
     T& get_ref() { return value_; };
     json to_json() const override;
     void from_json(const json& j) override;
-    void show() override;
+    void show(const std::string &label) override;
     std::unique_ptr<SettingInterface> clone() const override;
-    const std::string label() { return label_; };
+    const char* label() override { return label_.c_str(); };
 };
 
 template<typename T>
@@ -50,8 +51,7 @@ void Setting<T>::from_json(const json& j) {
 }
 
 template<typename T>
-void Setting<T>::show() {
-}
+void Setting<T>::show(const std::string &label) {}
 
 template<typename T>
 std::unique_ptr<SettingInterface> Setting<T>::clone() const {

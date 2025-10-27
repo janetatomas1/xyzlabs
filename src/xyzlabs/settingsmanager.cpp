@@ -22,7 +22,7 @@ public:
 
     ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
 
-    mainGroup_->show();
+    mainGroup_->show("");
 
     ImGui::EndChild();
 
@@ -88,11 +88,36 @@ void SettingsGroup::from_json(const json& jv) {
     }
 }
 
-void SettingsGroup::show() {
+void SettingsGroup::show(const std::string &label) {
+    bool hasLeafs = false;
+    ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_None;
+    if(settings_.size() == 1) {
+        flags |= ImGuiTreeNodeFlags_DefaultOpen;
+    }
+
     for(auto &[key, value]: settings_) {
-        if(ImGui::TreeNode(key.c_str())) {
-            value->show();
-            ImGui::TreePop();
+        if(dynamic_cast<SettingsGroup*>(value.get()) != nullptr) {
+            if(ImGui::TreeNodeEx(key.c_str(), flags)) {
+                value->show(key);
+                ImGui::TreePop();
+            }
+        } else {
+            hasLeafs = true;
+        }
+    }
+
+    if(hasLeafs) {
+        if(ImGui::BeginTable(label.c_str(), 2, ImGuiTableFlags_Borders)) {
+            for(auto &[key, value]: settings_) {
+                if(dynamic_cast<SettingsGroup*>(value.get()) == nullptr) {
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%s", value->label());
+                    ImGui::TableNextColumn();
+                    value->show(key);
+                }
+            }
+            ImGui::EndTable();
         }
     }
 }
