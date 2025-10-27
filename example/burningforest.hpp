@@ -80,7 +80,7 @@ public:
         task_manager().execute_periodic_task(task_);
         uint64_t aa = 0;
         std::unique_ptr<SettingInterface> ptr = std::make_unique<Setting<uint64_t>>("aaaa", aa);
-        settings_manager().add_setting("UI", std::move(ptr));
+        settings_manager().add_setting("UI.window", std::move(ptr));
     }
 };
 

@@ -16,7 +16,6 @@
 
 class XYZLabs {
     std::string title_;
-    
     TaskManager taskManager_;
     RandomGenerator randomGenerator_;
     SettingsManager settingsManager_;
