@@ -1,6 +1,5 @@
 
-#ifndef SHAPE_HPP
-#define SHAPE_HPP
+#pragma once
 
 #include <GL/glew.h>
 #include <array>
@@ -135,5 +134,3 @@ struct Shape {
 		glDeleteProgram(program);
 	}
 };
-
-#endif

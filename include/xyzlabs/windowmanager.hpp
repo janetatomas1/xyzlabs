@@ -1,6 +1,5 @@
 
-#ifndef WINDOWMANAGER_HPP
-#define WINDOWMANAGER_HPP
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -47,5 +46,3 @@ Window* WindowManager::add_window(Args... args) {
     auto window = std::make_unique<W>(std::forward<Args>(args)...);
     return add_window(std::move(window));
 }
-
-#endif

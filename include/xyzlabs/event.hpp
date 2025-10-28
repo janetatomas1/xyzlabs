@@ -1,6 +1,5 @@
 
-#ifndef EVENT_HPP
-#define EVENT_HPP
+#pragma once
 
 #include <string>
 #include <memory>
@@ -14,5 +13,3 @@ struct Event {
 using event_ptr = std::unique_ptr<Event>;
 using callback = std::move_only_function<void(std::unique_ptr<Event> event)>;
 using action = std::move_only_function<void()>;
-
-#endif

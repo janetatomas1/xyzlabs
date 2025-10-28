@@ -1,6 +1,5 @@
 
-#ifndef TASKMANAGER_HPP
-#define TASKMANAGER_HPP
+#pragma once
 
 #include <boost/asio.hpp>
 
@@ -25,5 +24,3 @@ public:
     void stop();
     asio::io_context& io_ctx();
 };
-
-#endif

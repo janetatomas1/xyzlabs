@@ -1,6 +1,7 @@
 
-#include <GL/glew.h>
+#pragma once
 
+#include <GL/glew.h>
 #include <spdlog/spdlog.h>
 
 struct OpenGLBackend {

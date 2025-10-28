@@ -1,6 +1,5 @@
 
-#ifndef OPENGLWIDGET_HPP
-#define OPENGLWIDGET_HPP
+#pragma once
 
 #include "xyzlabs/widget.hpp"
 #include "xyzlabs/openglbackend.hpp"
@@ -16,5 +15,3 @@ public:
     ~OpenGLWidget();
     virtual void update(){};
 };
-
-#endif

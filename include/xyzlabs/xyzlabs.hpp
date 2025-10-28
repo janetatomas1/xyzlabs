@@ -1,6 +1,5 @@
 
-#ifndef XYZLABS_HPP
-#define XYZLABS_HPP
+#pragma once
 
 #include <concepts>
 #include <filesystem>
@@ -62,5 +61,3 @@ XYZLabs& XYZLabs::init(const std::string &title, Args... args) {
     set_initial_widget<W>(std::forward<Args>(args)...);
     return instance();
 }
-
-#endif

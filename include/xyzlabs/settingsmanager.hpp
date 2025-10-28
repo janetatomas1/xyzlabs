@@ -1,6 +1,5 @@
 
-#ifndef SETTINGSMANAGER_HPP
-#define SETTINGSMANAGER_HPP
+#pragma once
 
 #include <memory>
 #include <boost/unordered_map.hpp>
@@ -44,5 +43,3 @@ SettingInterface* SettingsManager::add_setting(const std::string &path, const st
     std::unique_ptr<SettingInterface> setting = std::make_unique<S>(label, std::forward<Args>(args)...);
     return add_setting(path, std::move(setting));
 }
-
-#endif

@@ -1,6 +1,5 @@
 
-#ifndef RANDOMGENERATOR_HPP
-#define RANDOMGENERATOR_HPP
+#pragma once
 
 #include <cinttypes>
 #include <random>
@@ -21,5 +20,3 @@ public:
         return random();
     }
 };
-
-#endif
