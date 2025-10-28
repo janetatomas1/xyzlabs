@@ -3,6 +3,7 @@
 #define SETTINGS_HPP
 
 #include <nlohmann/json.hpp>
+#include <array>
 
 using json = nlohmann::json;
 
@@ -40,9 +41,7 @@ public:
 
 template<typename T>
 json Setting<T>::to_json() const {
-    if constexpr(std::is_arithmetic_v<T> || std::is_same_v<T, std::string>) {
-        return value_;
-    }
+    return value_;
 }
 
 template<typename T>
@@ -71,6 +70,13 @@ public:
 struct MultilineTextSetting: public Setting<std::string> {
 public:
     MultilineTextSetting(const std::string &label, const std::string &value): Setting(label, value) {};
+    void show(const std::string &label) override;
+    std::unique_ptr<SettingInterface> clone() const override;
+};
+
+struct ColorSetting: public Setting<std::array<float, 4>> {
+public:
+    ColorSetting(const std::string &label, std::array<float, 4> value): Setting(label, value) {};
     void show(const std::string &label) override;
     std::unique_ptr<SettingInterface> clone() const override;
 };

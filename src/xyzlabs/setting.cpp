@@ -21,3 +21,11 @@ void MultilineTextSetting::show(const std::string &label) {
 std::unique_ptr<SettingInterface> MultilineTextSetting::clone() const {
     return std::make_unique<MultilineTextSetting>(label_, value_);
 }
+
+void ColorSetting::show(const std::string &label) {
+    ImGui::ColorEdit4("", &value_[0]);
+}
+
+std::unique_ptr<SettingInterface> ColorSetting::clone() const {
+    return std::make_unique<ColorSetting>(label_, value_);
+}

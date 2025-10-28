@@ -78,7 +78,8 @@ public:
 
         task_ = std::make_shared<BurningForestTask>();
         task_manager().execute_periodic_task(task_);
-        settings_manager().add_setting<MultilineTextSetting>("Network.Window.speed", std::string("bbb"), std::string("aaaa"));
+        std::array<float, 4> aa = {0.0f, 0.0f, 0.0f, 0.0f};
+        settings_manager().add_setting<ColorSetting>("Network.Window.speed", std::string("bbb"), aa);
     }
 };
 
