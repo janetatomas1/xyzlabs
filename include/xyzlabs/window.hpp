@@ -1,6 +1,5 @@
 
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+#pragma once
 
 #include <memory>
 #include <concepts>
@@ -79,5 +78,3 @@ Widget* Window::set_central_widget(Args... args) {
 
 template <typename T>
 concept WindowType = std::derived_from<T, Window> || std::same_as<T, Window>;
-
-#endif

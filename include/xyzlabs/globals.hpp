@@ -1,6 +1,5 @@
 
-#ifndef GLOBALS_HPP
-#define GLOBALS_HPP
+#pragma once
 
 class XYZLabs;
 class RandomGenerator;
@@ -15,5 +14,3 @@ WindowManager &window_manager();
 EventManager &event_manager();
 TaskManager &task_manager();
 SettingsManager &settings_manager();
-
-#endif

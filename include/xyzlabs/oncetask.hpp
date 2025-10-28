@@ -1,6 +1,5 @@
 
-#ifndef ONCETASK_HPP
-#define ONCETASK_HPP
+#pragma once
 
 #include <memory>
 #include <atomic>
@@ -36,4 +35,4 @@ public:
     };
 };
 
-#endif
+#pragma once

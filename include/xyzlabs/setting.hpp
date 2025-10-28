@@ -1,6 +1,5 @@
 
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
+#pragma once
 
 #include <nlohmann/json.hpp>
 #include <array>
@@ -102,5 +101,3 @@ struct FloatSliderSetting: public Setting<float> {
     void show(const std::string &label) override;
     std::unique_ptr<SettingInterface> clone() const override;
 };
-
-#endif

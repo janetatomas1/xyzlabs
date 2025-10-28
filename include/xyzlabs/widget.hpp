@@ -1,6 +1,5 @@
 
-#ifndef WIDGET_H
-#define WIDGET_H
+#pragma once
 
 #include <imgui.h>
 #include <string>
@@ -47,5 +46,3 @@ std::string &Widget::title_id() {
 
 template <typename T>
 concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
-
-#endif

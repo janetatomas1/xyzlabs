@@ -1,6 +1,5 @@
 
-#ifndef PERIODICTASK_HPP
-#define PERIODICTASK_HPP
+#pragma once
 
 #include <array>
 #include <boost/asio.hpp>
@@ -87,5 +86,3 @@ public:
         }
     }
 };
-
-#endif

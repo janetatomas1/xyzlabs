@@ -1,6 +1,5 @@
 
-#ifndef EVENTMANAGER_HPP
-#define EVENTMANAGER_HPP
+#pragma once
 
 #include <boost/unordered/unordered_flat_map.hpp>
 #include <moodycamel/concurrentqueue.h>
@@ -22,5 +21,3 @@ public:
     void subscribe(const std::string &label, callback call);
     void unsubscribe(const std::string &label);
 };
-
-#endif
