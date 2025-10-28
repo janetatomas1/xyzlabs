@@ -6,7 +6,7 @@
 #include <boost/unordered_map.hpp>
 #include <nlohmann/json.hpp>
 
-#include "xyzlabs/settings.hpp"
+#include "xyzlabs/setting.hpp"
 
 using json = nlohmann::json;
 
@@ -30,11 +30,19 @@ class SettingsManager {
     std::unique_ptr<SettingsGroup> mainGroup_;
 
 public:
+    template<SettingType S, typename... Args>
+    SettingInterface* add_setting(const std::string &path, const std::string &label, Args... args);
     SettingInterface* add_setting(const std::string &path, std::unique_ptr<SettingInterface> ptr);
     SettingInterface* get(const std::string &path);
-    void open_settings();
+    void open_settings(int32_t width = 700, int32_t height = 500);
     void close_settings();
     void init();
 };
+
+template<SettingType S, typename... Args>
+SettingInterface* SettingsManager::add_setting(const std::string &path, const std::string &label, Args... args) {
+    std::unique_ptr<SettingInterface> setting = std::make_unique<S>(label, std::forward<Args>(args)...);
+    return add_setting(path, std::move(setting));
+}
 
 #endif

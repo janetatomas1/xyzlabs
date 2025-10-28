@@ -144,14 +144,14 @@ SettingInterface* SettingsManager::add_setting(const std::string &path, std::uni
     return mainGroup_->add_setting(path, std::move(ptr));
 }
 
-void SettingsManager::open_settings() {
+void SettingsManager::open_settings(int32_t width, int32_t height) {
     if(!settingsOpen_) {
         settingsOpen_ = true;
         Window *currentWindow = window_manager().get_current_window();
         Window *window = window_manager().add_window<Window>(
             "Settings",
-            currentWindow->width() * 0.8,
-            currentWindow->height() * 0.8
+            width,
+            height
         );
 
         std::unique_ptr<Widget> widget = std::make_unique<SettingsWidget>(std::move(mainGroup_->clone()));

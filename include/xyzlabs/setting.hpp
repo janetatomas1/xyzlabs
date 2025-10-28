@@ -26,7 +26,7 @@ protected:
     std::string label_;
 
 public:
-    Setting(const std::string &label, const T &value):
+    Setting(const std::string &label, T value):
         SettingInterface(),
         value_(value), label_(label) {};
     T* get() { return &value_; };
@@ -57,5 +57,22 @@ template<typename T>
 std::unique_ptr<SettingInterface> Setting<T>::clone() const {
     return std::make_unique<Setting<T>>(label_, value_);
 }
+
+template <typename T>
+concept SettingType = std::derived_from<T, SettingInterface>;
+
+struct TextSetting: public Setting<std::string> {
+public:
+    TextSetting(const std::string &label, const std::string &value): Setting(label, value) {};
+    void show(const std::string &label) override;
+    std::unique_ptr<SettingInterface> clone() const override;
+};
+
+struct MultilineTextSetting: public Setting<std::string> {
+public:
+    MultilineTextSetting(const std::string &label, const std::string &value): Setting(label, value) {};
+    void show(const std::string &label) override;
+    std::unique_ptr<SettingInterface> clone() const override;
+};
 
 #endif
