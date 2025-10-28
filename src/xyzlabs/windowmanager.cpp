@@ -11,6 +11,8 @@
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
 
+using namespace xyzlabs;
+
 void WindowManager::init_main_window() {
     auto mainWindow = std::make_unique<Window>(app().title());
     mainWindow->init();

@@ -5,6 +5,8 @@
 #include "xyzlabs/openglbackend.hpp"
 #include "xyzlabs/shape.hpp"
 
+namespace xyzlabs {
+
 class OpenGLWidget: public Widget {
 	OpenGLBackend backend_;
     
@@ -15,3 +17,5 @@ public:
     ~OpenGLWidget();
     virtual void update(){};
 };
+
+}

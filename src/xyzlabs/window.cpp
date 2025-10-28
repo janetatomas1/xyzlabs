@@ -21,6 +21,8 @@ constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
 
+using namespace xyzlabs;
+
 void Window::init() {
     bool maximize = false;
     if(height_ == 0 || width_ == 0) {

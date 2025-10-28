@@ -5,6 +5,8 @@
 #include "xyzlabs/event.hpp"
 #include "xyzlabs/eventmanager.hpp"
 
+using namespace xyzlabs;
+
 void EventManager::add_event(event_ptr event) {
     spdlog::info("Adding event {}", event->label);
     events_.enqueue(std::move(event));

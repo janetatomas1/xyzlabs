@@ -6,6 +6,8 @@
 #include "xyzlabs/oncetask.hpp"
 #include "xyzlabs/periodictask.hpp"
 
+namespace xyzlabs {
+
 namespace asio = boost::asio;
 
 class TaskManager {
@@ -24,3 +26,5 @@ public:
     void stop();
     asio::io_context& io_ctx();
 };
+
+}

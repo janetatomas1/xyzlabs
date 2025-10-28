@@ -12,6 +12,7 @@
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
 
+namespace xyzlabs {
 
 class XYZLabs {
     std::string title_;
@@ -60,4 +61,6 @@ XYZLabs& XYZLabs::init(const std::string &title, Args... args) {
     init_();
     set_initial_widget<W>(std::forward<Args>(args)...);
     return instance();
+}
+
 }

@@ -10,6 +10,7 @@
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/eventmanager.hpp"
 
+namespace xyzlabs {
 
 class WindowManager {
     std::vector<std::unique_ptr<Window>> windows_;
@@ -45,4 +46,6 @@ template<WindowType W, typename... Args>
 Window* WindowManager::add_window(Args... args) {
     auto window = std::make_unique<W>(std::forward<Args>(args)...);
     return add_window(std::move(window));
+}
+
 }

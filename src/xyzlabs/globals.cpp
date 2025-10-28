@@ -2,6 +2,8 @@
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
+namespace xyzlabs {
+
 XYZLabs &app() {
     return XYZLabs::instance();
 }
@@ -24,4 +26,6 @@ TaskManager &task_manager() {
 
 SettingsManager &settings_manager() {
     return XYZLabs::instance().settings_manager();
+}
+
 }

@@ -4,6 +4,8 @@
 #include <nlohmann/json.hpp>
 #include <array>
 
+namespace xyzlabs {
+
 using json = nlohmann::json;
 
 class SettingInterface {
@@ -101,3 +103,5 @@ struct FloatSliderSetting: public Setting<float> {
     void show(const std::string &label) override;
     std::unique_ptr<SettingInterface> clone() const override;
 };
+
+}

@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <spdlog/spdlog.h>
 
+namespace xyzlabs {
 struct OpenGLBackend {
 	uint32_t FBO;
 	uint32_t RBO;
@@ -60,4 +61,6 @@ struct OpenGLBackend {
 		glDeleteTextures(1, &texture_id);
 		glDeleteRenderbuffers(1, &RBO);
 	}
+};
+
 };

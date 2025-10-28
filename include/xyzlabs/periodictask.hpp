@@ -6,6 +6,8 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/spdlog.h>
 
+namespace xyzlabs {
+
 inline void swap(std::atomic<uint8_t> &a, std::atomic<uint8_t> &b) {
     auto tmp = a.load();
     a.store(b);
@@ -86,3 +88,5 @@ public:
         }
     }
 };
+
+}

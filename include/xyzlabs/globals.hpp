@@ -1,6 +1,8 @@
 
 #pragma once
 
+namespace xyzlabs {
+
 class XYZLabs;
 class RandomGenerator;
 class WindowManager;
@@ -14,3 +16,5 @@ WindowManager &window_manager();
 EventManager &event_manager();
 TaskManager &task_manager();
 SettingsManager &settings_manager();
+
+}
