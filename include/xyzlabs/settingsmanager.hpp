@@ -7,6 +7,8 @@
 
 #include "xyzlabs/setting.hpp"
 
+namespace xyzlabs {
+
 using json = nlohmann::json;
 
 class SettingsGroup: public SettingInterface {
@@ -42,4 +44,6 @@ template<SettingType S, typename... Args>
 SettingInterface* SettingsManager::add_setting(const std::string &path, const std::string &label, Args... args) {
     std::unique_ptr<SettingInterface> setting = std::make_unique<S>(label, std::forward<Args>(args)...);
     return add_setting(path, std::move(setting));
+}
+
 }

@@ -3,8 +3,9 @@
 #include <imgui_stdlib.h>
 #include <fmt/format.h>
 
-
 #include "xyzlabs/setting.hpp"
+
+using namespace xyzlabs;
 
 std::string format_label(const std::string& l) {
     return fmt::format("##{}", l);

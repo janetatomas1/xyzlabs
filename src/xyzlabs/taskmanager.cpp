@@ -3,6 +3,8 @@
 
 #include "xyzlabs/taskmanager.hpp"
 
+using namespace xyzlabs;
+
 TaskManager::TaskManager(): 
     pool_(asio::thread_pool(threadCount_)),
     guard_(asio::make_work_guard(io_)) {}

@@ -5,6 +5,8 @@
 #include <format>
 #include <stdexcept>
 
+namespace xyzlabs {
+
 namespace utils {
     std::string standardize(const std::string &ss) {
         std::string s = ss;
@@ -12,4 +14,6 @@ namespace utils {
         s.erase(std::remove_if(s.begin(), s.end(), [](unsigned char c){ return std::isspace(c); }), s.end());
         return s;
     }
+}
+
 }

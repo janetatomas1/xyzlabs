@@ -4,6 +4,8 @@
 #include <cinttypes>
 #include <random>
 
+namespace xyzlabs {
+
 class RandomGenerator {
     std::mt19937_64 gen;
     std::uniform_int_distribution<uint64_t> dist;
@@ -20,3 +22,5 @@ public:
         return random();
     }
 };
+
+}

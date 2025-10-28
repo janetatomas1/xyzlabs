@@ -5,6 +5,8 @@
 #include <atomic>
 #include <string>
 
+namespace xyzlabs {
+
 class OnceTaskInterface {
 protected:
     std::string error_;
@@ -35,4 +37,4 @@ public:
     };
 };
 
-#pragma once
+}

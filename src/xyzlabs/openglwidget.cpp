@@ -3,6 +3,7 @@
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/windowmanager.hpp"
 
+using namespace xyzlabs;
 
 OpenGLWidget::OpenGLWidget(const std::string &title): Widget(title) {}
 

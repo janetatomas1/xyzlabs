@@ -10,6 +10,7 @@
 #include "xyzlabs/periodictask.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
+using namespace xyzlabs;
 
 std::array<std::array<uint8_t, 50>, 50> zeroes();
 

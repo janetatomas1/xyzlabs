@@ -4,6 +4,8 @@
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/widget.hpp"
 
+using namespace xyzlabs;
+
 class SettingsWidget: public Widget {
     std::unique_ptr<SettingInterface> mainGroup_;
 public:

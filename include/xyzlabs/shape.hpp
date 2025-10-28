@@ -5,6 +5,8 @@
 #include <array>
 #include <spdlog/spdlog.h>
 
+namespace xyzlabs {
+
 const std::string vertex_shader_code = R"*(
 #version 330
 
@@ -134,3 +136,5 @@ struct Shape {
 		glDeleteProgram(program);
 	}
 };
+
+}

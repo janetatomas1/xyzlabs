@@ -8,6 +8,8 @@
 
 #include "xyzlabs/event.hpp"
 
+namespace xyzlabs {
+
 class EventManager {
     moodycamel::ConcurrentQueue<event_ptr> events_;
     moodycamel::ConcurrentQueue<action> actions_;
@@ -21,3 +23,5 @@ public:
     void subscribe(const std::string &label, callback call);
     void unsubscribe(const std::string &label);
 };
+
+}

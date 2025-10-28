@@ -5,6 +5,8 @@
 #include <string>
 #include <memory>
 
+namespace xyzlabs {
+
 class Widget {
     std::string title_;
     uint64_t id_ = 0;
@@ -46,3 +48,5 @@ std::string &Widget::title_id() {
 
 template <typename T>
 concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
+
+}

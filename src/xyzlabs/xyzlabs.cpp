@@ -16,6 +16,7 @@
 #include "xyzlabs/utils.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
+using namespace xyzlabs;
 
 void XYZLabs::init_() {
     windowManager_.init();

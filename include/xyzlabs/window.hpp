@@ -6,6 +6,7 @@
 
 #include "xyzlabs/widget.hpp"
 
+
 class ImGuiContext;
 
 #ifdef USE_GLFW
@@ -21,6 +22,8 @@ struct SDL_GLContextState;
 using WindowHandle = SDL_Window*;
 
 #endif
+
+namespace xyzlabs {
 
 class Window {
     #ifndef USE_GLFW
@@ -78,3 +81,5 @@ Widget* Window::set_central_widget(Args... args) {
 
 template <typename T>
 concept WindowType = std::derived_from<T, Window> || std::same_as<T, Window>;
+
+}
