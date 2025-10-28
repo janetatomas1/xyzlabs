@@ -78,8 +78,8 @@ public:
 
         task_ = std::make_shared<BurningForestTask>();
         task_manager().execute_periodic_task(task_);
-        std::array<float, 4> aa = {0.0f, 0.0f, 0.0f, 0.0f};
-        settings_manager().add_setting<ColorSetting>("Network.Window.speed", std::string("bbb"), aa);
+        float aa = 0.0f;
+        settings_manager().add_setting<FloatSliderSetting>("Network.Window.speed", std::string("bbb"), aa, 1.0, 10);
     }
 };
 
