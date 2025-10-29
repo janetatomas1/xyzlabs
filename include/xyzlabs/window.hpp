@@ -72,6 +72,7 @@ public:
     Widget* set_central_widget(Args... args);
     Widget* set_central_widget(std::unique_ptr<Widget> widget);
     void set_color(const std::array<float, 4> &color);
+    bool export_png(const std::string &filename);
 };
 
 template<WidgetType W, typename... Args>
