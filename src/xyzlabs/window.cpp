@@ -6,6 +6,9 @@
 #include <imgui_internal.h>
 #include <spdlog/spdlog.h>
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/eventmanager.hpp"
@@ -259,5 +262,31 @@ void Window::set_color(const std::array<float, 4> &color) {
         }
         ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255));
     });
+}
+
+auto flip_image(uint8_t *data, size_t width, size_t height) {
+    int row_bytes = width * 4;
+    std::vector<unsigned char> temp(row_bytes);
+
+    for (int y = 0; y < height / 2; ++y) {
+        unsigned char* row_top = data + y * row_bytes;
+        unsigned char* row_bottom = data + (height - 1 - y) * row_bytes;
+        std::copy(row_top, row_top + row_bytes, temp.begin());
+        std::copy(row_bottom, row_bottom + row_bytes, row_top);
+        std::copy(temp.begin(), temp.end(), row_bottom);
+    }
+}
+
+bool Window::export_png(const std::string &filename) {
+    std::vector<unsigned char> pixels(width_ * height_ * 4);
+
+    make_context_current();
+    glReadBuffer(GL_FRONT);
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, width_, height_, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+
+    flip_image(&pixels[0], width_, height_);
+
+    return stbi_write_png(filename.c_str(), width_, height_, 4, pixels.data(), width_ * 4) != 0;
 }
 }
