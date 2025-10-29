@@ -61,7 +61,7 @@ public:
     void update();
     bool is_open() const;
     WindowHandle handle();
-    virtual void key_callback(int key);
+    virtual void key_callback();
     const std::string& title() const {
         return title_;
     }

@@ -3,7 +3,7 @@
 
 #include "xyzlabs/taskmanager.hpp"
 
-using namespace xyzlabs;
+namespace xyzlabs {
 
 TaskManager::TaskManager(): 
     pool_(asio::thread_pool(threadCount_)),
@@ -43,4 +43,6 @@ void TaskManager::stop_periodic_task(std::shared_ptr<PeriodicTaskInterface> task
 
 asio::io_context& TaskManager::io_ctx() {
     return io_;
+}
+
 }

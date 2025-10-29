@@ -6,7 +6,7 @@
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/globals.hpp"
 
-using namespace xyzlabs;
+namespace xyzlabs {
 
 Widget::Widget(const std::string &title):
     title_(title), id_(random_generator().random()), open_(true) {
@@ -21,4 +21,6 @@ void Widget::show_toolbar(const ImVec2 &size, const ImVec2& position) {}
 
 void Widget::close() {
     open_ = false;
+}
+
 }
