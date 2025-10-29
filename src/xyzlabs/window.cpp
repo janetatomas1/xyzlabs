@@ -61,10 +61,6 @@ void Window::init() {
     ImGui_ImplOpenGL3_Init("#version 330");
     glfwSetWindowUserPointer(handle_, this);
 
-    // glfwSetKeyCallback(handle_, [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
-    //     Window *win = (Window*)glfwGetWindowUserPointer(handle);
-    //     win->key_callback(key);
-    // });
     spdlog::info("Opened new window. Title: {}, id: {}", title_, id_);
 }
 
@@ -109,6 +105,8 @@ void Window::update() {
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
     glfwSwapBuffers(handle_);
 
+    key_callback();
+
     if(glfwWindowShouldClose(handle_)) {
         open_ = false;
     }
@@ -116,12 +114,6 @@ void Window::update() {
 
 GLFWwindow* Window::handle() {
     return handle_;
-}
-
-void Window::key_callback(int key) {
-    if(key == GLFW_KEY_ESCAPE) {
-        glfwSetWindowShouldClose(handle_, 1);
-    }
 }
 
 void Window::make_context_current() {
@@ -199,16 +191,12 @@ void Window::update() {
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(handle_);
+
+    key_callback();
 }
 
 WindowHandle Window::handle() {
     return handle_;
-}
-
-void Window::key_callback(int key) {
-    if(key == SDLK_ESCAPE) {
-        close();
-    }
 }
 
 void Window::make_context_current() {
@@ -217,6 +205,7 @@ void Window::make_context_current() {
 }
 
 #endif
+
 
 Window::Window(const std::string &title, int32_t width, int32_t height):
     title_(title),
@@ -253,6 +242,12 @@ Widget* Window::set_central_widget(std::unique_ptr<Widget> widget) {
 
 bool Window::is_open() const {
     return open_;
+}
+
+void Window::key_callback() {
+    if(ImGui::IsKeyDown(ImGuiKey_Escape)) {
+        close();
+    }
 }
 
 }

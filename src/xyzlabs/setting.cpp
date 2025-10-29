@@ -5,7 +5,7 @@
 
 #include "xyzlabs/setting.hpp"
 
-using namespace xyzlabs;
+namespace xyzlabs {
 
 std::string format_label(const std::string& l) {
     return fmt::format("##{}", l);
@@ -49,4 +49,6 @@ void FloatSliderSetting::show(const std::string &label) {
 
 std::unique_ptr<SettingInterface> FloatSliderSetting::clone() const {
     return std::make_unique<FloatSliderSetting>(label_, value_, min, max);
+}
+
 }

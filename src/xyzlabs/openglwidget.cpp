@@ -3,7 +3,7 @@
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/windowmanager.hpp"
 
-using namespace xyzlabs;
+namespace xyzlabs {
 
 OpenGLWidget::OpenGLWidget(const std::string &title): Widget(title) {}
 
@@ -31,4 +31,6 @@ void OpenGLWidget::show(const ImVec2 &size, const ImVec2 &pos) {
 
 OpenGLWidget::~OpenGLWidget() {
     backend_.destroy();   
+}
+
 }
