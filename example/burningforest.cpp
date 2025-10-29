@@ -43,7 +43,6 @@ void BurningForest::update() {
     }
 
     if(ImGui::IsKeyDown(ImGuiKey_N)) {
-        settings_manager();
         settings_manager().open_settings();
     }
 }

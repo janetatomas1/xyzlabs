@@ -19,7 +19,6 @@ public:
     Widget() = default;
     Widget(const std::string &title);
     virtual void show(const ImVec2 &size, const ImVec2& position);
-    virtual void show_toolbar(const ImVec2 &size, const ImVec2& position);
     inline const std::string& title() const;
     inline uint64_t id() const;
     inline bool is_open() const;
