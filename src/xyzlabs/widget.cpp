@@ -17,8 +17,6 @@ void Widget::show(const ImVec2 &size, const ImVec2& position) {
     int x = 1;
 }
 
-void Widget::show_toolbar(const ImVec2 &size, const ImVec2& position) {}
-
 void Widget::close() {
     open_ = false;
 }
