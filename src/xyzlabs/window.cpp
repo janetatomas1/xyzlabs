@@ -3,6 +3,7 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui.h>
+#include <imgui_internal.h>
 #include <spdlog/spdlog.h>
 
 #include "xyzlabs/window.hpp"
@@ -250,4 +251,13 @@ void Window::key_callback() {
     }
 }
 
+void Window::set_color(const std::array<float, 4> &color) {
+    event_manager().add_action([this, color] () {
+        make_context_current();
+        if(ctx->ColorStack.Size > 0) {
+            ImGui::PopStyleColor();
+        }
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255));
+    });
+}
 }

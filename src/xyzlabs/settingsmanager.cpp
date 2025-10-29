@@ -227,11 +227,15 @@ void SettingsManager::open_settings(int32_t width, int32_t height) {
 
         std::unique_ptr<Widget> widget = std::make_unique<SettingsWidget>(std::move(mainGroup_->clone()));
         window->set_central_widget(std::move(widget));
+        window->set_color({1.0f, 1.0f, 1.0f, 1.0f});
     }
 }
 
 void SettingsManager::receive_settings(std::unique_ptr<SettingsGroup> group) {
     save_safe(std::move(group), config_file());
+    event_manager().add_action([this]() {
+        load_safe();
+    });
 }
 
 std::string SettingsManager::config_file() {
