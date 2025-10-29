@@ -71,6 +71,7 @@ public:
     template<WidgetType W = Widget, typename... Args>
     Widget* set_central_widget(Args... args);
     Widget* set_central_widget(std::unique_ptr<Widget> widget);
+    void set_color(const std::array<float, 4> &color);
 };
 
 template<WidgetType W, typename... Args>
