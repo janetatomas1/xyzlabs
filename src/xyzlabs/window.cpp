@@ -21,7 +21,7 @@ constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
 
-using namespace xyzlabs;
+namespace xyzlabs {
 
 void Window::init() {
     bool maximize = false;
@@ -134,12 +134,6 @@ void Window::make_context_current() {
 #include <SDL3/SDL.h>
 #include <imgui_impl_sdl3.h>
 
-void Window::close() {
-    event_manager().add_action([this]() {
-        open_ = false;
-    });
-}
-
 void Window::init() {
     handle_ = SDL_CreateWindow(
         title_.c_str(), width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
@@ -232,6 +226,12 @@ Window::Window(const std::string &title, int32_t width, int32_t height):
     height_(height)
 {}
 
+void Window::close() {
+    event_manager().add_action([this]() {
+        open_ = false;
+    });
+}
+
 Widget* Window::submit_widget(std::unique_ptr<Widget> widget) {
     auto ptr = widget.get();
     auto action = [this, widget = std::move(widget)]() mutable {
@@ -253,4 +253,6 @@ Widget* Window::set_central_widget(std::unique_ptr<Widget> widget) {
 
 bool Window::is_open() const {
     return open_;
+}
+
 }

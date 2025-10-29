@@ -37,7 +37,12 @@ public:
     SettingInterface* get(const std::string &path);
     void open_settings(int32_t width = 700, int32_t height = 500);
     void close_settings();
+    void receive_settings(std::unique_ptr<SettingsGroup> group);
     void init();
+    std::string config_file();
+    void save();
+    void load();
+    void load_safe();
 };
 
 template<SettingType S, typename... Args>
