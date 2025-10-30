@@ -28,9 +28,9 @@ class XYZLabs {
     XYZLabs() = default;
 
     int exitCode_ = 0;
+public:
     template<WidgetType W = Widget, typename... Args>
     void set_initial_widget(Args... args);
-public:
     template<WidgetType W = Widget, typename... Args>
     XYZLabs& init(const std::string &title, Args... args);
     static XYZLabs& instance();
