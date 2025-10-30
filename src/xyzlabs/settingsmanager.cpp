@@ -227,7 +227,6 @@ void SettingsManager::open_settings(int32_t width, int32_t height) {
 
         std::unique_ptr<Widget> widget = std::make_unique<SettingsWidget>(std::move(mainGroup_->clone()));
         window->set_central_widget(std::move(widget));
-        window->set_color({1.0f, 1.0f, 1.0f, 1.0f});
     }
 }
 

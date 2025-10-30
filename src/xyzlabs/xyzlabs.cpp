@@ -20,21 +20,12 @@ namespace xyzlabs {
 
 void XYZLabs::init_() {
     windowManager_.init();
+    taskManager_.run();
+    settingsManager_.init();
 
     IMGUI_CHECKVERSION();
 
-    ImGui::CreateContext();
-
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; 
-    io.IniFilename = nullptr;
-
-    ImGui::StyleColorsDark();
-    ImGuiStyle& style = ImGui::GetStyle();
-
     create_app_directory();
-    taskManager_.run();
-    settingsManager_.init();
 }
 
 void XYZLabs::mainloop_() {
