@@ -18,19 +18,26 @@ public:
     virtual void show(const std::string &label) = 0;
     virtual std::unique_ptr<SettingInterface> clone() const = 0;
     virtual SettingInterface* get_child(const std::string &path) { return nullptr; }
-    virtual const char* label() { return nullptr; };
+};
+
+class SettingBase: public SettingInterface {
+protected:
+    std::string label_;
+public:
+    virtual ~SettingBase() = default;
+    SettingBase(const std::string &label): label_(label) {};
+    virtual const char* label() { return label_.c_str(); };
 };
 
 template<typename T>
-class Setting: public SettingInterface {
+class Setting: public SettingBase {
 protected:
     T value_;
-    std::string label_;
 
 public:
     Setting(const std::string &label, T value):
-        SettingInterface(),
-        value_(value), label_(label) {};
+        SettingBase(label),
+        value_(value) {};
     T* get() { return &value_; };
     T& get_ref() { return value_; };
     json to_json() const override;
@@ -59,7 +66,7 @@ std::unique_ptr<SettingInterface> Setting<T>::clone() const {
 }
 
 template <typename T>
-concept SettingType = std::derived_from<T, SettingInterface>;
+concept SettingType = std::derived_from<T, SettingBase>;
 
 struct TextSetting: public Setting<std::string> {
 public:
