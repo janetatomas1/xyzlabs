@@ -90,9 +90,6 @@ void Window::update() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();    
     
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
     ImGui::NewFrame();
 
     ImVec2 size = {static_cast<float>(width_), static_cast<float>(height_)};
