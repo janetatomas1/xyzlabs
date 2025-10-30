@@ -72,11 +72,11 @@ std::unique_ptr<Derived> dynamic_unique_cast(std::unique_ptr<Base>&& base) {
 }
 
 class SettingsWidget: public Widget {
-    std::unique_ptr<SettingInterface> mainGroup_;
+    std::unique_ptr<SettingsGroup> mainGroup_;
 public:
     void show(const ImVec2 &size, const ImVec2 &pos) override;
     SettingsWidget(
-        std::unique_ptr<SettingInterface> group
+        std::unique_ptr<SettingsGroup> group
     ): Widget("Settings"), mainGroup_(std::move(group)) {}
 };
 
@@ -182,10 +182,11 @@ void SettingsGroup::show(const std::string &label) {
     if(hasLeafs) {
         if(ImGui::BeginTable(label.c_str(), 2, ImGuiTableFlags_Borders)) {
             for(auto &[key, value]: settings_) {
-                if(dynamic_cast<SettingsGroup*>(value.get()) == nullptr) {
+                auto ptr = dynamic_cast<SettingBase*>(value.get());
+                if(ptr != nullptr) {
                     ImGui::TableNextRow();
                     ImGui::TableNextColumn();
-                    ImGui::Text("%s", value->label());
+                    ImGui::Text("%s", ptr->label());
                     ImGui::TableNextColumn();
                     value->show(key);
                 }
@@ -225,7 +226,10 @@ void SettingsManager::open_settings(int32_t width, int32_t height) {
             height
         );
 
-        std::unique_ptr<Widget> widget = std::make_unique<SettingsWidget>(std::move(mainGroup_->clone()));
+        auto ptr = dynamic_cast<SettingsGroup*>(mainGroup_->clone().release());
+        std::unique_ptr<Widget> widget = std::make_unique<SettingsWidget>(
+            std::unique_ptr<SettingsGroup>(ptr)
+        );
         window->set_central_widget(std::move(widget));
     }
 }
