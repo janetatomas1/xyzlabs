@@ -23,7 +23,7 @@ public:
     const std::string& error() { return error_; };
     void set_error(const std::string &error) { error_ = error; };
     bool has_error() {
-        return error_.empty();
+        return !error_.empty();
     };
 };
 
