@@ -80,12 +80,12 @@ public:
     ): Widget("Settings"), mainGroup_(std::move(group)) {}
 };
 
-    void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {    
-    const ImVec2 settingsWindowPos = {size.x * 0.65f, size.y * 0.4f};
-    const ImVec2 scrollRegionSize = {size.x * 0.98f, size.y * 0.8f};
-    const ImVec2 saveBtnSize = {size.x * 0.2f, size.y * 0.07f};
-    const ImVec2 discardBtnPos = {size.x * 0.52f, size.y * 0.9f};
-    const ImVec2 saveBtnPos = {size.x * 0.75f, size.y * 0.9f};
+void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {    
+    const ImVec2 settingsWindowPos = pos + size * ImVec2{0.65f, 0.4f};
+    const ImVec2 scrollRegionSize = pos + size * ImVec2{0.98f, 0.8f};
+    const ImVec2 saveBtnSize = pos + size * ImVec2{0.2f, 0.07f};
+    const ImVec2 discardBtnPos = pos + size * ImVec2{0.52f, 0.9f};
+    const ImVec2 saveBtnPos = pos + size * ImVec2{0.75f, 0.9f};
 
     ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
 

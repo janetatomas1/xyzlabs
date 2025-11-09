@@ -48,4 +48,10 @@ std::string &Widget::title_id() {
 template <typename T>
 concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
 
+ImVec2 operator*(const ImVec2 &first, const ImVec2 &second);
+ImVec2 operator*(const ImVec2 &first, float x );
+ImVec2 operator*(float x, const ImVec2 &first);
+ImVec2 operator+(const ImVec2 &first, const ImVec2 &second);
+ImVec2 operator-(const ImVec2 &first, const ImVec2 &second);
+
 }
