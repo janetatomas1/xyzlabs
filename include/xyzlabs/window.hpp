@@ -44,7 +44,7 @@ class Window {
     Widget* submit_widget(std::unique_ptr<Widget> widget);    
     void make_context_current();
 public:
-    void init();
+    virtual void init();
     int32_t width() {
         return width_;
     }
