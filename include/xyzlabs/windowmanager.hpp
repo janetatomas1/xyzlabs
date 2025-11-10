@@ -32,7 +32,8 @@ public:
     void init();
     template<WindowType W = Window, typename... Args>
     Window* add_window(Args... args);
-    Window* add_window(std::unique_ptr<Window> window);
+    template<WindowType W = Window>
+    Window* add_window(std::unique_ptr<W> window);
     void update();
     void destroy();
     size_t nwindows() const;
@@ -46,6 +47,18 @@ template<WindowType W, typename... Args>
 Window* WindowManager::add_window(Args... args) {
     auto window = std::make_unique<W>(std::forward<Args>(args)...);
     return add_window(std::move(window));
+}
+
+template<WindowType W>
+Window* WindowManager::add_window(std::unique_ptr<W> window) {
+    auto id = window->id();
+    auto ptr = window.get();
+    event_manager().add_action(std::move([window = std::move(window), this] () mutable {
+        window->init();
+        windows_.push_back(std::move(window));
+    }));
+
+    return ptr;
 }
 
 }

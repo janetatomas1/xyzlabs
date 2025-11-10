@@ -94,17 +94,6 @@ void WindowManager::destroy() {
 
 #endif
 
-Window* WindowManager::add_window(std::unique_ptr<Window> window) {
-    auto id = window->id();
-    auto ptr = window.get();
-    event_manager().add_action(std::move([window = std::move(window), this] () mutable {
-        window->init();
-        windows_.push_back(std::move(window));
-    }));
-
-    return ptr;
-}
-
 size_t WindowManager::nwindows() const {
     return windows_.size();
 }
