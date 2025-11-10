@@ -13,8 +13,8 @@
 
 namespace xyzlabs {
 
-void WindowManager::init_main_window() {
-    auto mainWindow = std::make_unique<Window>(app().title());
+void WindowManager::init_main_window(std::unique_ptr<Window> window) {
+    auto mainWindow = std::move(window);
     mainWindow->init();
     windows_.push_back(std::move(mainWindow));
 }
@@ -31,7 +31,6 @@ void WindowManager::init() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    init_main_window();
 }
 
 void WindowManager::update() {

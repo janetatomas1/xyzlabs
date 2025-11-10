@@ -33,6 +33,8 @@ public:
     void set_initial_widget(Args... args);
     template<WidgetType W = Widget, typename... Args>
     XYZLabs& init(const std::string &title, Args... args);
+    template<WindowType Win, WidgetType W = Widget, typename... Args>
+    XYZLabs& init(const std::string &title, Args... args);
     static XYZLabs& instance();
     TaskManager &task_manager();
     RandomGenerator& random_generator();
@@ -59,6 +61,16 @@ template<WidgetType W, typename... Args>
 XYZLabs& XYZLabs::init(const std::string &title, Args... args) {
     title_ = title;
     init_();
+    windowManager_.init_main_window(std::make_unique<Window>(title));
+    set_initial_widget<W>(std::forward<Args>(args)...);
+    return instance();
+}
+
+template<WindowType Win, WidgetType W, typename... Args>
+XYZLabs& XYZLabs::init(const std::string &title, Args... args) {
+    title_ = title;
+    init_();
+    windowManager_.init_main_window(std::make_unique<Win>(title));
     set_initial_widget<W>(std::forward<Args>(args)...);
     return instance();
 }

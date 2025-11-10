@@ -27,8 +27,8 @@ class WindowManager {
             windows_[currentWindowIDx_]->update();
         }
     };
-    void init_main_window();
 public:
+    void init_main_window(std::unique_ptr<Window> window);
     void init();
     template<WindowType W = Window, typename... Args>
     Window* add_window(Args... args);
