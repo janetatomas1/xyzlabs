@@ -84,7 +84,6 @@ void WindowManager::update() {
                     SDL_GetWindowFromID(e.window.windowID)
                 ), "WINDOW", NULL
             );
-            window->key_callback(e.key.key);            
         }
     }
 }

@@ -286,4 +286,9 @@ bool Window::export_png(const std::string &filename) {
 
     return stbi_write_png(filename.c_str(), width_, height_, 4, pixels.data(), width_ * 4) != 0;
 }
+
+ImGuiStyle& Window::style() {
+    return ImGui::GetStyle();
+}
+
 }
