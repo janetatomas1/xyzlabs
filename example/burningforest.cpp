@@ -3,6 +3,7 @@
 #include "xyzlabs/periodictask.hpp"
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/settingsmanager.hpp"
+#include "xyzlabs/floatingwidget.hpp"
 
 
 const std::array<float, 3> RED = {1.0f, 0.0f, 0.0f};
@@ -43,7 +44,8 @@ void BurningForest::update() {
     }
 
     if(ImGui::IsKeyDown(ImGuiKey_N)) {
-        settings_manager().open_settings();
+        static FloatingWidget widget = FloatingWidget("abcd");
+        widget.show();
     }
 }
 
