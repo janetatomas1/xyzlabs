@@ -12,16 +12,12 @@ namespace xyzlabs {
 class Widget {
     std::string title_;
     uint64_t id_ = 0;
-    std::string titleID_;
-
-    ImGuiTabItemFlags tabItemFlags_ = ImGuiTabItemFlags_SetSelected;
 public:
     Widget() = default;
     Widget(const std::string &title);
     virtual void show(const ImVec2 &size, const ImVec2& position);
-    inline const std::string& title() const;
-    inline uint64_t id() const;
-    inline std::string& title_id();
+    const std::string& title() const;
+    uint64_t id() const;
     virtual ~Widget() = default;
     virtual void destroy() {};
     virtual void init() {};
