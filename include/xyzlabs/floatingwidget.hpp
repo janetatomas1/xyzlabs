@@ -14,13 +14,27 @@ class FloatingWidget: public Widget {
 
 public:
     FloatingWidget(
-        const std::string title,
+        const std::string title = "",
         int flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove,
         const ImVec2 &sizeRatio = {0.4f, 0.4f},
         const ImVec2 &positionRatio = {0.3f, 0.3f}
     ): Widget(title), flags_(flags), sizeRatio_(sizeRatio), positionRatio_(positionRatio) {};
+    virtual ~FloatingWidget() = default;
     virtual void show(const ImVec2 &size, const ImVec2 &pos);
-    void show();
+    virtual void show();
+    void set_size(const ImVec2 &size);
+    void set_position(const ImVec2 &pos);
+    void set_flags(int flags);
+};
+
+class Dialog: public FloatingWidget {
+protected:
+    std::string acceptBtnText_ = "Yes";
+    std::string rejectBtnText_ = "No";
+    std::string text_ = "Hello there";
+public:
+    Dialog(): FloatingWidget("aaaaa"){};
+    void show(const ImVec2 &size, const ImVec2 &pos) override;
 };
 
 };

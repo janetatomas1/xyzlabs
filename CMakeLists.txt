@@ -94,3 +94,6 @@ add_compile_options(
 )
 
 add_subdirectory(example)
+add_compile_options(
+    -fsanitize=address
+)
