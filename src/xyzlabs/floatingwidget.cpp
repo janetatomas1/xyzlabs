@@ -16,7 +16,7 @@ void FloatingWidget::show() {
     if(ImGui::Begin(title().c_str())) { 
         ImGui::SetWindowSize(size);
         ImGui::SetWindowPos(position);
-        show(size, position);
+        show(size, {0.0f, 0.0f});
     }
     ImGui::End();
 }
@@ -31,10 +31,6 @@ void FloatingWidget::set_position(const ImVec2 &pos) {
 
 void FloatingWidget::set_flags(int flags) {
     flags_ = flags;
-}
-
-void Dialog::show(const ImVec2 &size, const ImVec2 &pos) {
-    ImGui::Button("abcdddd");
 }
 
 }
