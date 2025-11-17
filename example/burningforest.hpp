@@ -9,7 +9,7 @@
 #include "xyzlabs/shape.hpp"
 #include "xyzlabs/periodictask.hpp"
 #include "xyzlabs/xyzlabs.hpp"
-#include "xyzlabs/floatingwidget.hpp"
+#include "xyzlabs/dialog.hpp"
 
 using namespace xyzlabs;
 
@@ -50,7 +50,7 @@ class BurningForest: public OpenGLWidget {
     std::vector<std::vector<uint8_t>> colors_;
     float begin_ = -0.95f, end_ = 0.95f;
     std::shared_ptr<BurningForestTask> task_ = nullptr;
-    FloatingWidget *widget;
+    std::unique_ptr<FloatingWidget> widget;
 public:
     BurningForest();
     void update() override;
@@ -80,7 +80,7 @@ public:
 
         task_ = std::make_shared<BurningForestTask>();
         task_manager().execute_periodic_task(task_);
-        widget = new Dialog();
+        widget = std::make_unique<Dialog>("aaaaa", "bbbbbbb");
     }
 };
 

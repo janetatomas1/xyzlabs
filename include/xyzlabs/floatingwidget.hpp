@@ -27,14 +27,4 @@ public:
     void set_flags(int flags);
 };
 
-class Dialog: public FloatingWidget {
-protected:
-    std::string acceptBtnText_ = "Yes";
-    std::string rejectBtnText_ = "No";
-    std::string text_ = "Hello there";
-public:
-    Dialog(): FloatingWidget("aaaaa"){};
-    void show(const ImVec2 &size, const ImVec2 &pos) override;
-};
-
 };

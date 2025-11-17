@@ -43,7 +43,6 @@ void BurningForest::update() {
     }
 
     if(ImGui::IsKeyDown(ImGuiKey_N)) {
-        spdlog::info("aaaaa");
         widget->show();
     }
 }
