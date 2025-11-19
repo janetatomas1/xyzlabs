@@ -35,7 +35,7 @@ public:
     virtual const T& get_value_ref() {
         return result_;
     };
-    virtual const T get_value() {
+    virtual T get_value() {
         return result_;
     };
 };
