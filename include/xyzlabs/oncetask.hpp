@@ -4,6 +4,10 @@
 #include <memory>
 #include <atomic>
 #include <string>
+#include <type_traits>
+
+template <typename T>
+constexpr bool is_movable_v = std::is_move_constructible_v<T> && std::is_move_assignable_v<T>;
 
 namespace xyzlabs {
 
@@ -36,7 +40,11 @@ public:
         return result_;
     };
     virtual T get_value() {
-        return result_;
+        if constexpr (is_movable_v<T>) {
+            return std::move(result_);
+        } else {
+            return result_;
+        }
     };
 };
 
