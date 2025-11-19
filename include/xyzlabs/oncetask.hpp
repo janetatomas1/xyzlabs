@@ -32,7 +32,10 @@ class OnceTask: public OnceTaskInterface {
 protected:
     T result_;
 public:
-    const T& get_value() {
+    virtual const T& get_value_ref() {
+        return result_;
+    };
+    virtual const T get_value() {
         return result_;
     };
 };
