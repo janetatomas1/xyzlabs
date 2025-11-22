@@ -41,10 +41,6 @@ void BurningForest::update() {
             tiles_[i][j].render(get_color(state[i][j]));
         }
     }
-
-    if(ImGui::IsKeyDown(ImGuiKey_N)) {
-        widget->show();
-    }
 }
 
 void BurningForest::destroy() {
