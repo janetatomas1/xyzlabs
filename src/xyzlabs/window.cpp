@@ -15,11 +15,6 @@
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/globals.hpp"
 
-constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
-    ImGuiWindowFlags_NoResize |
-    ImGuiWindowFlags_NoMove |
-    ImGuiWindowFlags_NoCollapse;
-
 #ifdef USE_GLFW
 
 #include <GLFW/glfw3.h>
@@ -97,10 +92,7 @@ void Window::update() {
     ImGui::SetNextWindowSize(size);
     ImGui::SetNextWindowPos(pos);
 
-    if(ImGui::Begin("##window", nullptr,  WINDOW_FLAGS)) {
-        centralWidget_->show(size, pos);
-    }
-    ImGui::End();
+    centralWidget_->display();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	

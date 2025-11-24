@@ -16,6 +16,7 @@ public:
     Widget() = default;
     Widget(const std::string &title);
     virtual void show(const ImVec2 &size, const ImVec2& position);
+    virtual void display();
     const std::string& title() const;
     uint64_t id() const;
     virtual ~Widget() = default;
