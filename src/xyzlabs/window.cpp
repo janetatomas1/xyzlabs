@@ -89,10 +89,8 @@ void Window::update() {
 
     ImVec2 size = {static_cast<float>(width_), static_cast<float>(height_)};
     ImVec2 pos = {0.0f, 0.0f};
-    ImGui::SetNextWindowSize(size);
-    ImGui::SetNextWindowPos(pos);
 
-    centralWidget_->display();
+    centralWidget_->display(size, pos);
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
