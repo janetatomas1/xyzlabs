@@ -55,7 +55,6 @@ public:
     void destroy() override;
     void init() override {
         OpenGLWidget::init();
-
         tiles_.resize(height_);
 
         float x = begin_, y = begin_;

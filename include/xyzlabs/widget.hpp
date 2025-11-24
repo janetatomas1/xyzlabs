@@ -3,7 +3,7 @@
 
 #include <imgui.h>
 #include <string>
-#include <memory>
+#include <cinttypes>
 
 #include "xyzlabs/operators.hpp"
 
@@ -12,11 +12,12 @@ namespace xyzlabs {
 class Widget {
     std::string title_;
     uint64_t id_ = 0;
+    std::string windowID;
 public:
     Widget() = default;
     Widget(const std::string &title);
     virtual void show(const ImVec2 &size, const ImVec2& position);
-    virtual void display();
+    virtual void display(const ImVec2 &size, const ImVec2& position);
     const std::string& title() const;
     uint64_t id() const;
     virtual ~Widget() = default;
