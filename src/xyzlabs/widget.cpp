@@ -7,10 +7,6 @@
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/windowmanager.hpp"
 
-constexpr ImGuiWindowFlags WINDOW_FLAGS = ImGuiWindowFlags_NoTitleBar |
-    ImGuiWindowFlags_NoResize |
-    ImGuiWindowFlags_NoMove |
-    ImGuiWindowFlags_NoCollapse;
 
 namespace xyzlabs {
 
@@ -24,7 +20,7 @@ void Widget::display(const ImVec2 &size, const ImVec2& position) {
     ImGui::SetNextWindowSize(size);
     ImGui::SetNextWindowPos(position);
     
-    if(ImGui::Begin(windowID.c_str(), nullptr, WINDOW_FLAGS)) {
+    if(ImGui::Begin(windowID.c_str(), nullptr, windowFlags_)) {
         show(size, position);
     }
     ImGui::End();
@@ -36,6 +32,14 @@ const std::string &Widget::title() const {
 
 uint64_t Widget::id() const {
     return id_;
+}
+
+int Widget::get_flags() {
+    return windowFlags_;
+}
+
+void Widget::set_flags(int flags) {
+    windowFlags_ = flags;
 }
 
 }

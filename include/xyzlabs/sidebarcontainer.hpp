@@ -1,44 +1,42 @@
 
 #include <memory>
+#include <array>
 
 #include "xyzlabs/widget.hpp"
 
 namespace xyzlabs {
 
 enum class Edge {
-    Left,
-    Right,
-    Top,
-    Bottom
+    Left = 0,
+    Top = 1,
+    Right = 2,
+    Bottom =3
 };
 
 class SidebarContainer: public Widget {
-protected:
-    std::unique_ptr<Widget> leftSidebar_ = nullptr;
-    std::unique_ptr<Widget> rightSidebar_ = nullptr;
-    std::unique_ptr<Widget> header_ = nullptr;
-    std::unique_ptr<Widget> footer_ = nullptr;
-    
-    ImVec2 leftSidebarSizeRelative_ = {0.07f, 1.0f};
-    ImVec2 leftSidebarPositionRelative_ = {0.0f, 0.0f};
+    struct SidebarInfo {
+        std::unique_ptr<Widget> ptr = nullptr;
+        ImVec2 sizeRelative = {0.0f, 0.0f};
+        ImVec2 positionRelative = {0.0f, 0.0f};
+        bool open = false;
 
-    ImVec2 rightSidebarSizeRelative_ = {0.07f, 1.0f};
-    ImVec2 rightSidebarPositionRelative_ = {0.093f, 1.0f};
+        SidebarInfo() = default;
+        SidebarInfo(const SidebarInfo&) = delete;
+        SidebarInfo& operator=(const SidebarInfo&) = delete;
+        SidebarInfo(SidebarInfo&&) = default;
+        SidebarInfo& operator=(SidebarInfo&&) = default;
+    };
+    std::array<SidebarInfo, 4> sidebars_;
 
-    ImVec2 headerSizeRelative_ = {1.0f, 0.3f};
-    ImVec2 headerPositionRelative_ = {0.0f, 0.0f};
-
-    ImVec2 footerSizeRelative_ = {1.0f, 0.1f};
-    ImVec2 footerPositionRelative_ = {0.9f, 0.0f};
-
-    bool leftSidebarOpen_ = false;
-    bool rightSidebarOpen_ = false;
-    bool headerOpen_ = false;
-    bool footerOpen_ = false;
 public:
     SidebarContainer(const std::string &title = ""): Widget(title) {};
     void display(const ImVec2 &size, const ImVec2& position) override;
+    Widget* get_sidebar(Edge edge = Edge::Left);
     void set_sidebar(std::unique_ptr<Widget> widget, Edge edge = Edge::Left);
+    ImVec2 get_sidebar_size_relative(Edge edge = Edge::Left);
+    ImVec2 get_sidebar_position_relative(Edge edge = Edge::Left);
+    void set_sidebar_size_relative(const ImVec2 &size, Edge edge = Edge::Left);
+    void set_sidebar_position_relative(const ImVec2 &pos, Edge edge = Edge::Left);
 };
 
 }

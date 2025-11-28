@@ -13,6 +13,11 @@ class Widget {
     std::string title_;
     uint64_t id_ = 0;
     std::string windowID;
+    int windowFlags_ = ImGuiWindowFlags_NoTitleBar |
+    ImGuiWindowFlags_NoResize |
+    ImGuiWindowFlags_NoMove |
+    ImGuiWindowFlags_NoCollapse;;
+
 public:
     Widget() = default;
     Widget(const std::string &title);
@@ -23,6 +28,8 @@ public:
     virtual ~Widget() = default;
     virtual void destroy() {};
     virtual void init() {};
+    int get_flags();
+    void set_flags(int flags);
 };
 
 template <typename T>
