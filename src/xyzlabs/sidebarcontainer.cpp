@@ -9,6 +9,8 @@ size_t idx(Edge e) {
     return static_cast<size_t>(e);
 }
 
+SidebarContainer::SidebarContainer(const std::string &title): Widget(title) {}
+
 void SidebarContainer::display(const ImVec2 &size, const ImVec2& position) {
     ImVec2 centralSize = size;
     ImVec2 centralPos = position;
@@ -66,6 +68,7 @@ Widget* SidebarContainer::get_sidebar(Edge edge) {
 void SidebarContainer::set_sidebar(std::unique_ptr<Widget> widget, Edge edge) {
     action act = [this, widget = std::move(widget), edge]() mutable {
         sidebars_[idx(edge)].ptr = std::move(widget);
+        sidebars_[idx(edge)].open = true;
     };
 
     event_manager().add_action(std::move(act));
