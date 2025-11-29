@@ -11,7 +11,8 @@
 namespace xyzlabs {
 
 Widget::Widget(const std::string &title):
-    title_(title), id_(random_generator().random()), windowID(fmt::format("{}##{}", title_, id_)) {
+    title_(title), id_(random_generator().random()) {
+    windowID = fmt::format("{}##{}", title_, id_);
 }
 
 void Widget::show(const ImVec2 &size, const ImVec2& position) {}

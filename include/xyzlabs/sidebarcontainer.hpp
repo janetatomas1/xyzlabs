@@ -29,7 +29,7 @@ class SidebarContainer: public Widget {
     std::array<SidebarInfo, 4> sidebars_;
 
 public:
-    SidebarContainer(const std::string &title = ""): Widget(title) {};
+    SidebarContainer(const std::string &title = "");
     void display(const ImVec2 &size, const ImVec2& position) override;
     Widget* get_sidebar(Edge edge = Edge::Left);
     void set_sidebar(std::unique_ptr<Widget> widget, Edge edge = Edge::Left);

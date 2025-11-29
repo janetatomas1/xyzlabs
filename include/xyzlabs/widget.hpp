@@ -19,8 +19,7 @@ class Widget {
     ImGuiWindowFlags_NoCollapse;;
 
 public:
-    Widget() = default;
-    Widget(const std::string &title);
+    Widget(const std::string &title = "");
     virtual void show(const ImVec2 &size, const ImVec2& position);
     virtual void display(const ImVec2 &size, const ImVec2& position);
     const std::string& title() const;
