@@ -6,6 +6,8 @@
 #include <cinttypes>
 
 #include "xyzlabs/operators.hpp"
+#include "xyzlabs/relativelayout.hpp"
+
 
 namespace xyzlabs {
 
@@ -18,6 +20,8 @@ class Widget {
     ImGuiWindowFlags_NoMove |
     ImGuiWindowFlags_NoCollapse;;
 
+    RelativeLayout layout_;
+
 public:
     Widget(const std::string &title = "");
     virtual void show(const ImVec2 &size, const ImVec2& position);
@@ -29,6 +33,7 @@ public:
     virtual void init() {};
     int get_flags();
     void set_flags(int flags);
+    RelativeLayout &layout();
 };
 
 template <typename T>

@@ -15,14 +15,16 @@ Widget::Widget(const std::string &title):
     windowID = fmt::format("{}##{}", title_, id_);
 }
 
-void Widget::show(const ImVec2 &size, const ImVec2& position) {}
+void Widget::show(const ImVec2 &size, const ImVec2& position) {
+    ImGui::Button("aaaaaaa", size);
+}
 
 void Widget::display(const ImVec2 &size, const ImVec2& position) {
-    ImGui::SetNextWindowSize(size);
-    ImGui::SetNextWindowPos(position);
-    
     if(ImGui::Begin(windowID.c_str(), nullptr, windowFlags_)) {
-        show(size, position);
+        auto [localSize, localPosition] = layout_.compute(size, position);
+        ImGui::SetWindowPos(localPosition);
+        ImGui::SetWindowSize(localSize);
+        show(localSize, localPosition);
     }
     ImGui::End();
 }
@@ -41,6 +43,10 @@ int Widget::get_flags() {
 
 void Widget::set_flags(int flags) {
     windowFlags_ = flags;
+}
+
+RelativeLayout &Widget::layout() {
+    return layout_;
 }
 
 }
