@@ -16,8 +16,6 @@ enum class Edge {
 class SidebarContainer: public Widget {
     struct SidebarInfo {
         std::unique_ptr<Widget> ptr = nullptr;
-        ImVec2 sizeRelative = {0.0f, 0.0f};
-        ImVec2 positionRelative = {0.0f, 0.0f};
         bool open = false;
 
         SidebarInfo() = default;
@@ -33,10 +31,6 @@ public:
     void display(const ImVec2 &size, const ImVec2& position) override;
     Widget* get_sidebar(Edge edge = Edge::Left);
     void set_sidebar(std::unique_ptr<Widget> widget, Edge edge = Edge::Left);
-    ImVec2 get_sidebar_size_relative(Edge edge = Edge::Left);
-    ImVec2 get_sidebar_position_relative(Edge edge = Edge::Left);
-    void set_sidebar_size_relative(const ImVec2 &size, Edge edge = Edge::Left);
-    void set_sidebar_position_relative(const ImVec2 &pos, Edge edge = Edge::Left);
 };
 
 }

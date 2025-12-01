@@ -21,41 +21,37 @@ void SidebarContainer::display(const ImVec2 &size, const ImVec2& position) {
     auto &bottomSidebar = sidebars_[idx(Edge::Bottom)];
 
     if(leftSidebar.ptr != nullptr && leftSidebar.open) {
-        auto leftSidebarSize = size * leftSidebar.sizeRelative;
-        auto leftSidebarPos = size * leftSidebar.positionRelative + position;
+        auto [localSize, localPos] = leftSidebar.ptr->layout().compute(size, position);
 
-        centralSize.x -= leftSidebarSize.x;
-        centralPos.x += leftSidebarSize.x;
+        centralSize.x -= localSize.x;
+        centralPos.x += localSize.x;
 
-        leftSidebar.ptr->display(leftSidebarSize, leftSidebarPos);
+        leftSidebar.ptr->display(size, position);
     }
 
     if(topSidebar.ptr != nullptr && topSidebar.open) {
-        auto headerSize = size * topSidebar.sizeRelative;
-        auto headerPos = size * topSidebar.positionRelative + position;
+        auto [localSize, localPos] = topSidebar.ptr->layout().compute(size, position);
 
-        centralSize.y -= headerSize.y;
-        centralPos.y = headerSize.y;
+        centralSize.y -= localSize.y;
+        centralPos.y = localSize.y;
 
-        topSidebar.ptr->display(headerSize, headerPos);
+        topSidebar.ptr->display(size, position);
     }
 
 
     if(rightSidebar.ptr != nullptr && rightSidebar.open) {
-        auto rightSidebarSize = size * rightSidebar.sizeRelative;
-        auto rightSidebarPos = size * rightSidebar.sizeRelative + position;
+        auto [localSize, localPos] = rightSidebar.ptr->layout().compute(size, position);
 
-        centralSize.x -= rightSidebarSize.x;
+        centralSize.x -= localSize.x;
 
-        rightSidebar.ptr->display(rightSidebarSize, rightSidebarPos);
+        rightSidebar.ptr->display(size, position);
     }
 
     if(bottomSidebar.ptr != nullptr && bottomSidebar.open) {
-        auto footerSize = size * bottomSidebar.sizeRelative;
-        auto footerPos = size * bottomSidebar.positionRelative + position;
+        auto [localSize, localPos] = bottomSidebar.ptr->layout().compute(size, position);
 
-        centralSize.y -= footerSize.y;
-        bottomSidebar.ptr->display(footerSize, footerPos);
+        centralSize.y -= localSize.y;
+        bottomSidebar.ptr->display(size, position);
     }
     
     Widget::display(centralSize, centralPos);
@@ -72,22 +68,6 @@ void SidebarContainer::set_sidebar(std::unique_ptr<Widget> widget, Edge edge) {
     };
 
     event_manager().add_action(std::move(act));
-}
-
-ImVec2 SidebarContainer::get_sidebar_size_relative(Edge edge) {
-    return sidebars_[idx(edge)].sizeRelative;
-}
-
-ImVec2 SidebarContainer::get_sidebar_position_relative(Edge edge) {
-    return sidebars_[idx(edge)].positionRelative;
-}
-
-void SidebarContainer::set_sidebar_size_relative(const ImVec2 &size, Edge edge) {
-    sidebars_[idx(edge)].sizeRelative = size;
-}
-
-void SidebarContainer::set_sidebar_position_relative(const ImVec2 &pos, Edge edge) {
-    sidebars_[idx(edge)].positionRelative = pos;
 }
 
 }
