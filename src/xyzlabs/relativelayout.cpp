@@ -3,6 +3,8 @@
 
 namespace xyzlabs {
 
+RelativeLayout::RelativeLayout(const ImVec2 &size, const ImVec2 &position): size_(size), position_(position) {}
+
 void RelativeLayout::set_size_relative(const ImVec2 &size) {
     size_ = size;
 }
