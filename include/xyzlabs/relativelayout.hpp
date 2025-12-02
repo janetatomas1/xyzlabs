@@ -13,6 +13,8 @@ class RelativeLayout {
     ImVec2 position_ = {0.0f, 0.0f};
 
 public:
+    RelativeLayout() = default;
+    RelativeLayout(const ImVec2 &size, const ImVec2 &position);
     void set_size_relative(const ImVec2 &size);
     void set_position_relative(const ImVec2 &position);
     ImVec2 size_relative();

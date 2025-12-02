@@ -4,7 +4,6 @@
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/settingsmanager.hpp"
 
-
 const std::array<float, 3> RED = {1.0f, 0.0f, 0.0f};
 const std::array<float, 3> GREEN = {0.0f, 1.0f, 0.0f};
 const std::array<float, 3> BLUE = {0.0f, 0.0f, 1.0f};
