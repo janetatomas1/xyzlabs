@@ -52,6 +52,7 @@ public:
     void set_reject_action(action act);
     ImVec4 background_color();
     void set_background_color(const ImVec4 &color);
+    void set_reject_active(bool value);
 };
 
 }

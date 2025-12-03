@@ -108,5 +108,10 @@ void Dialog::set_background_color(const ImVec4 &color) {
     });
 }
 
+void Dialog::set_reject_active(bool value) {
+    event_manager().add_action([this, value]() mutable {
+        rejectActive_ = value;
+    });
+}
 
 }
