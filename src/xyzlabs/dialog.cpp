@@ -38,7 +38,7 @@ void Dialog::show(const ImVec2 &size, const ImVec2 &position) {
     ImGui::EndChild();
 
     ImGui::SetCursorPos(rejectBtnPos);
-    if(ImGui::Button(rejectText_.c_str(), rejectBtnSize)) {
+    if(rejectActive_ && ImGui::Button(rejectText_.c_str(), rejectBtnSize)) {
         reject();
     }
 
