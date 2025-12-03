@@ -28,4 +28,8 @@ SettingsManager &settings_manager() {
     return XYZLabs::instance().settings_manager();
 }
 
+ObjectRegistry &object_registry() {
+    return XYZLabs::instance().object_registry();
+}
+
 }

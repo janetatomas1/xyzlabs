@@ -32,7 +32,6 @@ class PeriodicTaskInterface {
         }
     };
 
-
 protected:
     boost::asio::steady_timer timer_;
     uint64_t milisecondsTimeout_ = 100;

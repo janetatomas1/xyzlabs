@@ -11,6 +11,7 @@
 #include "xyzlabs/settingsmanager.hpp"
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
+#include "xyzlabs/objectregistry.hpp"
 
 namespace xyzlabs {
 
@@ -21,6 +22,7 @@ class XYZLabs {
     SettingsManager settingsManager_;
     EventManager eventManager_;
     WindowManager windowManager_;
+    ObjectRegistry objectRegistry_;
 
     void init_();
     void exit_();
@@ -37,10 +39,11 @@ public:
     XYZLabs& init(const std::string &title, Args... args);
     static XYZLabs& instance();
     TaskManager &task_manager();
-    RandomGenerator& random_generator();
-    SettingsManager& settings_manager();
-    EventManager& event_manager();
-    WindowManager& window_manager();
+    RandomGenerator &random_generator();
+    SettingsManager &settings_manager();
+    EventManager &event_manager();
+    WindowManager &window_manager();
+    ObjectRegistry &object_registry();
 
     void close();
     int exec();

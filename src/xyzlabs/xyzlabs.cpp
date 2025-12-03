@@ -71,12 +71,16 @@ SettingsManager &XYZLabs::settings_manager() {
     return settingsManager_;
 }
 
-EventManager& XYZLabs::event_manager() {
+EventManager &XYZLabs::event_manager() {
     return eventManager_;
 }
 
 WindowManager &XYZLabs::window_manager() {
     return windowManager_;
+}
+
+ObjectRegistry &XYZLabs::object_registry() {
+    return objectRegistry_;
 }
 
 void XYZLabs::close() {
