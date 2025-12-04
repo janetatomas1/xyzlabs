@@ -27,6 +27,10 @@ class Dialog: public Widget {
         {0.15f, 0.12f},
         {0.6f, 0.8f}
     };
+    RelativeLayout acceptBtnAloneLayout_ = {
+        {0.15f, 0.12f},
+        {0.43f, 0.8f}
+    };
     RelativeLayout rejectBtnLayout_ = {
         {0.15f, 0.12f},
         {0.2f, 0.8f}

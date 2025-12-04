@@ -30,7 +30,9 @@ void Dialog::display(const ImVec2 &size, const ImVec2 &position) {
 void Dialog::show(const ImVec2 &size, const ImVec2 &position) {
     auto [contentSize, contentPos] = contentLayout_.compute(size, {0.0f, 0.0f});
     auto [rejectBtnSize, rejectBtnPos] = rejectBtnLayout_.compute(size, {0.0f, 0.0f});
-    auto [acceptBtnSize, acceptBtnPos] = acceptBtnLayout_.compute(size, {0.0f, 0.0f});
+
+    auto &acceptLayout = rejectActive_ ? acceptBtnLayout_ : acceptBtnAloneLayout_;
+    auto [acceptBtnSize, acceptBtnPos] = acceptLayout.compute(size, {0.0f, 0.0f});
 
     ImGui::SetCursorPos(contentPos);
     ImGui::BeginChild("TextBox", contentSize, true, ImGuiWindowFlags_NoScrollbar);
