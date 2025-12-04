@@ -26,8 +26,26 @@ class TabWidget: public Widget {
 
 public:
     TabWidget(const std::string &title = "");
-    Widget* add_tab(std::unique_ptr<Widget> tab);
     void show(const ImVec2 &size, const ImVec2 &position) override;
+    Widget* add_tab(std::unique_ptr<Widget> widget);
+    template<
+        WidgetType W = Widget,
+        typename... Args,
+        typename = std::enable_if_t<
+            !((sizeof...(Args) == 0) ||(sizeof...(Args) == 1 &&
+            std::is_convertible_v<std::decay_t<Args>..., std::unique_ptr<Widget>>
+            ))
+        >
+    >
+    Widget* add_tab(Args&&... args) {
+        auto tab = std::make_unique<W>(std::forward<Args>(args)...);
+        return add_tab(std::move(tab));
+    };
+    template<WidgetType W = Widget>
+    Widget* add_tab() {
+        auto tab = std::make_unique<W>();
+        return add_tab(std::move(tab));
+    };
 };
 
 }

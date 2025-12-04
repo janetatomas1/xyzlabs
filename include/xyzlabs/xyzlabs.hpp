@@ -57,7 +57,11 @@ public:
 
 template<WidgetType W, typename... Args>
 void XYZLabs::set_initial_widget(Args... args) {
-    windowManager_.get_main_window()->set_central_widget<W>(std::forward<Args>(args)...);
+    windowManager_
+    .get_main_window()
+    ->set_central_widget<W>(
+        std::forward<Args>(args)...
+    );
 };
 
 template<WidgetType W, typename... Args>
