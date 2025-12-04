@@ -14,7 +14,7 @@ namespace xyzlabs {
 class Widget {
     std::string title_;
     uint64_t id_ = 0;
-    std::string windowID;
+    std::string windowID_;
     int windowFlags_ = ImGuiWindowFlags_NoTitleBar |
     ImGuiWindowFlags_NoResize |
     ImGuiWindowFlags_NoMove |
@@ -27,6 +27,7 @@ public:
     virtual void show(const ImVec2 &size, const ImVec2& position);
     virtual void display(const ImVec2 &size, const ImVec2& position);
     const std::string& title() const;
+    const std::string& window_id() const;
     uint64_t id() const;
     virtual ~Widget() = default;
     virtual void destroy() {};

@@ -12,15 +12,15 @@ namespace xyzlabs {
 
 Widget::Widget(const std::string &title):
     title_(title), id_(random_generator().random()) {
-    windowID = fmt::format("{}##{}", title_, id_);
+    windowID_ = fmt::format("{}##{}", title_, id_);
 }
 
 void Widget::show(const ImVec2 &size, const ImVec2& position) {
-    ImGui::Button("aaaaaaa", size);
+    ImGui::Button(title_.c_str(), size);
 }
 
 void Widget::display(const ImVec2 &size, const ImVec2& position) {
-    if(ImGui::Begin(windowID.c_str(), nullptr, windowFlags_)) {
+    if(ImGui::Begin(windowID_.c_str(), nullptr, windowFlags_)) {
         auto [localSize, localPosition] = layout_.compute(size, position);
         ImGui::SetWindowPos(localPosition);
         ImGui::SetWindowSize(localSize);
@@ -31,6 +31,10 @@ void Widget::display(const ImVec2 &size, const ImVec2& position) {
 
 const std::string &Widget::title() const {
     return title_;
+}
+
+const std::string &Widget::window_id() const {
+    return windowID_;
 }
 
 uint64_t Widget::id() const {
