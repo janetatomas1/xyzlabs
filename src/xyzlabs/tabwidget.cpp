@@ -29,7 +29,7 @@ void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
         auto [btnSize, btnPosition] = btnLayout_.compute(size, position);
         btnPosition.x = btnSize.x * i * (1 + padding);
         ImGui::SetCursorPos(btnPosition);
-        if(ImGui::Button(fmt::format("{}##{}", tab->title(), tab->id()).c_str(), btnSize)) {
+        if(ImGui::Button(tab->window_id().c_str(), btnSize)) {
             currentTab_ = i;
         }
     }
