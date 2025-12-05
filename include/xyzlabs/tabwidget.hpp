@@ -52,7 +52,7 @@ public:
     };
     Widget* get_tab(size_t idx);
     Widget* get_tab_id(uint64_t id);
-    Widget *get_current_tab();
+    Widget* get_current_tab();
     size_t get_current_index();
     size_t count();
     void remove_tab(size_t idx);

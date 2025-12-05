@@ -54,5 +54,46 @@ void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
     }
 }
 
+Widget* TabWidget::get_tab(size_t idx) {
+    return tabs_[idx].get();
+}
+
+Widget* TabWidget::get_tab_id(uint64_t id) {
+    Widget *ptr = nullptr;
+    for(auto &tab: tabs_) {
+        if(tab->id() == id) {
+            ptr = tab.get();
+        }
+    }
+
+    return ptr;
+}
+
+Widget* TabWidget::get_current_tab() {
+    return tabs_[currentTab_].get();
+}
+
+size_t TabWidget::get_current_index() {
+    return currentTab_;
+}
+
+size_t TabWidget::count() {
+    return tabs_.size();
+}
+
+void TabWidget::remove_tab(size_t idx) {
+    tabs_.erase(tabs_.begin() + idx);
+}
+
+void TabWidget::remove_tab_id(uint64_t id) {
+    event_manager().add_action([this, id]() {
+        for(size_t i=0;i < tabs_.size();i++) {
+            if(tabs_[i]->id() == id) {
+                tabs_.erase(tabs_.begin() + i);
+                return;
+            }
+        }
+    });
+} 
 
 }
