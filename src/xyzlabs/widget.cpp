@@ -6,12 +6,12 @@
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/windowmanager.hpp"
-
+#include "xyzlabs/window.hpp"
 
 namespace xyzlabs {
 
-Widget::Widget(const std::string &title):
-    title_(title), id_(random_generator().random()) {
+Widget::Widget(const std::string &title, Widget *parent, Window *window):
+    title_(title), id_(random_generator().random()), parent_(parent), window_(window) {
     windowID_ = fmt::format("{}##{}", title_, id_);
 }
 
@@ -51,6 +51,26 @@ void Widget::set_flags(int flags) {
 
 RelativeLayout &Widget::layout() {
     return layout_;
+}
+
+Widget* Widget::parent() {
+    return parent_;
+}
+
+void Widget::set_parent(Widget *parent) {
+    event_manager().add_action([this, parent]() {
+        parent_ = parent;
+    });
+}
+
+Window* Widget::window() {
+    return window_;
+}
+
+void Widget::set_window(Window *window) {
+    event_manager().add_action([this, window]() {
+        window_ = window;
+    });
 }
 
 }

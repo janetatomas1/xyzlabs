@@ -146,4 +146,14 @@ Window* WindowManager::get_current_window() {
     return nullptr;
 }
 
+Window* WindowManager::add_window(std::unique_ptr<Window> window) {
+    auto ptr = window.get();
+    event_manager().add_action(std::move([window = std::move(window), this] () mutable {
+        window->init();
+        windows_.push_back(std::move(window));
+    }));
+
+    return ptr;
+}
+
 }

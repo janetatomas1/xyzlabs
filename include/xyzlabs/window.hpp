@@ -42,8 +42,8 @@ class Window {
 
     std::unique_ptr<Widget> centralWidget_;
     Widget* submit_widget(std::unique_ptr<Widget> widget);    
-    void make_context_current();
 public:
+    void make_context_current();
     virtual void init();
     int32_t width() {
         return width_;
@@ -68,19 +68,29 @@ public:
     uint64_t id() {
         return id_;
     }
-    template<WidgetType W = Widget, typename... Args>
-    Widget* set_central_widget(Args... args);
+    template<
+        WidgetType W = Widget,
+        typename... Args,
+        typename = std::enable_if_t<
+            !((sizeof...(Args) == 0) ||(sizeof...(Args) == 1 &&
+            std::is_convertible_v<std::decay_t<Args>..., std::unique_ptr<Widget>>
+            ))
+        >
+    >
+    Widget* set_central_widget(Args... args) {
+        auto widget = std::make_unique<W>(std::forward<Args>(args)...);
+        return submit_widget(std::move(widget));
+    }
+    template<WidgetType W = Widget>
+    Widget* set_central_widget() {
+        auto widget = std::make_unique<W>();
+        return submit_widget(std::move(widget));
+    }
     Widget* set_central_widget(std::unique_ptr<Widget> widget);
     void set_color(const std::array<float, 4> &color);
     bool export_png(const std::string &filename);
     ImGuiStyle& style();
 };
-
-template<WidgetType W, typename... Args>
-Widget* Window::set_central_widget(Args... args) {
-    auto widget = std::make_unique<W>(std::forward<Args>(args)...);
-    return submit_widget(std::move(widget));
-}
 
 template <typename T>
 concept WindowType = std::derived_from<T, Window> || std::same_as<T, Window>;

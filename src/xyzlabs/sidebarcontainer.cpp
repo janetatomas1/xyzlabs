@@ -2,6 +2,7 @@
 #include "xyzlabs/sidebarcontainer.hpp"
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/window.hpp"
 
 namespace xyzlabs { 
 
@@ -9,7 +10,11 @@ size_t idx(Edge e) {
     return static_cast<size_t>(e);
 }
 
-SidebarContainer::SidebarContainer(const std::string &title): Widget(title) {}
+SidebarContainer::SidebarContainer(const std::string &title,
+    Widget *parent,
+    Window *window
+): Widget(title, parent, window) {}
+
 
 void SidebarContainer::display(const ImVec2 &size, const ImVec2& position) {
     ImVec2 centralSize = size;
@@ -63,6 +68,10 @@ Widget* SidebarContainer::get_sidebar(Edge edge) {
 
 void SidebarContainer::set_sidebar(std::unique_ptr<Widget> widget, Edge edge) {
     action act = [this, widget = std::move(widget), edge]() mutable {
+        window()->make_context_current();
+        widget->init();
+        widget->set_parent(this);
+        widget->set_window(window());
         sidebars_[idx(edge)].ptr = std::move(widget);
         sidebars_[idx(edge)].open = true;
     };

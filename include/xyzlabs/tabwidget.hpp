@@ -25,9 +25,13 @@ class TabWidget: public Widget {
     }};
 
 public:
-    TabWidget(const std::string &title = "");
+    TabWidget(
+        const std::string &title = "",
+        Widget *parent = nullptr,
+        Window *window = nullptr
+    );
     void show(const ImVec2 &size, const ImVec2 &position) override;
-    Widget* add_tab(std::unique_ptr<Widget> widget);
+    Widget* add_tab(std::unique_ptr<Widget> widget, size_t position = std::string::npos);
     template<
         WidgetType W = Widget,
         typename... Args,
@@ -37,15 +41,22 @@ public:
             ))
         >
     >
-    Widget* add_tab(Args&&... args) {
+    Widget* add_tab(size_t position = std::string::npos, Args&&... args) {
         auto tab = std::make_unique<W>(std::forward<Args>(args)...);
         return add_tab(std::move(tab));
     };
     template<WidgetType W = Widget>
-    Widget* add_tab() {
+    Widget* add_tab(size_t position = std::string::npos) {
         auto tab = std::make_unique<W>();
-        return add_tab(std::move(tab));
+        return add_tab(std::move(tab), position);
     };
+    Widget* get_tab(size_t idx);
+    Widget* get_tab_id(uint64_t id);
+    Widget *get_current_tab();
+    size_t get_current_index();
+    size_t count();
+    void remove_tab(size_t idx);
+    void remove_tab_id(uint64_t id);
 };
 
 }

@@ -8,8 +8,8 @@
 #include "xyzlabs/operators.hpp"
 #include "xyzlabs/relativelayout.hpp"
 
-
 namespace xyzlabs {
+class Window;
 
 class Widget {
     std::string title_;
@@ -18,12 +18,17 @@ class Widget {
     int windowFlags_ = ImGuiWindowFlags_NoTitleBar |
     ImGuiWindowFlags_NoResize |
     ImGuiWindowFlags_NoMove |
-    ImGuiWindowFlags_NoCollapse;;
-
+    ImGuiWindowFlags_NoCollapse;
     RelativeLayout layout_;
 
+    Widget *parent_;
+    Window *window_;
 public:
-    Widget(const std::string &title = "");
+    Widget(
+        const std::string &title = "",
+        Widget *parent = nullptr,
+        Window *window = nullptr
+    );
     virtual void show(const ImVec2 &size, const ImVec2& position);
     virtual void display(const ImVec2 &size, const ImVec2& position);
     const std::string& title() const;
@@ -35,6 +40,10 @@ public:
     int get_flags();
     void set_flags(int flags);
     RelativeLayout &layout();
+    Widget* parent();
+    void set_parent(Widget *parent);
+    Window* window();
+    void set_window(Window *window);
 };
 
 template <typename T>

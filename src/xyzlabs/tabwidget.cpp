@@ -2,21 +2,34 @@
 #include "xyzlabs/tabwidget.hpp"
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/eventmanager.hpp"
-#include <fmt/format.h>
+#include "xyzlabs/window.hpp"
 
 namespace xyzlabs {
 
-TabWidget::TabWidget(const std::string &title): Widget(title) {}
+TabWidget::TabWidget(
+    const std::string &title,
+    Widget *parent,
+    Window *window
+): Widget(title, parent, window) {}
 
-Widget* TabWidget::add_tab(std::unique_ptr<Widget> tab) {
+Widget* TabWidget::add_tab(std::unique_ptr<Widget> tab, size_t position) {
     Widget *ptr = tab.get();
-    event_manager().add_action([this, widget = std::move(tab)]() mutable {
+    event_manager().add_action([this, position, widget = std::move(tab)]() mutable {
         auto size = btnLayout_.size_relative();
-        if(!tabs_.empty()) {
-            size.x = size.x * tabs_.size();
-        }
+        widget->set_window(window());
+        widget->set_parent(this);
+        window()->make_context_current();
         widget->init();
-        tabs_.push_back(std::move(widget));
+        if(position < tabs_.size()) {
+            tabs_.insert(tabs_.begin() + position, std::move(widget));
+            currentTab_ = position;
+        } else {
+            tabs_.push_back(std::move(widget));
+            currentTab_ = tabs_.size() - 1;
+        }
+        if(tabs_.size() > 1) {
+            size.x = size.x * (tabs_.size() - 1);
+        }
         size.x = size.x / tabs_.size();
         btnLayout_.set_size_relative(size);
     });
@@ -40,5 +53,6 @@ void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
         currentTab->show(tabSize, tabPosition);
     }
 }
+
 
 }

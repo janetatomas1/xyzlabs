@@ -220,6 +220,7 @@ Widget* Window::submit_widget(std::unique_ptr<Widget> widget) {
             centralWidget_->destroy();
         }
 
+        widget->set_window(this);
         centralWidget_ = std::move(widget);
         centralWidget_->init();
     };
