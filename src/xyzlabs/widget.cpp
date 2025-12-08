@@ -64,7 +64,15 @@ void Widget::set_parent(Widget *parent) {
 }
 
 Window* Widget::window() {
-    return window_;
+    if(window_ != nullptr) {
+        return window_;
+    }
+
+    if(parent_ != nullptr) {
+        return parent_->window();
+    }
+
+    return nullptr;
 }
 
 void Widget::set_window(Window *window) {
