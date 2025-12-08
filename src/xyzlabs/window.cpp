@@ -228,10 +228,6 @@ Widget* Window::submit_widget(std::unique_ptr<Widget> widget) {
     return ptr;
 }
 
-Widget* Window::set_central_widget(std::unique_ptr<Widget> widget) {
-    return submit_widget(std::move(widget));
-}
-
 bool Window::is_open() const {
     return open_;
 }

@@ -70,27 +70,49 @@ public:
     }
     template<
         WidgetType W = Widget,
-        typename... Args,
-        typename = std::enable_if_t<
-            !((sizeof...(Args) == 0) ||(sizeof...(Args) == 1 &&
-            std::is_convertible_v<std::decay_t<Args>..., std::unique_ptr<Widget>>
-            ))
-        >
+        typename... Args
     >
-    Widget* set_central_widget(Args... args) {
-        auto widget = std::make_unique<W>(std::forward<Args>(args)...);
-        return submit_widget(std::move(widget));
-    }
-    template<WidgetType W = Widget>
-    Widget* set_central_widget() {
-        auto widget = std::make_unique<W>();
-        return submit_widget(std::move(widget));
-    }
-    Widget* set_central_widget(std::unique_ptr<Widget> widget);
+    Widget* set_central_widget(Args... args);
     void set_color(const std::array<float, 4> &color);
     bool export_png(const std::string &filename);
     ImGuiStyle& style();
 };
+
+template<typename T>
+struct is_unique_ptr_to_widget : std::false_type {};
+
+template<typename T>
+struct is_unique_ptr_to_widget<std::unique_ptr<T>>
+    : std::bool_constant<std::is_base_of_v<Widget, T>> {};
+
+template<typename T>
+inline constexpr bool is_unique_ptr_to_widget_v = is_unique_ptr_to_widget<T>::value;
+
+template<
+    WidgetType W,
+    typename... Args
+>
+Widget* Window::set_central_widget(Args... args) {
+    if constexpr (sizeof...(Args) == 1) {
+        using First = std::tuple_element_t<0, std::tuple<Args...>>;
+        if constexpr (is_unique_ptr_to_widget_v<std::decay_t<First>> && std::is_same_v<W, Widget>) {
+            auto widget = std::move(std::get<0>(std::forward_as_tuple(args...)));
+            return submit_widget(std::move(widget));
+        } else {
+            return submit_widget(
+                std::make_unique<W>(
+                    std::forward<Args>(args)...
+                )
+            );            
+        }
+    } else {
+        return submit_widget(
+            std::make_unique<W>(
+                std::forward<Args>(args)...
+            )
+        );
+    }
+}
 
 template <typename T>
 concept WindowType = std::derived_from<T, Window> || std::same_as<T, Window>;
