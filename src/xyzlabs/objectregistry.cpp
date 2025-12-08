@@ -3,9 +3,10 @@
 
 namespace xyzlabs {
 
-void ObjectRegistry::insert(std::unique_ptr<Object> obj) {
+Object* ObjectRegistry::insert(std::unique_ptr<Object> obj) {
     uint64_t id = obj->id();
     objects_[id] = std::move(obj);
+    return objects_[id].get();
 }
 
 Object* ObjectRegistry::get(uint64_t id) {
