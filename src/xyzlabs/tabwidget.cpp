@@ -36,14 +36,16 @@ Widget* TabWidget::add_tab(std::unique_ptr<Widget> tab, size_t position) {
     return ptr;
 }
 
-void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {    
-    for(size_t i=0;i < tabs_.size();i++) {
-        auto &tab = tabs_[i];
-        auto [btnSize, btnPosition] = btnLayout_.compute(size, position);
-        btnPosition.x = btnSize.x * i * (1 + padding);
-        ImGui::SetCursorPos(btnPosition);
-        if(ImGui::Button(tab->window_id().c_str(), btnSize)) {
-            currentTab_ = i;
+void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
+    if(tabs_.size() > 1) {
+        for(size_t i=0;i < tabs_.size();i++) {
+            auto &tab = tabs_[i];
+            auto [btnSize, btnPosition] = btnLayout_.compute(size, position);
+            btnPosition.x = btnSize.x * i * (1 + padding);
+            ImGui::SetCursorPos(btnPosition);
+            if(ImGui::Button(tab->window_id().c_str(), btnSize)) {
+                currentTab_ = i;
+            }
         }
     }
 
@@ -94,6 +96,6 @@ void TabWidget::remove_tab_id(uint64_t id) {
             }
         }
     });
-} 
+}
 
 }
