@@ -8,7 +8,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <stb_image.h>
-#include <stdexcept>
 #include <cstdlib>
 #include <fmt/format.h>
 #include <thread>
@@ -36,6 +35,7 @@ void XYZLabs::mainloop_() {
 
         eventManager_.dispatch();
         windowManager_.update();
+        std::this_thread::sleep_for(std::chrono::milliseconds(renderTimeout_));
     }
 }
 
@@ -92,7 +92,7 @@ const std::string& XYZLabs::title() {
 
 std::filesystem::path XYZLabs::app_directory() {
     auto titleStandardized = utils::standardize(title());
-    
+
     #ifdef __unix__
         return std::filesystem::path(std::getenv("HOME")) / fmt::format(".{}", titleStandardized);
     #else

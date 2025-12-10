@@ -16,6 +16,7 @@
 namespace xyzlabs {
 
 class XYZLabs {
+    size_t renderTimeout_ = 30;
     std::string title_;
     TaskManager taskManager_;
     RandomGenerator randomGenerator_;

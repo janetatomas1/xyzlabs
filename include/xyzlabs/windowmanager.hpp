@@ -14,7 +14,6 @@ namespace xyzlabs {
 
 class WindowManager {
     std::vector<std::unique_ptr<Window>> windows_;
-    size_t renderTimeout_ = 30;
     int64_t currentWindowIDx_ = -1;
 
     inline void flush_closed_windows() {
@@ -64,7 +63,7 @@ Window* WindowManager::add_window(Args... args) {
                 std::make_unique<W>(
                     std::forward<Args>(args)...
                 )
-            );            
+            );
         }
     } else {
         return submit_window(

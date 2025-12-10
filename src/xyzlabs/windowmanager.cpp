@@ -37,7 +37,6 @@ void WindowManager::update() {
     flush_closed_windows();
     update_windows();
     glfwPollEvents();
-    std::this_thread::sleep_for(std::chrono::milliseconds(renderTimeout_));
 }
 
 void WindowManager::destroy() {
@@ -58,7 +57,7 @@ void WindowManager::init() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    
+
     init_main_window();
 }
 
