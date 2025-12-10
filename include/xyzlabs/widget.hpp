@@ -4,12 +4,14 @@
 #include <imgui.h>
 #include <string>
 #include <cinttypes>
+#include <memory>
 
 #include "xyzlabs/operators.hpp"
 #include "xyzlabs/relativelayout.hpp"
 
 namespace xyzlabs {
 class Window;
+
 
 class Widget {
     std::string title_;
@@ -45,6 +47,16 @@ public:
     Window* window();
     void set_window(Window *window);
 };
+
+template<typename T>
+struct is_unique_ptr_to_widget : std::false_type {};
+
+template<typename T>
+struct is_unique_ptr_to_widget<std::unique_ptr<T>>
+    : std::bool_constant<std::is_base_of_v<Widget, T>> {};
+
+template<typename T>
+inline constexpr bool is_unique_ptr_to_widget_v = is_unique_ptr_to_widget<T>::value;
 
 template <typename T>
 concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;

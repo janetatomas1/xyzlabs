@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <memory>
 #include <concepts>
 
 #include "xyzlabs/widget.hpp"
@@ -41,7 +40,7 @@ class Window {
     int32_t height_ = 0;
 
     std::unique_ptr<Widget> centralWidget_;
-    Widget* submit_widget(std::unique_ptr<Widget> widget);    
+    Widget* submit_widget(std::unique_ptr<Widget> widget);
 public:
     void make_context_current();
     virtual void init();
@@ -78,16 +77,6 @@ public:
     ImGuiStyle& style();
 };
 
-template<typename T>
-struct is_unique_ptr_to_widget : std::false_type {};
-
-template<typename T>
-struct is_unique_ptr_to_widget<std::unique_ptr<T>>
-    : std::bool_constant<std::is_base_of_v<Widget, T>> {};
-
-template<typename T>
-inline constexpr bool is_unique_ptr_to_widget_v = is_unique_ptr_to_widget<T>::value;
-
 template<
     WidgetType W,
     typename... Args
@@ -103,7 +92,7 @@ Widget* Window::set_central_widget(Args... args) {
                 std::make_unique<W>(
                     std::forward<Args>(args)...
                 )
-            );            
+            );
         }
     } else {
         return submit_widget(

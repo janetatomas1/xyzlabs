@@ -12,7 +12,7 @@ TabWidget::TabWidget(
     Window *window
 ): Widget(title, parent, window) {}
 
-Widget* TabWidget::add_tab(std::unique_ptr<Widget> tab, size_t position) {
+Widget* TabWidget::add_tab_internal(std::unique_ptr<Widget> tab, size_t position) {
     Widget *ptr = tab.get();
     event_manager().add_action([this, position, widget = std::move(tab)]() mutable {
         auto size = btnLayout_.size_relative();
@@ -34,6 +34,23 @@ Widget* TabWidget::add_tab(std::unique_ptr<Widget> tab, size_t position) {
         btnLayout_.set_size_relative(size);
     });
     return ptr;
+}
+
+Widget* TabWidget::set_tab_internal(std::unique_ptr<Widget> tab, size_t position) {
+    if(tabs_.size() > position) {
+        Widget *ptr = tab.get();
+        event_manager().add_action([this, position, tab = std::move(tab)]() mutable {
+            window()->make_context_current();
+            tab->init();
+            tab->set_parent(this);
+            tab->set_window(window());
+            tabs_[position]->destroy();
+            tabs_[position] = std::move(tab);
+        });
+        return ptr;
+    }
+
+    return nullptr;
 }
 
 void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
@@ -84,13 +101,17 @@ size_t TabWidget::count() {
 }
 
 void TabWidget::remove_tab(size_t idx) {
-    tabs_.erase(tabs_.begin() + idx);
+    event_manager().add_action([this, idx] () {
+        tabs_[idx]->destroy();
+        tabs_.erase(tabs_.begin() + idx);
+    });
 }
 
 void TabWidget::remove_tab_id(uint64_t id) {
     event_manager().add_action([this, id]() {
         for(size_t i=0;i < tabs_.size();i++) {
             if(tabs_[i]->id() == id) {
+                tabs_[id]->destroy();
                 tabs_.erase(tabs_.begin() + i);
                 return;
             }

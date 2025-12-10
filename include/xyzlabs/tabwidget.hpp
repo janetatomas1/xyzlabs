@@ -1,9 +1,12 @@
 
 #pragma once
 
+#include <cstddef>
 #include <memory>
+#include <string>
 #include <vector>
 
+#include "widget.hpp"
 #include "xyzlabs/widget.hpp"
 
 namespace xyzlabs {
@@ -16,14 +19,15 @@ class TabWidget: public Widget {
     RelativeLayout btnLayout_ = {{
         1.0f - padding, 0.035f
     }, {
-       0.0f, 0.0f 
+       0.0f, 0.0f
     }};
     RelativeLayout tabLayout_ = {{
         1.0f, 0.965f
     }, {
        0.0f, 0.035f
     }};
-
+    Widget* add_tab_internal(std::unique_ptr<Widget> tab, size_t position = std::string::npos);
+    Widget* set_tab_internal(std::unique_ptr<Widget> tab, size_t position);
 public:
     TabWidget(
         const std::string &title = "",
@@ -31,25 +35,16 @@ public:
         Window *window = nullptr
     );
     void show(const ImVec2 &size, const ImVec2 &position) override;
-    Widget* add_tab(std::unique_ptr<Widget> widget, size_t position = std::string::npos);
     template<
         WidgetType W = Widget,
-        typename... Args,
-        typename = std::enable_if_t<
-            !((sizeof...(Args) == 0) ||(sizeof...(Args) == 1 &&
-            std::is_convertible_v<std::decay_t<Args>..., std::unique_ptr<Widget>>
-            ))
-        >
+        typename... Args
     >
-    Widget* add_tab(size_t position = std::string::npos, Args&&... args) {
-        auto tab = std::make_unique<W>(std::forward<Args>(args)...);
-        return add_tab(std::move(tab));
-    };
-    template<WidgetType W = Widget>
-    Widget* add_tab(size_t position = std::string::npos) {
-        auto tab = std::make_unique<W>();
-        return add_tab(std::move(tab), position);
-    };
+    Widget* add_tab(size_t position = std::string::npos, Args&&... args);
+    template<
+        WidgetType W = Widget,
+        typename... Args
+    >
+    Widget* set_tab(size_t position, Args&&... args);
     Widget* get_tab(size_t idx);
     Widget* get_tab_id(uint64_t id);
     Widget* get_current_tab();
@@ -57,6 +52,60 @@ public:
     size_t count();
     void remove_tab(size_t idx);
     void remove_tab_id(uint64_t id);
+};
+
+template<
+    WidgetType W,
+    typename... Args
+>
+Widget* TabWidget::add_tab(size_t position, Args&&... args) {
+    if constexpr (sizeof...(Args) == 1) {
+        using First = std::tuple_element_t<0, std::tuple<Args...>>;
+        if constexpr (is_unique_ptr_to_widget_v<std::decay_t<First>> && std::is_same_v<W, Widget>) {
+            auto tab = std::move(std::get<0>(std::forward_as_tuple(args...)));
+            return add_tab_internal(
+                std::move(tab),
+                position
+            );
+        } else {
+            return add_tab_internal(
+                std::make_unique<W>(
+                    std::forward<Args>(args)...
+                ),
+                position
+            );
+        }
+    } else {
+        auto tab = std::make_unique<W>(std::forward<Args>(args)...);
+        return add_tab_internal(
+            std::move(tab),
+            position
+        );
+    }
+};
+
+template<
+    WidgetType W,
+    typename... Args
+>
+Widget* TabWidget::set_tab(size_t position, Args&&... args) {
+    if constexpr (sizeof...(Args) == 1) {
+        using First = std::tuple_element_t<0, std::tuple<Args...>>;
+        if constexpr (is_unique_ptr_to_widget_v<std::decay_t<First>> && std::is_same_v<W, Widget>) {
+            auto tab = std::move(std::get<0>(std::forward_as_tuple(args...)));
+            return set_tab_internal(std::move(tab), position);
+        } else {
+            return set_tab_internal(
+                std::make_unique<W>(
+                    std::forward<Args>(args)...
+                ),
+                position
+            );
+        }
+    } else {
+        auto tab = std::make_unique<W>(std::forward<Args>(args)...);
+        return set_tab_internal(std::move(tab), position);
+    }
 };
 
 }
