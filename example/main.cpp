@@ -1,7 +1,6 @@
 
 #include "xyzlabs/globals.hpp"
 #include "burningforest.hpp"
-#include "xyzlabs/tabwidget.hpp"
 
 using namespace xyzlabs;
 
