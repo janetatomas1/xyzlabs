@@ -15,9 +15,7 @@ Widget::Widget(const std::string &title, Widget *parent, Window *window):
     windowID_ = fmt::format("{}##{}", title_, id_);
 }
 
-void Widget::show(const ImVec2 &size, const ImVec2& position) {
-    ImGui::Button(title_.c_str(), size);
-}
+void Widget::show(const ImVec2 &size, const ImVec2& position) {}
 
 void Widget::display(const ImVec2 &size, const ImVec2& position) {
     if(ImGui::Begin(windowID_.c_str(), nullptr, windowFlags_)) {

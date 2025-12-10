@@ -4,3 +4,4 @@ third-party
 CMakeUserPresets.json
 CMakePresets.json
 .vscode
+.zed

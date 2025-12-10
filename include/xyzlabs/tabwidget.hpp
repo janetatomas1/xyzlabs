@@ -2,6 +2,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -13,13 +14,24 @@ namespace xyzlabs {
 
 class TabWidget: public Widget {
     std::vector<std::unique_ptr<Widget>> tabs_;
+    std::string tabBarID_;
     float padding = 0.005;
     size_t currentTab_ = 0;
 
+    ImVec2 closeBtnSize = {30.0f, 0.0f};
+    ImVec2 closeBtnPosition = {0.0f, 0.0f};
+    ImVec2 btnSize = {0.0f, 0.0f};
+    ImVec2 btnPosition = {0.0f, 0.0f};
+
     RelativeLayout btnLayout_ = {{
-        1.0f - padding, 0.035f
+        1.0f, 0.035f
     }, {
        0.0f, 0.0f
+    }};
+    RelativeLayout closeBtnLayout_ = {{
+        0.02f, 1.0f
+    }, {
+       0.98f, 0.0f
     }};
     RelativeLayout tabLayout_ = {{
         1.0f, 0.965f
@@ -28,6 +40,9 @@ class TabWidget: public Widget {
     }};
     Widget* add_tab_internal(std::unique_ptr<Widget> tab, size_t position = std::string::npos);
     Widget* set_tab_internal(std::unique_ptr<Widget> tab, size_t position);
+    void render_full_tabbar();
+    void render_only_current();
+    void recompute_tab_width();
 public:
     TabWidget(
         const std::string &title = "",
@@ -39,7 +54,7 @@ public:
         WidgetType W = Widget,
         typename... Args
     >
-    Widget* add_tab(size_t position = std::string::npos, Args&&... args);
+    Widget* add_tab(Args&&... args);
     template<
         WidgetType W = Widget,
         typename... Args
@@ -58,28 +73,25 @@ template<
     WidgetType W,
     typename... Args
 >
-Widget* TabWidget::add_tab(size_t position, Args&&... args) {
+Widget* TabWidget::add_tab(Args&&... args) {
     if constexpr (sizeof...(Args) == 1) {
         using First = std::tuple_element_t<0, std::tuple<Args...>>;
         if constexpr (is_unique_ptr_to_widget_v<std::decay_t<First>> && std::is_same_v<W, Widget>) {
             auto tab = std::move(std::get<0>(std::forward_as_tuple(args...)));
             return add_tab_internal(
-                std::move(tab),
-                position
+                std::move(tab)
             );
         } else {
             return add_tab_internal(
                 std::make_unique<W>(
                     std::forward<Args>(args)...
-                ),
-                position
+                )
             );
         }
     } else {
         auto tab = std::make_unique<W>(std::forward<Args>(args)...);
         return add_tab_internal(
-            std::move(tab),
-            position
+            std::move(tab)
         );
     }
 };

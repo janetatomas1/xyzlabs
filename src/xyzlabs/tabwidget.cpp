@@ -1,7 +1,11 @@
 
+#include <fmt/format.h>
+#include <string>
+
 #include "xyzlabs/tabwidget.hpp"
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/window.hpp"
 
 namespace xyzlabs {
@@ -10,7 +14,9 @@ TabWidget::TabWidget(
     const std::string &title,
     Widget *parent,
     Window *window
-): Widget(title, parent, window) {}
+): Widget(title, parent, window) {
+    tabBarID_ = fmt::format("{}##{}", title, random_generator().random());
+}
 
 Widget* TabWidget::add_tab_internal(std::unique_ptr<Widget> tab, size_t position) {
     Widget *ptr = tab.get();
@@ -32,6 +38,7 @@ Widget* TabWidget::add_tab_internal(std::unique_ptr<Widget> tab, size_t position
         }
         size.x = size.x / tabs_.size();
         btnLayout_.set_size_relative(size);
+        recompute_tab_width();
     });
     return ptr;
 }
@@ -53,17 +60,69 @@ Widget* TabWidget::set_tab_internal(std::unique_ptr<Widget> tab, size_t position
     return nullptr;
 }
 
-void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
-    if(tabs_.size() > 1) {
-        for(size_t i=0;i < tabs_.size();i++) {
-            auto &tab = tabs_[i];
-            auto [btnSize, btnPosition] = btnLayout_.compute(size, position);
-            btnPosition.x = btnSize.x * i * (1 + padding);
-            ImGui::SetCursorPos(btnPosition);
-            if(ImGui::Button(tab->window_id().c_str(), btnSize)) {
+void TabWidget::render_full_tabbar() {
+    for(size_t i=0;i < tabs_.size();i++) {
+        auto &tab = tabs_[i];
+
+        ImGui::SetCursorPos(btnPosition);
+        if(ImGui::Button(tab->window_id().c_str(), btnSize)) {
+            auto mousePos = ImGui::GetMousePos();
+            if(mousePos.x > closeBtnPosition.x) {
+                remove_tab(currentTab_);
+                if(currentTab_ == tabs_.size() - 1) {
+                    currentTab_ -= 1;
+                }
+            } else {
                 currentTab_ = i;
             }
         }
+
+        ImGui::SetCursorPos(closeBtnPosition);
+        if(ImGui::Button(fmt::format("x##{}", i).c_str(), closeBtnSize)) {
+        }
+        btnPosition.x += btnSize.x;
+        closeBtnPosition.x += btnSize.x;
+    }
+}
+
+void TabWidget::render_only_current() {
+    for(size_t i=0;i < tabs_.size();i++) {
+        auto &tab = tabs_[i];
+
+        ImGui::SetCursorPos(btnPosition);
+        if(ImGui::Button(tab->window_id().c_str(), btnSize)) {
+            auto mousePos = ImGui::GetMousePos();
+            if(currentTab_ == i && mousePos.x > closeBtnPosition.x) {
+                remove_tab(currentTab_);
+                if(currentTab_ == tabs_.size() - 1) {
+                    currentTab_ -= 1;
+                }
+            } else {
+                currentTab_ = i;
+            }
+        }
+
+        if(currentTab_ == i) {
+            ImGui::SetCursorPos(closeBtnPosition);
+            ImGui::Button(fmt::format("x##{}", i).c_str(), closeBtnSize);
+        }
+        btnPosition.x += btnSize.x;
+        closeBtnPosition.x += btnSize.x;
+    }
+}
+
+void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
+    btnSize = btnLayout_.compute_size(size);
+    btnPosition = btnLayout_.compute_position(size, position);
+    closeBtnSize = {30.0f, btnSize.y};
+    closeBtnPosition = {btnSize.x - 30, 0.0f};
+
+    const bool displayAllCloseBtns = btnSize.x > closeBtnSize.x * 10.0f;
+
+    if(displayAllCloseBtns) {
+        render_full_tabbar();
+    } else {
+        render_only_current();
     }
 
     if(currentTab_ < tabs_.size()) {
@@ -104,6 +163,7 @@ void TabWidget::remove_tab(size_t idx) {
     event_manager().add_action([this, idx] () {
         tabs_[idx]->destroy();
         tabs_.erase(tabs_.begin() + idx);
+        recompute_tab_width();
     });
 }
 
@@ -113,9 +173,22 @@ void TabWidget::remove_tab_id(uint64_t id) {
             if(tabs_[i]->id() == id) {
                 tabs_[id]->destroy();
                 tabs_.erase(tabs_.begin() + i);
+                recompute_tab_width();
                 return;
             }
         }
+    });
+}
+
+void TabWidget::recompute_tab_width() {
+    event_manager().add_action([this]() mutable {
+        auto size = btnLayout_.size_relative();
+        if(tabs_.empty()) {
+            size.x = 1;
+        } else {
+            size.x = 1.0f / tabs_.size();
+        }
+        btnLayout_.set_size_relative(size);
     });
 }
 

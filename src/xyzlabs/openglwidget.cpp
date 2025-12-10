@@ -5,7 +5,7 @@
 
 namespace xyzlabs {
 
-OpenGLWidget::OpenGLWidget(const std::string &title): Widget(title) {}
+OpenGLWidget::OpenGLWidget(const std::string &title): TabWidget(title) {}
 
 void OpenGLWidget::init() {
     backend_.create_framebuffer(
@@ -21,16 +21,16 @@ void OpenGLWidget::show(const ImVec2 &size, const ImVec2 &pos) {
     backend_.unbind_framebuffer();
 
     ImGui::GetWindowDrawList()->AddImage(
-			(void*)backend_.texture_id, 
-			ImVec2(pos.x, pos.y), 
-			ImVec2(pos.x + size.x, pos.y + size.y), 
-			ImVec2(0, 1), 
+			(void*)backend_.texture_id,
+			ImVec2(pos.x, pos.y),
+			ImVec2(pos.x + size.x, pos.y + size.y),
+			ImVec2(0, 1),
 			ImVec2(1, 0)
     );
 }
 
 OpenGLWidget::~OpenGLWidget() {
-    backend_.destroy();   
+    backend_.destroy();
 }
 
 }
