@@ -22,15 +22,16 @@ public:
 
 template<ObjectType O>
 O* ObjectRegistry::insert(std::unique_ptr<O> obj) {
+    auto ptr = obj.get();
     uint64_t id = obj->id();
     objects_[id] = std::move(obj);
-    return objects_[id].get();
+    return ptr;
 }
 
 template<ObjectType O>
 O* ObjectRegistry::get(uint64_t id) {
     if(objects_.contains(id)) {
-        return objects_[id].get();
+        return dynamic_cast<O*>(objects_[id].get());
     }
     return nullptr;
 }
