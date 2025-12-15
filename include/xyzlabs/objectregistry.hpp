@@ -15,8 +15,9 @@ public:
     ObjectRegistry() = default;
     template<ObjectType O = Object>
     O* insert(std::unique_ptr<O> obj);
+    Object* get(uint64_t id);
     template<ObjectType O = Object>
-    O* get(uint64_t id);
+    O* get_as(uint64_t id);
     void remove(uint64_t id);
 };
 
@@ -24,16 +25,15 @@ template<ObjectType O>
 O* ObjectRegistry::insert(std::unique_ptr<O> obj) {
     auto ptr = obj.get();
     uint64_t id = obj->id();
-    objects_[id] = std::move(obj);
+    std::unique_ptr<Object> proxy = std::move(obj);
+    objects_[id] = std::move(proxy);
     return ptr;
 }
 
 template<ObjectType O>
-O* ObjectRegistry::get(uint64_t id) {
-    if(objects_.contains(id)) {
-        return dynamic_cast<O*>(objects_[id].get());
-    }
-    return nullptr;
+O* ObjectRegistry::get_as(uint64_t id) {
+    return dynamic_cast<O*>(get(id));
 }
+
 
 }

@@ -43,6 +43,9 @@ public:
     void set_flags(int flags);
     RelativeLayout &layout();
     Widget* parent();
+    template<class W>
+    W* parent_as();
+
     void set_parent(Widget *parent);
     Window* window();
     void set_window(Window *window);
@@ -60,5 +63,10 @@ inline constexpr bool is_unique_ptr_to_widget_v = is_unique_ptr_to_widget<T>::va
 
 template <typename T>
 concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
+
+template<class W>
+W* Widget::parent_as() {
+    return dynamic_cast<W*>(parent());
+}
 
 }
