@@ -169,14 +169,13 @@ void TabWidget::remove_tab(size_t idx) {
 
 void TabWidget::remove_tab_id(uint64_t id) {
     event_manager().add_action([this, id]() {
-        for(size_t i=0;i < tabs_.size();i++) {
-            if(tabs_[i]->id() == id) {
-                tabs_[id]->destroy();
-                tabs_.erase(tabs_.begin() + i);
-                recompute_tab_width();
-                return;
+        auto it = std::find_if(tabs_.begin(), tabs_.end(),
+            [id](const auto& w) {
+                return w->id() == id;
             }
-        }
+        );
+        size_t index = std::distance(tabs_.begin(), it);
+        remove_tab(index);
     });
 }
 
