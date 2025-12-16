@@ -164,6 +164,9 @@ void TabWidget::remove_tab(size_t idx) {
         tabs_[idx]->destroy();
         tabs_.erase(tabs_.begin() + idx);
         recompute_tab_width();
+        if(currentTab_ != 0) {
+            currentTab_ = currentTab_ - 1;
+        }
     });
 }
 
