@@ -1,43 +1,40 @@
 
+#include <cstdlib>
+#include <fmt/format.h>
+
 #include "xyzlabs/dialog.hpp"
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/globals.hpp"
 
-#include <spdlog/spdlog.h>
-
-namespace xyzlabs { 
+namespace xyzlabs {
 
 Dialog::Dialog(
     const std::string &content,
     const std::string &acceptText,
     const std::string &rejectText,
-    const std::string &title): 
+    const std::string &title):
     Widget(title),
     content_(content),
     acceptText_(acceptText),
     rejectText_(rejectText) {
-    layout().set_size_relative({0.35f, 0.3f});
-    layout().set_position_relative({0.35f, 0.3f});
-}
-
-void Dialog::display(const ImVec2 &size, const ImVec2 &position) {
-    ImGui::SetNextWindowFocus();
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, color_);
-    Widget::display(size, position);
-    ImGui::PopStyleColor();
+    layout().set_size_relative({0.4f, 0.3f});
+    layout().set_position_relative({0.3f, 0.1f});
 }
 
 void Dialog::show(const ImVec2 &size, const ImVec2 &position) {
-    auto [contentSize, contentPos] = contentLayout_.compute(size, {0.0f, 0.0f});
-    auto [rejectBtnSize, rejectBtnPos] = rejectBtnLayout_.compute(size, {0.0f, 0.0f});
+    auto [outerSize, outerPos] = layout().compute(size, position);
+
+    auto [contentSize, contentPos] = contentLayout_.compute(outerSize, {0.0f, 0.0f});
+    auto [rejectBtnSize, rejectBtnPos] = rejectBtnLayout_.compute(outerSize, {0.0f, 0.0f});
 
     auto &acceptLayout = rejectActive_ ? acceptBtnLayout_ : acceptBtnAloneLayout_;
-    auto [acceptBtnSize, acceptBtnPos] = acceptLayout.compute(size, {0.0f, 0.0f});
+    auto [acceptBtnSize, acceptBtnPos] = acceptLayout.compute(outerSize, {0.0f, 0.0f});
+
+    ImGui::SetCursorPos(outerPos);
+    ImGui::BeginChild(fmt::format("##outer{}", id()).c_str(), outerSize, true, ImGuiWindowFlags_NoScrollbar);
 
     ImGui::SetCursorPos(contentPos);
-    ImGui::BeginChild("TextBox", contentSize, true, ImGuiWindowFlags_NoScrollbar);
     ImGui::TextWrapped("%s", content_.c_str());
-    ImGui::EndChild();
 
     ImGui::SetCursorPos(rejectBtnPos);
     if(rejectActive_ && ImGui::Button(rejectText_.c_str(), rejectBtnSize)) {
@@ -48,6 +45,7 @@ void Dialog::show(const ImVec2 &size, const ImVec2 &position) {
     if(ImGui::Button(acceptText_.c_str(), acceptBtnSize)) {
         accept();
     }
+    ImGui::EndChild();
 }
 
 void Dialog::accept() {
@@ -114,6 +112,22 @@ void Dialog::set_reject_active(bool value) {
     event_manager().add_action([this, value]() mutable {
         rejectActive_ = value;
     });
+}
+
+RelativeLayout &Dialog::accept_btn_layout() {
+    return acceptBtnLayout_;
+}
+
+RelativeLayout &Dialog::reject_btn_layout() {
+    return rejectBtnLayout_;
+}
+
+RelativeLayout &Dialog::accept_btn_alone_layout() {
+    return acceptBtnAloneLayout_;
+}
+
+RelativeLayout &Dialog::content_layout() {
+    return contentLayout_;
 }
 
 }

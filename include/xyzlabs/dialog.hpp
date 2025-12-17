@@ -10,7 +10,7 @@ class Dialog: public Widget {
     std::string content_;
     std::string acceptText_ = "OK";
     std::string rejectText_ = "Cancel";
-  
+
     action acceptAction_ = []() {};
     action rejectAction_ = []() {};
 
@@ -20,20 +20,20 @@ class Dialog: public Widget {
     bool rejectActive_ = true;
 
     RelativeLayout contentLayout_ = {
-        {0.8f, 0.6f},
+        {0.3f, 0.2f},
         {0.1f, 0.1f}
     };
     RelativeLayout acceptBtnLayout_ = {
-        {0.15f, 0.12f},
-        {0.6f, 0.8f}
+        {0.2f, 0.15f},
+        {0.55f, 0.5f}
     };
     RelativeLayout acceptBtnAloneLayout_ = {
-        {0.15f, 0.12f},
-        {0.43f, 0.8f}
+        {0.2f, 0.15f},
+        {0.45f, 0.5f}
     };
     RelativeLayout rejectBtnLayout_ = {
-        {0.15f, 0.12f},
-        {0.2f, 0.8f}
+        {0.2f, 0.15f},
+        {0.25f, 0.5f}
     };
 public:
     Dialog(
@@ -42,7 +42,6 @@ public:
         const std::string &rejectText = "Cancel",
         const std::string &title = ""
     );
-    void display(const ImVec2 &size, const ImVec2 &position) override;
     void show(const ImVec2 &size, const ImVec2 &position) override;
     virtual void accept();
     virtual void reject();
@@ -57,6 +56,10 @@ public:
     ImVec4 background_color();
     void set_background_color(const ImVec4 &color);
     void set_reject_active(bool value);
+    RelativeLayout &accept_btn_layout();
+    RelativeLayout &reject_btn_layout();
+    RelativeLayout &accept_btn_alone_layout();
+    RelativeLayout &content_layout();
 };
 
 }

@@ -49,7 +49,7 @@ target_link_directories(
     ${CMAKE_LIBRARY_PATH}
 )
 
-if(MSVS) 
+if(MSVS)
     set(GLEW_LIBRARY "libglew32")
     set(OPENGL_LIBRARY OpenGL::GL)
 else()
@@ -70,7 +70,7 @@ target_link_libraries(
 
 add_definitions(-DGLEW_STATIC)
 
-target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL) 
+target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL)
 
 if(USE_GLFW)
     target_compile_definitions(xyzlabs PUBLIC USE_GLFW)
@@ -95,5 +95,5 @@ add_compile_options(
 
 add_subdirectory(example)
 add_compile_options(
-    -fsanitize=address
+    -fsanitize=address -Wfatal-errors
 )
