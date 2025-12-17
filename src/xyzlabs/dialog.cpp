@@ -30,8 +30,11 @@ void Dialog::show(const ImVec2 &size, const ImVec2 &position) {
     auto &acceptLayout = rejectActive_ ? acceptBtnLayout_ : acceptBtnAloneLayout_;
     auto [acceptBtnSize, acceptBtnPos] = acceptLayout.compute(outerSize, {0.0f, 0.0f});
 
+    auto drawList = ImGui::GetWindowDrawList();
+    drawList->AddRectFilled(outerPos, outerPos + outerSize, ImGui::GetColorU32(ImGuiCol_WindowBg));
+
     ImGui::SetCursorPos(outerPos);
-    ImGui::BeginChild(fmt::format("##outer{}", id()).c_str(), outerSize, true, ImGuiWindowFlags_NoScrollbar);
+    ImGui::BeginChild(fmt::format("##outer{}", id()).c_str(), outerSize, true);
 
     ImGui::SetCursorPos(contentPos);
     ImGui::TextWrapped("%s", content_.c_str());
