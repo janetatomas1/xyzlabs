@@ -13,7 +13,9 @@ namespace xyzlabs3d {
 ViewportWidget::ViewportWidget(const std::string& title) : Widget(title) {}
 
 void ViewportWidget::init() {
-    ctx_ = std::make_unique<Platform::GLContext>(0, nullptr);
+    Magnum::GL::Context::Configuration config;
+    config.setFlags(Magnum::GL::Context::Configuration::Flag::QuietLog);
+    ctx_ = std::make_unique<Platform::GLContext>(config);
 
     framebuffer_ = std::make_optional(GL::Framebuffer{{{0, 0}, {800, 600}}});
 
