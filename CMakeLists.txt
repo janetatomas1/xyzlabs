@@ -6,13 +6,13 @@ if(DEFINED CMAKE_TOOLCHAIN_FILE_ AND EXISTS ${CMAKE_TOOLCHAIN_FILE_})
     include(${CMAKE_TOOLCHAIN_FILE_})
 endif()
 
-option(USE_GLFW "Enable GLFW backend" OFF)
-option(USE_SDL "Enable SDL backend" ON)
+option(USE_GLFW "Enable GLFW backend" ON)
+option(USE_SDL "Enable SDL backend" OFF)
 option(WITH_3D "Build xyzlabs3d library" ON)
 option(WITH_EXAMPLE "Build example" ON)
 
 if(USE_GLFW AND USE_SDL)
-    message(FATAL_ERROR "Cannot use both GLFW and SDL backends")
+
 endif()
 
 if(USE_GLFW)
