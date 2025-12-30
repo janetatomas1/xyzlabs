@@ -9,6 +9,7 @@ endif()
 option(USE_GLFW "Enable GLFW backend" ON)
 option(USE_SDL "Enable SDL backend" OFF)
 option(WITH_3D "Build xyzlabs3d library" ON)
+option(WITH_EXAMPLE "Build example" ON)
 
 if(USE_GLFW)
     set(BACKEND_LIBRARY glfw3)
@@ -101,34 +102,44 @@ if(WITH_3D)
     )
 endif()
 
-add_executable(triangle
-    "${CMAKE_SOURCE_DIR}/src/triangle/main.cpp"
-)
-target_include_directories(
-    triangle
-    PRIVATE
-    "${CMAKE_SOURCE_DIR}/include/"
-)
-target_link_libraries(
-    triangle
-    PRIVATE
-    xyzlabs
-    xyzlabs3d
-)
+if(WITH_EXAMPLE AND NOT WITH_3D)
+    message(FATAL_ERROR "xyzlabs3d library must be built for examples")
+elseif(WITH_EXAMPLE)
+    add_executable(triangle
+        "${CMAKE_SOURCE_DIR}/src/triangle/main.cpp"
+    )
+    target_include_directories(
+        triangle
+        PRIVATE
+        "${CMAKE_SOURCE_DIR}/include/"
+    )
+    target_link_libraries(
+        triangle
+        PRIVATE
+        xyzlabs
+        xyzlabs3d
+    )
+endif()
 
 install(
     TARGETS xyzlabs
     ARCHIVE DESTINATION lib
 )
 install(
-    DIRECTORY include/
-    DESTINATION include
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs
+    DESTINATION include/xyzlabs
 )
 add_compile_options(
     -Wfatal-errors
 )
 
-add_subdirectory(example)
-add_compile_options(
-    -fsanitize=address -Wfatal-errors
-)
+if(WITH_3D)
+    install(
+        TARGETS xyzlabs3d
+        ARCHIVE DESTINATION lib
+    )
+    install(
+        DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs3d
+        DESTINATION include/xyzlabs3d
+    )
+endif()
