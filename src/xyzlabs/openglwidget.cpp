@@ -8,29 +8,22 @@ namespace xyzlabs {
 OpenGLWidget::OpenGLWidget(const std::string &title): TabWidget(title) {}
 
 void OpenGLWidget::init() {
-    backend_.create_framebuffer(
+    fb_.create(
         window_manager().get_main_window()->width(),
         window_manager().get_main_window()->height()
     );
 }
 
 void OpenGLWidget::show(const ImVec2 &size, const ImVec2 &pos) {
-    backend_.rescale_framebuffer(size.x, size.y);
-    backend_.bind_framebuffer();
+    fb_.rescale(size.x, size.y);
+    fb_.bind();
     update();
-    backend_.unbind_framebuffer();
-
-    ImGui::GetWindowDrawList()->AddImage(
-			(void*)backend_.texture_id,
-			ImVec2(pos.x, pos.y),
-			ImVec2(pos.x + size.x, pos.y + size.y),
-			ImVec2(0, 1),
-			ImVec2(1, 0)
-    );
+    fb_.unbind();
+    fb_.render(size.x, size.y);
 }
 
 OpenGLWidget::~OpenGLWidget() {
-    backend_.destroy();
+    fb_.destroy();
 }
 
 }

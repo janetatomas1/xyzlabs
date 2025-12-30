@@ -8,6 +8,7 @@ endif()
 
 option(USE_GLFW "Enable GLFW backend" ON)
 option(USE_SDL "Enable SDL backend" OFF)
+option(WITH_3D "Build xyzlabs3d library" ON)
 
 if(USE_GLFW)
     set(BACKEND_LIBRARY glfw3)
@@ -80,6 +81,40 @@ else()
     target_link_libraries(xyzlabs PUBLIC SDL3)
 endif()
 
+if(WITH_3D)
+    find_package(
+        Magnum
+        REQUIRED
+        GL
+        GlfwApplication
+        Shaders
+    )
+    file(GLOB XYZLABS3D_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs3d/*.cpp")
+    add_library(xyzlabs3d STATIC "${XYZLABS3D_SOURCES}")
+    target_include_directories(xyzlabs3d PUBLIC "${CMAKE_SOURCE_DIR}/include/")
+    target_link_libraries(
+        xyzlabs3d
+        PUBLIC xyzlabs
+        Magnum::GL
+        Magnum::Application
+        Magnum::Shaders
+    )
+endif()
+
+add_executable(triangle
+    "${CMAKE_SOURCE_DIR}/src/triangle/main.cpp"
+)
+target_include_directories(
+    triangle
+    PRIVATE
+    "${CMAKE_SOURCE_DIR}/include/"
+)
+target_link_libraries(
+    triangle
+    PRIVATE
+    xyzlabs
+    xyzlabs3d
+)
 
 install(
     TARGETS xyzlabs

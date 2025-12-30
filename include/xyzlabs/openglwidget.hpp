@@ -3,14 +3,14 @@
 
 #include "tabwidget.hpp"
 #include "xyzlabs/widget.hpp"
-#include "xyzlabs/openglbackend.hpp"
+#include "xyzlabs/framebuffer.hpp"
 #include "xyzlabs/shape.hpp"
 #include "xyzlabs/tabwidget.hpp"
 
 namespace xyzlabs {
 
 class OpenGLWidget: public TabWidget {
-	OpenGLBackend backend_;
+	Framebuffer fb_;
 
 public:
     OpenGLWidget(const std::string &title);
