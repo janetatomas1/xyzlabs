@@ -25,9 +25,9 @@ public:
     void init() override;
     void destroy() override;
     void show(const ImVec2 &size, const ImVec2 &position) override;
-    GL::Framebuffer& get_framebuffer();
-    GL::Texture2D& get_texture();
-    GL::Renderbuffer& get_depth_buffer();
+    GL::Framebuffer& framebuffer();
+    GL::Texture2D& texture();
+    GL::Renderbuffer& depth_buffer();
 };
 
 }

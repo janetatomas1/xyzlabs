@@ -1,12 +1,8 @@
 #include <Magnum/GL/AbstractFramebuffer.h>
 #include <Magnum/GL/Buffer.h>
-#include <Magnum/GL/DefaultFramebuffer.h>
-#include <Magnum/GL/Mesh.h>
-#include <Magnum/Math/Color.h>
-#include <Magnum/Shaders/VertexColorGL.h>
+#include <Magnum/GL/Renderer.h>
 #include <Magnum/GL/TextureFormat.h>
 #include <Magnum/GL/RenderbufferFormat.h>
-#include <Magnum/GL/Renderer.h>
 
 #include "xyzlabs3d/viewportwidget.hpp"
 
@@ -37,12 +33,26 @@ void ViewportWidget::init() {
 }
 
 void ViewportWidget::destroy() {
+    texture_->release();
+    depthBuffer_->release();
     framebuffer_->release();
     ctx_.release();
 }
 
 void ViewportWidget::show(const ImVec2 &size, const ImVec2 &position) {
     ImGui::Image(texture_->id(), size);
+}
+
+GL::Framebuffer& ViewportWidget::framebuffer() {
+    return framebuffer_.value();
+}
+
+GL::Texture2D& ViewportWidget::texture() {
+    return texture_.value();
+}
+
+GL::Renderbuffer& ViewportWidget::depth_buffer() {
+    return depthBuffer_.value();
 }
 
 }
