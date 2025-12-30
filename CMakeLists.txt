@@ -150,7 +150,7 @@ install(
 )
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs
-    DESTINATION include/xyzlabs
+    DESTINATION include/
 )
 
 if(WITH_3D)
@@ -162,7 +162,7 @@ if(WITH_3D)
     )
     install(
         DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs3d
-        DESTINATION include/xyzlabs3d
+        DESTINATION include/
     )
 endif()
 
