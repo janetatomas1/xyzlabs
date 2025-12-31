@@ -28,18 +28,11 @@ if(MSVC)
 endif()
 
 file(GLOB XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules" ${CMAKE_MODULE_PATH})
 add_library(
     xyzlabs
     STATIC
     "${XYZLABS_SOURCES}"
-)
-
-target_include_directories(
-    xyzlabs
-    PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
 )
 
 find_package(glfw3 REQUIRED)
@@ -54,6 +47,7 @@ target_include_directories(
     PUBLIC
     ${CMAKE_INCLUDE_PATH}
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_INCLUDE_PATH}>
     $<INSTALL_INTERFACE:include>
 )
 
@@ -144,9 +138,8 @@ add_compile_options(
 
 install(
     TARGETS xyzlabs
-    EXPORT xyzlabsTargets
-    ARCHIVE
-    DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
 )
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs
@@ -156,34 +149,10 @@ install(
 if(WITH_3D)
     install(
         TARGETS xyzlabs3d
-        EXPORT xyzlabsTargets
-        ARCHIVE
-        DESTINATION lib
+        ARCHIVE DESTINATION lib
     )
     install(
         DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs3d
         DESTINATION include/
     )
 endif()
-
-include(CMakePackageConfigHelpers)
-
-configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/xyzlabsConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/xyzlabsConfig.cmake
-    INSTALL_DESTINATION lib/cmake/xyzlabs
-)
-
-install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/xyzlabsConfig.cmake
-    DESTINATION lib/cmake/xyzlabs
-)
-
-install(
-    EXPORT
-    xyzlabsTargets
-    FILE
-    xyzlabsTargets.cmake
-    NAMESPACE xyzlabs::
-    DESTINATION lib/cmake/xyzlabs
-)
