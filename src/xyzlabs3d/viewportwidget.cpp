@@ -6,6 +6,7 @@
 
 #include "xyzlabs3d/viewportwidget.hpp"
 
+using namespace Magnum;
 using namespace Magnum::Math::Literals;
 
 namespace xyzlabs3d {
