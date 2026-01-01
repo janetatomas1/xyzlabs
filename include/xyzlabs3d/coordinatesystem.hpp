@@ -9,14 +9,13 @@
 
 namespace xyzlabs3d {
 
-class CoordinateSystem {
+struct CoordinateSystem {
     Magnum::GL::Mesh mesh_;
     Magnum::Shaders::VertexColorGL3D shader_;
 
 public:
     CoordinateSystem();
     ~CoordinateSystem();
-    void init();
     void draw();
 };
 

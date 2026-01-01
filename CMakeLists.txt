@@ -93,6 +93,7 @@ if(WITH_3D)
         Magnum
         REQUIRED
         GL
+        SceneGraph
         ${MAGNUM_APPLICATION_BACKEND}
         Shaders
     )
@@ -110,6 +111,7 @@ if(WITH_3D)
         Magnum::GL
         Magnum::Application
         Magnum::Shaders
+        Magnum::SceneGraph
     )
 endif()
 

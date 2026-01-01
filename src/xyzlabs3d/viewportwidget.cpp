@@ -11,51 +11,56 @@ using namespace Magnum::Math::Literals;
 
 namespace xyzlabs3d {
 
-ViewportWidget::ViewportWidget(const std::string& title) : Widget(title) {}
+std::unique_ptr<GLContext>  ViewportWidget::ctx_ = nullptr;
+
+ViewportWidget::ViewportWidget(const std::string& title) : Widget(title), camera_(cameraObject_) {}
 
 void ViewportWidget::init() {
-    Magnum::GL::Context::Configuration config;
-    config.setFlags(Magnum::GL::Context::Configuration::Flag::QuietLog);
-    ctx_ = std::make_unique<Platform::GLContext>(config);
 
-    framebuffer_ = std::make_optional(GL::Framebuffer{{{0, 0}, {800, 600}}});
+    if(!ctx_) {
+        GL::Context::Configuration config;
+        config.setFlags(GL::Context::Configuration::Flag::QuietLog);
+        ctx_ = std::make_unique<GLContext>(config);
+    }
 
-    texture_ = std::make_optional<GL::Texture2D>();
-    depthBuffer_ = std::make_optional<GL::Renderbuffer>();
+    framebuffer_ = Framebuffer{{{0, 0}, {800, 600}}};
+
+    texture_ = Texture2D();
+    depthBuffer_ = Renderbuffer();
 
     texture_
-         ->setStorage(1, GL::TextureFormat::RGBA8, {800, 600})
+        .setStorage(1, GL::TextureFormat::RGBA8, {800, 600})
         .setMinificationFilter(SamplerFilter::Linear);
-    depthBuffer_->setStorage(
+    depthBuffer_.setStorage(
         GL::RenderbufferFormat::DepthComponent24, {800, 600});
 
-    framebuffer_->attachTexture(GL::Framebuffer::ColorAttachment{0},
-                       texture_.value(), 0)
+    framebuffer_.attachTexture(GL::Framebuffer::ColorAttachment{0},
+                       texture_, 0)
         .attachRenderbuffer(GL::Framebuffer::BufferAttachment::Depth,
-                            depthBuffer_.value());
+                            depthBuffer_);
 }
 
 void ViewportWidget::destroy() {
-    texture_->release();
-    depthBuffer_->release();
-    framebuffer_->release();
-    ctx_.release();
 }
 
 void ViewportWidget::show(const ImVec2 &size, const ImVec2 &position) {
-    ImGui::Image(texture_->id(), size);
+    ImGui::Image(texture_.id(), size);
 }
 
-GL::Framebuffer& ViewportWidget::framebuffer() {
-    return framebuffer_.value();
+Framebuffer& ViewportWidget::framebuffer() {
+    return framebuffer_;
 }
 
-GL::Texture2D& ViewportWidget::texture() {
-    return texture_.value();
+Texture2D& ViewportWidget::texture() {
+    return texture_;
 }
 
-GL::Renderbuffer& ViewportWidget::depth_buffer() {
-    return depthBuffer_.value();
+Renderbuffer& ViewportWidget::depth_buffer() {
+    return depthBuffer_;
+}
+
+Camera3D& ViewportWidget::camera() {
+    return camera_;
 }
 
 }

@@ -10,11 +10,7 @@ using namespace Magnum;
 namespace xyzlabs3d {
 using namespace Math::Literals;
 
-CoordinateSystem::CoordinateSystem() {}
-
-CoordinateSystem::~CoordinateSystem() {}
-
-void CoordinateSystem::init() {
+CoordinateSystem::CoordinateSystem() {
     GL::Buffer vertexBuffer;
 
     struct Vertex {
@@ -44,6 +40,8 @@ void CoordinateSystem::init() {
     auto x = mesh_.count();
     spdlog::info("count {}", x);
 }
+
+CoordinateSystem::~CoordinateSystem() {}
 
 void CoordinateSystem::draw() {
     shader_.draw(mesh_);
