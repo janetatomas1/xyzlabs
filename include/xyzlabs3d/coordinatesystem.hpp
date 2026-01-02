@@ -1,22 +1,17 @@
 
 #pragma once
 
-#include <Magnum/GL/Mesh.h>
-#include <Magnum/Shaders/VertexColorGL.h>
-#include <Magnum/GL/Renderer.h>
-#include <Magnum/Shaders/Vector.h>
-#include <Magnum/Math/Color.h>
+#include "types.hpp"
+#include "xyzlabs3d/types.hpp"
 
 namespace xyzlabs3d {
 
-struct CoordinateSystem {
-    Magnum::GL::Mesh mesh_;
-    Magnum::Shaders::VertexColorGL3D shader_;
-
+struct CoordinateSystem: public Magnum::SceneGraph::Drawable3D {
+    Mesh mesh_;
+    VertexColorGL3D shader_;
 public:
-    CoordinateSystem();
-    ~CoordinateSystem();
-    void draw();
+    CoordinateSystem(Object3D& object, DrawableGroup3D* drawables);
+    void draw(const Matrix4& transformation, Camera3D& camera);
 };
 
 }

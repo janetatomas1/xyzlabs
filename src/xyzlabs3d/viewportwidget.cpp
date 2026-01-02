@@ -3,6 +3,7 @@
 #include <Magnum/GL/Renderer.h>
 #include <Magnum/GL/TextureFormat.h>
 #include <Magnum/GL/RenderbufferFormat.h>
+#include <Magnum/Magnum.h>
 
 #include "xyzlabs3d/viewportwidget.hpp"
 
@@ -13,10 +14,10 @@ namespace xyzlabs3d {
 
 std::unique_ptr<GLContext>  ViewportWidget::ctx_ = nullptr;
 
-ViewportWidget::ViewportWidget(const std::string& title) : Widget(title), camera_(cameraObject_) {}
+ViewportWidget::ViewportWidget(const std::string& title)
+: Widget(title) {}
 
 void ViewportWidget::init() {
-
     if(!ctx_) {
         GL::Context::Configuration config;
         config.setFlags(GL::Context::Configuration::Flag::QuietLog);
@@ -38,9 +39,9 @@ void ViewportWidget::init() {
                        texture_, 0)
         .attachRenderbuffer(GL::Framebuffer::BufferAttachment::Depth,
                             depthBuffer_);
-}
 
-void ViewportWidget::destroy() {
+    cameraObject_ = new Object3D{&scene_};
+    camera_ = new Camera3D(*cameraObject_);
 }
 
 void ViewportWidget::show(const ImVec2 &size, const ImVec2 &position) {
@@ -59,8 +60,20 @@ Renderbuffer& ViewportWidget::depth_buffer() {
     return depthBuffer_;
 }
 
-Camera3D& ViewportWidget::camera() {
+Camera3D* ViewportWidget::camera() {
     return camera_;
+}
+
+Object3D* ViewportWidget::camera_object() {
+    return cameraObject_;
+}
+
+Scene3D& ViewportWidget::scene() {
+    return scene_;
+}
+
+DrawableGroup3D& ViewportWidget::drawables() {
+    return drawables_;
 }
 
 }

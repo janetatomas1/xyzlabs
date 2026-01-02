@@ -1,6 +1,5 @@
 
-#include <Magnum/Magnum.h>
-#include <spdlog/spdlog.h>
+#include <Magnum/Math/Angle.h>
 
 #include "xyzlabs3d/coordinatesystem.hpp"
 
@@ -10,7 +9,8 @@ using namespace Magnum;
 namespace xyzlabs3d {
 using namespace Math::Literals;
 
-CoordinateSystem::CoordinateSystem() {
+CoordinateSystem::CoordinateSystem(Object3D& object, DrawableGroup3D* drawables)
+    : Drawable3D(object, drawables) {
     GL::Buffer vertexBuffer;
 
     struct Vertex {
@@ -38,13 +38,12 @@ CoordinateSystem::CoordinateSystem() {
             Shaders::VertexColorGL3D::Color3{}
         );
     auto x = mesh_.count();
-    spdlog::info("count {}", x);
 }
 
-CoordinateSystem::~CoordinateSystem() {}
-
-void CoordinateSystem::draw() {
-    shader_.draw(mesh_);
+void CoordinateSystem::draw(const Matrix4& transformation, SceneGraph::Camera3D& camera) {
+    shader_
+        .setTransformationProjectionMatrix(camera.projectionMatrix() * transformation)
+        .draw(mesh_);
 }
 
 }
