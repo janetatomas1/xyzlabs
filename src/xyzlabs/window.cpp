@@ -14,7 +14,7 @@
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/globals.hpp"
-
+#include "xyzlabs/xyzlabs.hpp"
 
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
@@ -113,7 +113,7 @@ void Window::make_context_current() {
 
 Window::Window(const std::string &title, int32_t width, int32_t height):
     title_(title),
-    id_(random_generator()()),
+    id_(XYZLabs::random_generator()()),
     centralWidget_(std::move(std::make_unique<Widget>())),
     width_(width),
     height_(height)

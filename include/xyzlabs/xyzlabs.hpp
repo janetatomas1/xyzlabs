@@ -6,7 +6,7 @@
 
 #include <imgui.h>
 
-#include "xyzlabs/randomgenerator.hpp"
+#include "randomgenerator.hpp"
 #include "xyzlabs/taskmanager.hpp"
 #include "xyzlabs/settingsmanager.hpp"
 #include "xyzlabs/eventmanager.hpp"
@@ -15,11 +15,12 @@
 
 namespace xyzlabs {
 
+class RandomGenerator;
+
 class XYZLabs {
     size_t renderTimeout_ = 30;
     std::string title_;
     TaskManager taskManager_;
-    RandomGenerator randomGenerator_;
     SettingsManager settingsManager_;
     EventManager eventManager_;
     WindowManager windowManager_;
@@ -40,11 +41,11 @@ public:
     XYZLabs& init(const std::string &title, Args... args);
     static XYZLabs& instance();
     TaskManager &task_manager();
-    RandomGenerator &random_generator();
     SettingsManager &settings_manager();
     EventManager &event_manager();
     WindowManager &window_manager();
     ObjectRegistry &object_registry();
+    static RandomGenerator& random_generator();
 
     void close();
     int exec();

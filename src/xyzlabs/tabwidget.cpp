@@ -7,6 +7,7 @@
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/window.hpp"
+#include "xyzlabs/xyzlabs.hpp"
 
 namespace xyzlabs {
 
@@ -15,7 +16,7 @@ TabWidget::TabWidget(
     Widget *parent,
     Window *window
 ): Widget(title, parent, window) {
-    tabBarID_ = fmt::format("{}##{}", title, random_generator().random());
+    tabBarID_ = fmt::format("{}##{}", title, XYZLabs::random_generator().random());
 }
 
 Widget* TabWidget::add_tab_internal(std::unique_ptr<Widget> tab, size_t position) {

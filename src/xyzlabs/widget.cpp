@@ -4,6 +4,7 @@
 
 #include "xyzlabs/widget.hpp"
 #include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/window.hpp"
@@ -11,7 +12,7 @@
 namespace xyzlabs {
 
 Widget::Widget(const std::string &title, Widget *parent, Window *window):
-    title_(title), id_(random_generator().random()), parent_(parent), window_(window) {
+    title_(title), id_(XYZLabs::random_generator().random()), parent_(parent), window_(window) {
     windowID_ = fmt::format("{}##{}", title_, id_);
 }
 

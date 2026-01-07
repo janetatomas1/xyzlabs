@@ -65,10 +65,6 @@ TaskManager &XYZLabs::task_manager() {
     return taskManager_;
 }
 
-RandomGenerator &XYZLabs::random_generator() {
-    return randomGenerator_;
-}
-
 SettingsManager &XYZLabs::settings_manager() {
     return settingsManager_;
 }
@@ -110,6 +106,11 @@ std::filesystem::path XYZLabs::create_app_directory() {
     }
 
     return appDirectory;
+}
+
+RandomGenerator &XYZLabs::random_generator() {
+    static RandomGenerator generator;
+    return generator;
 }
 
 }
