@@ -67,8 +67,13 @@ public:
         int width, int height
     );
     ImGuiStyle& style();
+<<<<<<< HEAD
     WindowManager *window_manager();
     void set_window_manager(WindowManager *windowManager);
+=======
+    WindowManager &window_manager();
+    void set_window_manager(WindowManager &windowManager);
+>>>>>>> 9a84781 (remove SDL backend)
 };
 
 template<
