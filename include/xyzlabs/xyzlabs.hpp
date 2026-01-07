@@ -25,10 +25,10 @@ class XYZLabs {
     WindowManager windowManager_;
     ObjectRegistry objectRegistry_;
 
+    XYZLabs();
     void init_();
     void exit_();
     void mainloop_();
-    XYZLabs() = default;
 
     int exitCode_ = 0;
 public:

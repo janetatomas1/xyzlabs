@@ -6,20 +6,8 @@ if(DEFINED CMAKE_TOOLCHAIN_FILE_ AND EXISTS ${CMAKE_TOOLCHAIN_FILE_})
     include(${CMAKE_TOOLCHAIN_FILE_})
 endif()
 
-option(USE_GLFW "Enable GLFW backend" ON)
-option(USE_SDL "Enable SDL backend" OFF)
 option(WITH_3D "Build xyzlabs3d library" ON)
 option(WITH_EXAMPLE "Build example" ON)
-
-if(USE_GLFW AND USE_SDL)
-
-endif()
-
-if(USE_GLFW)
-    set(BACKEND_LIBRARY glfw3)
-elseif(USE_SDL)
-    set(BACKEND_LIBRARY SDL3)
-endif()
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -35,12 +23,11 @@ add_library(
     "${XYZLABS_SOURCES}"
 )
 
-find_package(glfw3 REQUIRED)
+find_package(GLFW REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdloG REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(imgui MODULE REQUIRED)
-find_package(GLFW REQUIRED)
 
 target_include_directories(
     xyzlabs
@@ -67,27 +54,15 @@ target_link_libraries(
     ${OPENGL_LIBRARY}
     ${GLEW_LIBRARY}
     imgui::imgui
+    GLFW::GLFW
 )
 
 add_definitions(-DGLEW_STATIC)
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL)
 target_compile_definitions(xyzlabs PUBLIC FMT_HEADER_ONLY)
 
-if(USE_GLFW)
-    find_package(GLFW REQUIRED)
-    target_compile_definitions(xyzlabs PUBLIC USE_GLFW)
-    target_link_libraries(xyzlabs PUBLIC GLFW::GLFW)
-else()
-    target_compile_definitions(xyzlabs PUBLIC USE_SDL)
-    target_link_libraries(xyzlabs PUBLIC SDL3)
-endif()
-
 if(WITH_3D)
-    if(USE_GLFW)
-        set(MAGNUM_APPLICATION_BACKEND GlfwApplication)
-    elseif(USE_SDL)
-        set(MAGNUM_APPLICATION_BACKEND Sdl2Application)
-    endif()
+    set(MAGNUM_APPLICATION_BACKEND GlfwApplication)
 
     find_package(
         Magnum

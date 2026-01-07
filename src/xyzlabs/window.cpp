@@ -15,7 +15,6 @@
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/globals.hpp"
 
-#ifdef USE_GLFW
 
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
@@ -83,8 +82,8 @@ void Window::update() {
     glfwGetWindowSize(handle_, &width_, &height_);
 
     ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();    
-    
+    ImGui_ImplGlfw_NewFrame();
+
     ImGui::NewFrame();
 
     ImVec2 size = {static_cast<float>(width_), static_cast<float>(height_)};
@@ -93,7 +92,7 @@ void Window::update() {
     centralWidget_->display(size, pos);
 
     ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());	
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(handle_);
 
     key_callback();
@@ -111,92 +110,6 @@ void Window::make_context_current() {
     glfwMakeContextCurrent(handle_);
     ImGui::SetCurrentContext(ctx);
 }
-
-#else
-
-#include <SDL3/SDL.h>
-#include <imgui_impl_sdl3.h>
-
-void Window::init() {
-    handle_ = SDL_CreateWindow(
-        title_.c_str(), width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
-    );
-    glContext = SDL_GL_CreateContext(handle_);
-    SDL_GL_MakeCurrent(handle_, glContext);
-
-    IMGUI_CHECKVERSION();
-    ImGui::GetIO().IniFilename = nullptr;
-    ctx = ImGui::CreateContext();
-    ImGui::GetIO().IniFilename = nullptr;
-
-    make_context_current();
-
-    SDL_ShowWindow(handle_);
-    SDL_MaximizeWindow(handle_);
-
-    SDL_SetPointerProperty(SDL_GetWindowProperties(handle_), "WINDOW", this);
-    ImGui_ImplSDL3_InitForOpenGL(handle_, glContext);
-    ImGui_ImplOpenGL3_Init("#version 330 core");
-
-    glewExperimental = GL_TRUE;
-    if(glewInit() != GLEW_OK) {
-        spdlog::error("GLEW initialisation failed!");
-    } else {
-        spdlog::info("GLEW initialisation SUCCESS!");
-    }
-    spdlog::info("Opened new window. Title: {}, id: {}", title_, id_);
-}
-
-Window::~Window() {
-    make_context_current();
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL3_Shutdown();
-    
-    ImGui::DestroyContext();
-    SDL_GL_DestroyContext(glContext);
-    SDL_DestroyWindow(handle_);
-    
-    spdlog::info("Closed window. Title: {}, id: {}", title_, id_);
-}
-
-void Window::update() {
-    make_context_current();
-
-    SDL_GetWindowSize(handle_, &width_, &height_);
-
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL3_NewFrame();
-    ImGui::NewFrame();
-
-    ImVec2 size = {static_cast<float>(width_), static_cast<float>(height_)};
-    ImVec2 pos = {0.0f, 0.0f};
-    ImGui::SetNextWindowSize(size);
-    ImGui::SetNextWindowPos(pos);
-
-    if(ImGui::Begin("##window", nullptr,  WINDOW_FLAGS)) {
-        centralWidget_->show(size, pos);
-    }
-    ImGui::End();
-    
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    SDL_GL_SwapWindow(handle_);
-
-    key_callback();
-}
-
-WindowHandle Window::handle() {
-    return handle_;
-}
-
-void Window::make_context_current() {
-    SDL_GL_MakeCurrent(handle_, glContext);
-    ImGui::SetCurrentContext(ctx);
-}
-
-#endif
-
 
 Window::Window(const std::string &title, int32_t width, int32_t height):
     title_(title),
@@ -276,6 +189,14 @@ bool Window::export_png(const std::string &filename) {
 
 ImGuiStyle& Window::style() {
     return ImGui::GetStyle();
+}
+
+WindowManager* Window::window_manager() {
+    return windowManager_;
+}
+
+void Window::set_window_manager(WindowManager *windowManager) {
+    windowManager_ = windowManager;
 }
 
 }

@@ -3,8 +3,6 @@
 
 #include <boost/unordered/unordered_flat_map.hpp>
 #include <moodycamel/concurrentqueue.h>
-#include <vector>
-#include <memory>
 
 #include "xyzlabs/event.hpp"
 

@@ -79,4 +79,14 @@ void Widget::set_window(Window *window) {
     });
 }
 
+XYZLabs* Widget::app() {
+    if(window_ != nullptr) {
+        return window_->window_manager()->app();
+    }
+
+    if(parent_ != nullptr) {
+        return parent_->app();
+    }
+
+    return nullptr;
 }

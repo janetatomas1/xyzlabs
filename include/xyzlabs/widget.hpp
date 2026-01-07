@@ -11,7 +11,7 @@
 
 namespace xyzlabs {
 class Window;
-
+class XYZLabs;
 
 class Widget {
     std::string title_;
@@ -45,10 +45,10 @@ public:
     Widget* parent();
     template<class W>
     W* parent_as();
-
     void set_parent(Widget *parent);
     Window* window();
     void set_window(Window *window);
+    XYZLabs* app();
 };
 
 template<typename T>

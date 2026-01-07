@@ -10,7 +10,10 @@
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/eventmanager.hpp"
 
+
 namespace xyzlabs {
+
+class XYZLabs;
 
 class WindowManager {
     std::vector<std::unique_ptr<Window>> windows_;
@@ -27,7 +30,9 @@ class WindowManager {
         }
     };
     Window* submit_window(std::unique_ptr<Window> window);
+    XYZLabs* app_;
 public:
+    WindowManager(XYZLabs* app);
     void init_main_window(std::unique_ptr<Window> window);
     void init();
     template<WindowType W = Window, typename... Args>
@@ -39,6 +44,7 @@ public:
     Window *get_window_by_id(uint64_t id) const;
     Window *get_window_by_title(const std::string &title) const;
     Window *get_current_window();
+    XYZLabs* app();
 };
 
 template<typename T>

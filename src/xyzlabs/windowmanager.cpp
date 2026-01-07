@@ -7,15 +7,17 @@
 #include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/globals.hpp"
 
-#ifdef USE_GLFW
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
 
 namespace xyzlabs {
 
+WindowManager::WindowManager(XYZLabs* app) : app_(app) {}
+
 void WindowManager::init_main_window(std::unique_ptr<Window> window) {
     auto mainWindow = std::move(window);
     mainWindow->init();
+    mainWindow->set_window_manager(this);
     windows_.push_back(std::move(mainWindow));
 }
 
@@ -43,55 +45,6 @@ void WindowManager::destroy() {
     ImGui::DestroyContext();
     glfwTerminate();
 }
-
-#else
-
-#include <SDL3/SDL.h>
-#include <imgui_impl_sdl3.h>
-
-void WindowManager::init() {
-    if(!SDL_Init(SDL_INIT_VIDEO)) {
-        spdlog::error("SDL init failed");
-    }
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-    init_main_window();
-}
-
-void WindowManager::update() {
-    flush_closed_windows();
-    update_windows();
-
-    SDL_Event e;
-    while (SDL_PollEvent(&e)) {
-        if(e.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {
-            Window *window = (Window*) SDL_GetPointerProperty(
-                SDL_GetWindowProperties(
-                    SDL_GetWindowFromID(e.window.windowID)
-                ), "WINDOW", NULL
-            );
-            window->close();
-        }
-
-        if(e.type == SDL_EVENT_KEY_DOWN) {
-            Window *window = (Window*) SDL_GetPointerProperty(
-                SDL_GetWindowProperties(
-                    SDL_GetWindowFromID(e.window.windowID)
-                ), "WINDOW", NULL
-            );
-        }
-    }
-}
-
-void WindowManager::destroy() {
-    ImGui::DestroyContext();
-    SDL_Quit();
-}
-
-#endif
 
 size_t WindowManager::nwindows() const {
     return windows_.size();
@@ -149,10 +102,15 @@ Window* WindowManager::submit_window(std::unique_ptr<Window> window) {
     auto ptr = window.get();
     event_manager().add_action(std::move([window = std::move(window), this] () mutable {
         window->init();
+        window->set_window_manager(this);
         windows_.push_back(std::move(window));
     }));
 
     return ptr;
+}
+
+XYZLabs* WindowManager::app() {
+    return app_;
 }
 
 }

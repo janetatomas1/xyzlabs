@@ -8,28 +8,15 @@
 
 class ImGuiContext;
 
-#ifdef USE_GLFW
-
 struct GLFWwindow;
 using WindowHandle = GLFWwindow*;
 
-#else
-
-struct SDL_Window;
-struct SDL_GLContextState;
-
-using WindowHandle = SDL_Window*;
-
-#endif
-
 namespace xyzlabs {
 
-class Window {
-    #ifndef USE_GLFW
-    SDL_GLContextState *glContext;
-    #endif
-    bool open_ = true;
+class WindowManager;
 
+class Window {
+    bool open_ = true;
     WindowHandle handle_ = nullptr;
     ImGuiContext *ctx;
 
@@ -41,6 +28,8 @@ class Window {
 
     std::unique_ptr<Widget> centralWidget_;
     Widget* submit_widget(std::unique_ptr<Widget> widget);
+
+    WindowManager *windowManager_ = nullptr;
 public:
     void make_context_current();
     virtual void init();
@@ -75,6 +64,8 @@ public:
     void set_color(const std::array<float, 4> &color);
     bool export_png(const std::string &filename);
     ImGuiStyle& style();
+    WindowManager *window_manager();
+    void set_window_manager(WindowManager *windowManager);
 };
 
 template<
