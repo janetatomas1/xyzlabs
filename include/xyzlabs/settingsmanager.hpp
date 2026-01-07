@@ -11,6 +11,8 @@ namespace xyzlabs {
 
 using json = nlohmann::json;
 
+class XYZLabs;
+
 class SettingsGroup: public SettingInterface {
     boost::unordered_map<std::string, std::unique_ptr<SettingInterface>> settings_;
 
@@ -29,8 +31,10 @@ public:
 class SettingsManager {
     bool settingsOpen_ = false;
     std::unique_ptr<SettingsGroup> mainGroup_;
+    XYZLabs *app_;
 
 public:
+    SettingsManager(XYZLabs *app);
     template<SettingType S, typename... Args>
     SettingInterface* add_setting(const std::string &path, const std::string &label, Args... args);
     SettingInterface* add_setting(const std::string &path, std::unique_ptr<SettingInterface> ptr);
@@ -43,6 +47,7 @@ public:
     void save();
     void load();
     void load_safe();
+    XYZLabs *app();
 };
 
 template<SettingType S, typename... Args>

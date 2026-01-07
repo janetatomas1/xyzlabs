@@ -6,6 +6,7 @@
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/globals.hpp"
+#include "xyzlabs/randomgenerator.hpp"
 
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>

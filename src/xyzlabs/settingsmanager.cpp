@@ -80,7 +80,7 @@ public:
     ): Widget("Settings"), mainGroup_(std::move(group)) {}
 };
 
-void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {    
+void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {
     const ImVec2 settingsWindowPos = pos + size * ImVec2{0.65f, 0.4f};
     const ImVec2 scrollRegionSize = pos + size * ImVec2{0.98f, 0.8f};
     const ImVec2 saveBtnSize = pos + size * ImVec2{0.2f, 0.07f};
@@ -95,14 +95,14 @@ void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {
 
     ImGui::SetCursorPos(discardBtnPos);
     if(ImGui::Button("Discard changes", saveBtnSize)) {
-        window_manager().get_current_window()->close();
+        app()->window_manager().get_current_window()->close();
     }
 
     ImGui::SetCursorPos(saveBtnPos);
     if(ImGui::Button("Save changes", saveBtnSize)) {
         auto group = dynamic_unique_cast<SettingsGroup, SettingInterface>(std::move(mainGroup_));
-        settings_manager().receive_settings(std::move(group));
-        window_manager().get_current_window()->close();
+        app()->settings_manager().receive_settings(std::move(group));
+        app()->window_manager().get_current_window()->close();
     }
 }
 
@@ -210,6 +210,8 @@ SettingInterface* SettingsGroup::add_setting(const std::string &path, std::uniqu
     return add_child(path, std::move(setting));
 }
 
+SettingsManager::SettingsManager(XYZLabs *app) : app_(app) {}
+
 SettingInterface* SettingsManager::add_setting(const std::string &path, std::unique_ptr<SettingInterface> setting) {
     auto ptr = mainGroup_->add_setting(path, std::move(setting));
     load_safe();
@@ -219,8 +221,8 @@ SettingInterface* SettingsManager::add_setting(const std::string &path, std::uni
 void SettingsManager::open_settings(int32_t width, int32_t height) {
     if(!settingsOpen_) {
         settingsOpen_ = true;
-        Window *currentWindow = window_manager().get_current_window();
-        Window *window = window_manager().add_window<Window>(
+        Window *currentWindow = app()->window_manager().get_current_window();
+        Window *window = app()->window_manager().add_window<Window>(
             "Settings",
             width,
             height
@@ -242,7 +244,7 @@ void SettingsManager::receive_settings(std::unique_ptr<SettingsGroup> group) {
 }
 
 std::string SettingsManager::config_file() {
-    return (app().app_directory() / "config.json").string();
+    return (app()->app_directory() / "config.json").string();
 }
 
 void SettingsManager::init() {
@@ -271,4 +273,9 @@ void SettingsManager::load_safe() {
 
     load();
 }
+
+XYZLabs *SettingsManager::app() {
+    return app_;
+}
+
 }
