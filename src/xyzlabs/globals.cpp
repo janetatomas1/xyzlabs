@@ -12,8 +12,4 @@ EventManager &event_manager() {
     return XYZLabs::instance().event_manager();
 }
 
-ObjectRegistry &object_registry() {
-    return XYZLabs::instance().object_registry();
-}
-
 }

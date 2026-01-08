@@ -5,6 +5,7 @@
 #include "xyzlabs/dialog.hpp"
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/globals.hpp"
+#include "xyzlabs/xyzlabs.hpp"
 
 namespace xyzlabs {
 
@@ -60,19 +61,19 @@ void Dialog::reject() {
 }
 
 void Dialog::set_content(const std::string &text) {
-    event_manager().add_action([this, &text]() mutable {
+    app()->event_manager().add_action([this, &text]() mutable {
         content_ = text;
     });
 }
 
 void Dialog::set_accept_text(const std::string &text) {
-    event_manager().add_action([this, &text]() mutable {
+    app()->event_manager().add_action([this, &text]() mutable {
         acceptText_ = text;
     });
 }
 
 void Dialog::set_reject_text(const std::string &text) {
-    event_manager().add_action([this, &text]() mutable {
+    app()->event_manager().add_action([this, &text]() mutable {
         rejectText_ = text;
     });
 }
@@ -90,13 +91,13 @@ std::string Dialog::reject_text() {
 }
 
 void Dialog::set_accept_action(action act) {
-    event_manager().add_action([this, act = std::move(act)]() mutable {
+    app()->event_manager().add_action([this, act = std::move(act)]() mutable {
         acceptAction_ = std::move(act);
     });
 }
 
 void Dialog::set_reject_action(action act) {
-    event_manager().add_action([this, act = std::move(act)]() mutable {
+    app()->event_manager().add_action([this, act = std::move(act)]() mutable {
         rejectAction_ = std::move(act);
     });
 }
@@ -106,13 +107,13 @@ ImVec4 Dialog::background_color() {
 }
 
 void Dialog::set_background_color(const ImVec4 &color) {
-    event_manager().add_action([this, color]() mutable {
+    app()->event_manager().add_action([this, color]() mutable {
         color_ = color;
     });
 }
 
 void Dialog::set_reject_active(bool value) {
-    event_manager().add_action([this, value]() mutable {
+    app()->event_manager().add_action([this, value]() mutable {
         rejectActive_ = value;
     });
 }

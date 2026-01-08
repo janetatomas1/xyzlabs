@@ -9,5 +9,6 @@ class ObjectRegistry;
 
 XYZLabs &app();
 EventManager &event_manager();
+ObjectRegistry &object_registry();
 
 }
