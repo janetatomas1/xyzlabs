@@ -12,10 +12,6 @@ EventManager &event_manager() {
     return XYZLabs::instance().event_manager();
 }
 
-TaskManager &task_manager() {
-    return XYZLabs::instance().task_manager();
-}
-
 ObjectRegistry &object_registry() {
     return XYZLabs::instance().object_registry();
 }

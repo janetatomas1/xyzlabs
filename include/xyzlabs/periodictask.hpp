@@ -4,9 +4,10 @@
 #include <array>
 #include <boost/asio.hpp>
 #include <spdlog/spdlog.h>
-#include <spdlog/spdlog.h>
 
 namespace xyzlabs {
+
+class TaskManager;
 
 inline void swap(std::atomic<uint8_t> &a, std::atomic<uint8_t> &b) {
     auto tmp = a.load();
@@ -28,7 +29,7 @@ class PeriodicTaskInterface {
             }
 
             timer_.expires_after(std::chrono::milliseconds(milisecondsTimeout_));
-            timer_.async_wait(handler);    
+            timer_.async_wait(handler);
         }
     };
 
@@ -43,7 +44,7 @@ protected:
     std::atomic<uint8_t> backIdx_ = 2;
 
 public:
-    PeriodicTaskInterface(uint64_t timeout);
+    PeriodicTaskInterface(TaskManager &taskManager, uint64_t timeout);
     inline bool write_ready() {
         return writeReady_;
     }
@@ -65,10 +66,14 @@ protected:
     std::array<T, 3> states_;
 
 public:
-    PeriodicTask(const T &initialValue, uint64_t timeout = 1000): PeriodicTaskInterface(timeout) {
+    PeriodicTask(
+        TaskManager &taskManager,
+        const T &initialValue,
+        uint64_t timeout = 1000
+    ): PeriodicTaskInterface(taskManager, timeout) {
         states_ = {initialValue, initialValue, initialValue};
     };
-    PeriodicTask(uint64_t timeout = 1000): PeriodicTaskInterface(timeout) {};
+    PeriodicTask(TaskManager &taskManager, uint64_t timeout = 1000): PeriodicTaskInterface(taskManager, timeout) {};
     const T& get_value() {
         if(writeReady_) {
             swap(frontIdx_, middleIdx_);

@@ -1,11 +1,12 @@
 
 #include "xyzlabs/periodictask.hpp"
-#include "xyzlabs/taskmanager.hpp"
 #include "xyzlabs/globals.hpp"
+#include "xyzlabs/taskmanager.hpp"
 
 namespace xyzlabs {
 
-PeriodicTaskInterface::PeriodicTaskInterface(uint64_t timeout): 
-    timer_(task_manager().io_ctx()),
+PeriodicTaskInterface::PeriodicTaskInterface(TaskManager &taskManager, uint64_t timeout):
+    timer_(taskManager.io_ctx()),
     milisecondsTimeout_(timeout) {}
+
 }
