@@ -1,6 +1,7 @@
 
 #include <GL/glew.h>
 
+#include <cstdint>
 #include <imgui_impl_opengl3.h>
 #include <imgui.h>
 #include <imgui_internal.h>
