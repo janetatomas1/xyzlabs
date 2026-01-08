@@ -1,6 +1,5 @@
 
 #include "xyzlabs/periodictask.hpp"
-#include "xyzlabs/globals.hpp"
 #include "xyzlabs/taskmanager.hpp"
 
 namespace xyzlabs {

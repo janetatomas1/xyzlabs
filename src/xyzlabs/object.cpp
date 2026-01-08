@@ -1,5 +1,4 @@
 
-#include "xyzlabs/globals.hpp"
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/object.hpp"
 #include "xyzlabs/randomgenerator.hpp"

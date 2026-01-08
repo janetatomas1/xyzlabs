@@ -26,13 +26,13 @@ class XYZLabs {
     WindowManager windowManager_;
     ObjectRegistry objectRegistry_;
 
-    XYZLabs();
     void init_();
     void exit_();
     void mainloop_();
 
     int exitCode_ = 0;
 public:
+    XYZLabs();
     template<WidgetType W = Widget, typename... Args>
     void set_initial_widget(Args... args);
     template<WidgetType W = Widget, typename... Args>

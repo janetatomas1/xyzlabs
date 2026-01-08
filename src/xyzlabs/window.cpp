@@ -7,6 +7,9 @@
 #include <imgui_internal.h>
 #include <spdlog/spdlog.h>
 
+#include <GLFW/glfw3.h>
+#include <imgui_impl_glfw.h>
+
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
@@ -14,11 +17,7 @@
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
-#include "xyzlabs/globals.hpp"
 #include "xyzlabs/xyzlabs.hpp"
-
-#include <GLFW/glfw3.h>
-#include <imgui_impl_glfw.h>
 
 namespace xyzlabs {
 

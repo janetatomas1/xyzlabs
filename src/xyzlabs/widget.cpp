@@ -5,7 +5,6 @@
 #include "xyzlabs/widget.hpp"
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/xyzlabs.hpp"
-#include "xyzlabs/globals.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/eventmanager.hpp"

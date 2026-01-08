@@ -4,7 +4,6 @@
 
 #include "xyzlabs/dialog.hpp"
 #include "xyzlabs/eventmanager.hpp"
-#include "xyzlabs/globals.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
 namespace xyzlabs {

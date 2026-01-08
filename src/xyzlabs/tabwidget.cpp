@@ -3,7 +3,6 @@
 #include <string>
 
 #include "xyzlabs/tabwidget.hpp"
-#include "xyzlabs/globals.hpp"
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/window.hpp"

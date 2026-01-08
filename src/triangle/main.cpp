@@ -2,7 +2,6 @@
 #include <Magnum/GL/GL.h>
 #include <xyzlabs3d/viewportwidget.hpp>
 #include <xyzlabs/xyzlabs.hpp>
-#include <xyzlabs/globals.hpp>
 
 #include <Magnum/GL/DefaultFramebuffer.h>
 #include <Magnum/GL/Mesh.h>
@@ -50,7 +49,7 @@ int main(int argc, char** argv) {
         }
     };
 
-    auto &app_ = app();
+    auto app_ = XYZLabs();
     app_.init<Window, TriangleWidget>("Triangle");
     return app_.exec();
 }

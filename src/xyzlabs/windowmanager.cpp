@@ -3,13 +3,12 @@
 #include <spdlog/spdlog.h>
 #include <algorithm>
 
-#include "xyzlabs/windowmanager.hpp"
-#include "xyzlabs/xyzlabs.hpp"
-#include "xyzlabs/globals.hpp"
-#include "xyzlabs/randomgenerator.hpp"
-
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
+
+#include "xyzlabs/windowmanager.hpp"
+#include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/randomgenerator.hpp"
 
 namespace xyzlabs {
 

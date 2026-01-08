@@ -2,7 +2,6 @@
 #include <fstream>
 
 #include "xyzlabs/settingsmanager.hpp"
-#include "xyzlabs/globals.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/widget.hpp"
 #include "xyzlabs/xyzlabs.hpp"
