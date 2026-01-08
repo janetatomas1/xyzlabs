@@ -21,7 +21,7 @@ TabWidget::TabWidget(
 
 Widget* TabWidget::add_tab_internal(std::unique_ptr<Widget> tab, size_t position) {
     Widget *ptr = tab.get();
-    event_manager().add_action([this, position, widget = std::move(tab)]() mutable {
+    app()->event_manager().add_action([this, position, widget = std::move(tab)]() mutable {
         auto size = btnLayout_.size_relative();
         widget->set_window(window());
         widget->set_parent(this);
@@ -47,7 +47,7 @@ Widget* TabWidget::add_tab_internal(std::unique_ptr<Widget> tab, size_t position
 Widget* TabWidget::set_tab_internal(std::unique_ptr<Widget> tab, size_t position) {
     if(tabs_.size() > position) {
         Widget *ptr = tab.get();
-        event_manager().add_action([this, position, tab = std::move(tab)]() mutable {
+        app()->event_manager().add_action([this, position, tab = std::move(tab)]() mutable {
             window()->make_context_current();
             tab->init();
             tab->set_parent(this);
@@ -161,7 +161,7 @@ size_t TabWidget::count() {
 }
 
 void TabWidget::remove_tab(size_t idx) {
-    event_manager().add_action([this, idx] () {
+    app()->event_manager().add_action([this, idx] () {
         tabs_[idx]->destroy();
         tabs_.erase(tabs_.begin() + idx);
         recompute_tab_width();
@@ -172,7 +172,7 @@ void TabWidget::remove_tab(size_t idx) {
 }
 
 void TabWidget::remove_tab_id(uint64_t id) {
-    event_manager().add_action([this, id]() {
+    app()->event_manager().add_action([this, id]() {
         auto it = std::find_if(tabs_.begin(), tabs_.end(),
             [id](const auto& w) {
                 return w->id() == id;
@@ -184,7 +184,7 @@ void TabWidget::remove_tab_id(uint64_t id) {
 }
 
 void TabWidget::recompute_tab_width() {
-    event_manager().add_action([this]() mutable {
+    app()->event_manager().add_action([this]() mutable {
         auto size = btnLayout_.size_relative();
         if(tabs_.empty()) {
             size.x = 1;

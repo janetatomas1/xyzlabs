@@ -8,6 +8,7 @@
 #include "xyzlabs/globals.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/window.hpp"
+#include "xyzlabs/eventmanager.hpp"
 
 namespace xyzlabs {
 
@@ -57,7 +58,7 @@ Widget* Widget::parent() {
 }
 
 void Widget::set_parent(Widget *parent) {
-    event_manager().add_action([this, parent]() {
+    app()->event_manager().add_action([this, parent]() {
         parent_ = parent;
     });
 }
@@ -75,9 +76,7 @@ Window* Widget::window() {
 }
 
 void Widget::set_window(Window *window) {
-    event_manager().add_action([this, window]() {
-        window_ = window;
-    });
+    window_ = window;
 }
 
 XYZLabs* Widget::app() {

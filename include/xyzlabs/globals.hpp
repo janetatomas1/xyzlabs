@@ -8,7 +8,7 @@ class EventManager;
 class ObjectRegistry;
 
 XYZLabs &app();
-EventManager &event_manager();
+// EventManager &event_manager();
 ObjectRegistry &object_registry();
 
 }

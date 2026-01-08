@@ -121,8 +121,11 @@ Window::Window(const std::string &title, int32_t width, int32_t height):
 {}
 
 void Window::close() {
-    event_manager().add_action([this]() {
-        open_ = false;
+    window_manager()
+        ->app()
+        ->event_manager()
+        .add_action([this]() {
+            open_ = false;
     });
 }
 
@@ -138,7 +141,13 @@ Widget* Window::submit_widget(std::unique_ptr<Widget> widget) {
         centralWidget_ = std::move(widget);
         centralWidget_->init();
     };
-    event_manager().add_action(std::move(action));
+
+    window_manager()
+        ->app()
+        ->event_manager()
+        .add_action(
+            std::move(action)
+        );
     return ptr;
 }
 
@@ -153,7 +162,10 @@ void Window::key_callback() {
 }
 
 void Window::set_color(const std::array<float, 4> &color) {
-    event_manager().add_action([this, color] () {
+    window_manager()
+        ->app()
+        ->event_manager()
+        .add_action([this, color] () {
         make_context_current();
         if(ctx->ColorStack.Size > 0) {
             ImGui::PopStyleColor();

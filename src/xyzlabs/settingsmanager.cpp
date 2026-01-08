@@ -238,7 +238,7 @@ void SettingsManager::open_settings(int32_t width, int32_t height) {
 
 void SettingsManager::receive_settings(std::unique_ptr<SettingsGroup> group) {
     save_safe(std::move(group), config_file());
-    event_manager().add_action([this]() {
+    app()->event_manager().add_action([this]() {
         load_safe();
     });
 }
