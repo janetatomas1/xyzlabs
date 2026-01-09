@@ -68,7 +68,6 @@ public:
     void remove_tab(size_t idx);
     void remove_tab_id(uint64_t id);
 };
-#include <spdlog/spdlog.h>
 
 template<
     WidgetType W,

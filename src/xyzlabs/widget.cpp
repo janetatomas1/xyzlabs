@@ -12,7 +12,10 @@
 namespace xyzlabs {
 
 Widget::Widget(const std::string &title, Widget *parent, Window *window):
-    title_(title), id_(XYZLabs::random_generator().random()), parent_(parent), window_(window) {
+    title_(title),
+    id_(XYZLabs::random_generator().random()),
+    parent_(parent),
+    window_(window) {
     windowID_ = fmt::format("{}##{}", title_, id_);
 }
 
@@ -74,7 +77,17 @@ Window* Widget::window() {
     return nullptr;
 }
 
+void Widget::set_parent_direct(Widget *parent) {
+    parent_ = parent;
+}
+
 void Widget::set_window(Window *window) {
+    app()->event_manager().add_action([this, window]() {
+        window_ = window;
+    });
+}
+
+void Widget::set_window_direct(Window *window) {
     window_ = window;
 }
 
