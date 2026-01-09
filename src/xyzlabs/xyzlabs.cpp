@@ -56,11 +56,6 @@ int XYZLabs::exec() {
     return exitCode_;
 }
 
-XYZLabs& XYZLabs::instance() {
-    static XYZLabs wave;
-    return wave;
-}
-
 TaskManager &XYZLabs::task_manager() {
     return taskManager_;
 }

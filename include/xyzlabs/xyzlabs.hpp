@@ -36,10 +36,9 @@ public:
     template<WidgetType W = Widget, typename... Args>
     void set_initial_widget(Args... args);
     template<WidgetType W = Widget, typename... Args>
-    XYZLabs& init(const std::string &title, Args... args);
+    void init(const std::string &title, Args... args);
     template<WindowType Win, WidgetType W = Widget, typename... Args>
-    XYZLabs& init(const std::string &title, Args... args);
-    static XYZLabs& instance();
+    void init(const std::string &title, Args... args);
     TaskManager &task_manager();
     SettingsManager &settings_manager();
     EventManager &event_manager();
@@ -67,21 +66,19 @@ void XYZLabs::set_initial_widget(Args... args) {
 };
 
 template<WidgetType W, typename... Args>
-XYZLabs& XYZLabs::init(const std::string &title, Args... args) {
+void XYZLabs::init(const std::string &title, Args... args) {
     title_ = title;
     init_();
     windowManager_.init_main_window(std::make_unique<Window>(title));
     set_initial_widget<W>(std::forward<Args>(args)...);
-    return instance();
 }
 
 template<WindowType Win, WidgetType W, typename... Args>
-XYZLabs& XYZLabs::init(const std::string &title, Args... args) {
+void XYZLabs::init(const std::string &title, Args... args) {
     title_ = title;
     init_();
     windowManager_.init_main_window(std::make_unique<Win>(title));
     set_initial_widget<W>(std::forward<Args>(args)...);
-    return instance();
 }
 
 }

@@ -7,8 +7,8 @@
 #include "xyzlabs/widget.hpp"
 
 class ImGuiContext;
-
 struct GLFWwindow;
+
 using WindowHandle = GLFWwindow*;
 
 namespace xyzlabs {
