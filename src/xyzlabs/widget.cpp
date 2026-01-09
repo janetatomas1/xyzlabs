@@ -90,3 +90,5 @@ XYZLabs* Widget::app() {
 
     return nullptr;
 }
+
+}
