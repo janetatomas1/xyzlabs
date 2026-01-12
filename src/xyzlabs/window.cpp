@@ -174,7 +174,7 @@ auto flip_image(uint8_t *data, size_t width, size_t height) {
     }
 }
 
-std::vector<unsigned char> Window::export_img(const std::string &filename, int x, int y, int width, int height) {
+std::vector<unsigned char> Window::export_img(int x, int y, int width, int height) {
     std::vector<unsigned char> pixels(width_ * height_ * 4);
 
     make_context_current();

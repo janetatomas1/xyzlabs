@@ -63,7 +63,6 @@ public:
     Widget* set_central_widget(Args... args);
     void set_color(const std::array<float, 4> &color);
     std::vector<unsigned char> export_img(
-        const std::string &filename,
         int x, int y,
         int width, int height
     );
