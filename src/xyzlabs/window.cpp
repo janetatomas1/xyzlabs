@@ -174,17 +174,17 @@ auto flip_image(uint8_t *data, size_t width, size_t height) {
     }
 }
 
-bool Window::export_png(const std::string &filename) {
+std::vector<unsigned char> Window::export_img(const std::string &filename, int x, int y, int width, int height) {
     std::vector<unsigned char> pixels(width_ * height_ * 4);
 
     make_context_current();
     glReadBuffer(GL_FRONT);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(0, 0, width_, height_, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+    glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
 
-    flip_image(&pixels[0], width_, height_);
+    flip_image(&pixels[0], width, height);
 
-    return stbi_write_png(filename.c_str(), width_, height_, 4, pixels.data(), width_ * 4) != 0;
+    return pixels;
 }
 
 ImGuiStyle& Window::style() {
