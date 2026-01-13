@@ -12,8 +12,10 @@ Dialog::Dialog(
     const std::string &content,
     const std::string &acceptText,
     const std::string &rejectText,
-    const std::string &title):
-    Widget(title),
+    const std::string &title,
+    Widget *parent,
+    Window *window):
+    Widget(title, parent, window),
     content_(content),
     acceptText_(acceptText),
     rejectText_(rejectText) {

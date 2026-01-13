@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "widget.hpp"
 #include "xyzlabs/widget.hpp"
 #include "xyzlabs/event.hpp"
 
@@ -40,7 +41,9 @@ public:
         const std::string &content,
         const std::string &acceptText = "OK",
         const std::string &rejectText = "Cancel",
-        const std::string &title = ""
+        const std::string &title = "",
+        Widget *parent = nullptr,
+        Window *window = nullptr
     );
     void show(const ImVec2 &size, const ImVec2 &position) override;
     virtual void accept();
