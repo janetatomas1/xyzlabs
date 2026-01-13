@@ -91,4 +91,20 @@ XYZLabs* Widget::app() {
     return nullptr;
 }
 
+TaskManager& Widget::task_manager() {
+    return app()->task_manager();
+}
+
+EventManager& Widget::event_manager() {
+    return app()->event_manager();
+}
+
+ObjectRegistry& Widget::object_registry() {
+    return app()->object_registry();
+}
+
+SettingsManager& Widget::settings_manager() {
+    return app()->settings_manager();
+}
+
 }

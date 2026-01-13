@@ -6,12 +6,19 @@
 #include <cinttypes>
 #include <memory>
 
+#include "eventmanager.hpp"
+#include "settingsmanager.hpp"
 #include "xyzlabs/operators.hpp"
 #include "xyzlabs/relativelayout.hpp"
 
 namespace xyzlabs {
+
 class Window;
 class XYZLabs;
+class TaskManager;
+class EventManager;
+class ObjectRegistry;
+class SettingsManager;
 
 class Widget {
     std::string title_;
@@ -25,6 +32,12 @@ class Widget {
 
     Widget *parent_;
     Window *window_;
+protected:
+    TaskManager& task_manager();
+    EventManager& event_manager();
+    ObjectRegistry& object_registry();
+    SettingsManager& settings_manager();
+
 public:
     Widget(
         const std::string &title = "",
