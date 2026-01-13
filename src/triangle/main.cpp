@@ -1,13 +1,14 @@
 
-#include <Magnum/GL/GL.h>
 #include <xyzlabs3d/viewportwidget.hpp>
 #include <xyzlabs/xyzlabs.hpp>
+#include <xyzlabs/tabwidget.hpp>
 
-#include <Magnum/GL/DefaultFramebuffer.h>
+#include <Magnum/GL/GL.h>
 #include <Magnum/GL/Mesh.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/Shaders/VertexColorGL.h>
 #include <Magnum/GL/Renderer.h>
+#include <Magnum/GL/DefaultFramebuffer.h>
 
 
 using namespace xyzlabs;
@@ -49,7 +50,16 @@ int main(int argc, char** argv) {
         }
     };
 
+    struct W: public TabWidget {
+        W(): TabWidget("Tab") {}
+        void init() override {
+            TabWidget::init();
+            auto widget = std::make_unique<TriangleWidget>();
+            add_tab(std::move(widget));
+        }
+    };
+
     auto app_ = XYZLabs();
-    app_.init<Window, TriangleWidget>("Triangle");
+    app_.init<Window, W>("Triangle");
     return app_.exec();
 }

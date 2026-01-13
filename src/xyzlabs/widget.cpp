@@ -60,9 +60,7 @@ Widget* Widget::parent() {
 }
 
 void Widget::set_parent(Widget *parent) {
-    app()->event_manager().add_action([this, parent]() {
-        parent_ = parent;
-    });
+    parent_ = parent;
 }
 
 Window* Widget::window() {
@@ -77,17 +75,7 @@ Window* Widget::window() {
     return nullptr;
 }
 
-void Widget::set_parent_direct(Widget *parent) {
-    parent_ = parent;
-}
-
 void Widget::set_window(Window *window) {
-    app()->event_manager().add_action([this, window]() {
-        window_ = window;
-    });
-}
-
-void Widget::set_window_direct(Window *window) {
     window_ = window;
 }
 

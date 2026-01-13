@@ -46,10 +46,8 @@ public:
     template<class W>
     W* parent_as();
     void set_parent(Widget *parent);
-    void set_parent_direct(Widget *parent);
     Window* window();
     void set_window(Window *window);
-    void set_window_direct(Window *window);
     XYZLabs* app();
 };
 
