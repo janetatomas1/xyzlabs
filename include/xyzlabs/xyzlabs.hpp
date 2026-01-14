@@ -45,10 +45,10 @@ public:
     WindowManager &window_manager();
     ObjectRegistry &object_registry();
     static RandomGenerator& random_generator();
-
     void close();
     int exec();
     const std::string& title();
+    void set_title(const std::string& title);
     int return_code() {
         return exitCode_;
     }

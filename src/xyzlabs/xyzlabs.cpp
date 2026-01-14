@@ -17,7 +17,7 @@
 
 namespace xyzlabs {
 
-XYZLabs::XYZLabs() : windowManager_(this), settingsManager_(this) {}
+XYZLabs::XYZLabs(): windowManager_(this), settingsManager_(this) {}
 
 void XYZLabs::init_() {
     windowManager_.init();
@@ -81,6 +81,10 @@ void XYZLabs::close() {
 
 const std::string& XYZLabs::title() {
     return title_;
+}
+
+void XYZLabs::set_title(const std::string& title) {
+    title_ = title;
 }
 
 std::filesystem::path XYZLabs::app_directory() {
