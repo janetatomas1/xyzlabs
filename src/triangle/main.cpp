@@ -50,16 +50,7 @@ int main(int argc, char** argv) {
         }
     };
 
-    struct W: public TabWidget {
-        W(): TabWidget("Tab") {}
-        void init() override {
-            TabWidget::init();
-            auto widget = std::make_unique<TriangleWidget>();
-            add_tab(std::move(widget));
-        }
-    };
-
     auto app_ = XYZLabs();
-    app_.init<Window, W>("Triangle");
+    app_.init<Window, TriangleWidget>("Triangle");
     return app_.exec();
 }

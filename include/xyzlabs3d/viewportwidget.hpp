@@ -21,8 +21,15 @@ class ViewportWidget: public xyzlabs::Widget {
 
     Scene3D scene_;
     DrawableGroup3D drawables_;
+    int width_;
+    int height_;
 public:
-    ViewportWidget(const std::string& title = "");
+    ViewportWidget(
+        const std::string& title = "",
+        int width = 2000,
+        int height = 2000,
+        Widget *parent = nullptr
+    );
     void init() override;
     void show(const ImVec2 &size, const ImVec2 &position) override;
     Framebuffer& framebuffer();

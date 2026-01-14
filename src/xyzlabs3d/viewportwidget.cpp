@@ -14,8 +14,13 @@ namespace xyzlabs3d {
 
 std::unique_ptr<GLContext>  ViewportWidget::ctx_ = nullptr;
 
-ViewportWidget::ViewportWidget(const std::string& title)
-: Widget(title) {}
+ViewportWidget::ViewportWidget(
+    const std::string& title,
+    int width,
+    int height,
+    Widget *parent
+)
+: Widget(title, parent), width_(width), height_(height) {}
 
 void ViewportWidget::init() {
     if(!ctx_) {
@@ -24,16 +29,16 @@ void ViewportWidget::init() {
         ctx_ = std::make_unique<GLContext>(config);
     }
 
-    framebuffer_ = Framebuffer{{{0, 0}, {800, 600}}};
+    framebuffer_ = Framebuffer{{{0, 0}, {width_, height_}}};
 
     texture_ = Texture2D();
     depthBuffer_ = Renderbuffer();
 
     texture_
-        .setStorage(1, GL::TextureFormat::RGBA8, {800, 600})
+        .setStorage(1, GL::TextureFormat::RGBA8, {width_, height_})
         .setMinificationFilter(SamplerFilter::Linear);
     depthBuffer_.setStorage(
-        GL::RenderbufferFormat::DepthComponent24, {800, 600});
+        GL::RenderbufferFormat::DepthComponent24, {width_, height_});
 
     framebuffer_.attachTexture(GL::Framebuffer::ColorAttachment{0},
                        texture_, 0)
