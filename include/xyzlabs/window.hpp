@@ -69,6 +69,7 @@ public:
     ImGuiStyle& style();
     WindowManager *window_manager();
     void set_window_manager(WindowManager *windowManager);
+    void set_size(int width, int height);
 };
 
 template<

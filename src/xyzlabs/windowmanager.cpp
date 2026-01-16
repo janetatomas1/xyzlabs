@@ -100,9 +100,9 @@ Window* WindowManager::get_current_window() {
 
 Window* WindowManager::submit_window(std::unique_ptr<Window> window) {
     auto ptr = window.get();
+    window->set_window_manager(this);
     app()->event_manager().add_action(std::move([window = std::move(window), this] () mutable {
         window->init();
-        window->set_window_manager(this);
         windows_.push_back(std::move(window));
     }));
 

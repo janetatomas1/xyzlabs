@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "eventmanager.hpp"
-#include "settingsmanager.hpp"
 #include "xyzlabs/operators.hpp"
 #include "xyzlabs/relativelayout.hpp"
 

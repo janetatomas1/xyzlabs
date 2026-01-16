@@ -70,15 +70,6 @@ std::unique_ptr<Derived> dynamic_unique_cast(std::unique_ptr<Base>&& base) {
     return nullptr;
 }
 
-class SettingsWidget: public Widget {
-    std::unique_ptr<SettingsGroup> mainGroup_;
-public:
-    void show(const ImVec2 &size, const ImVec2 &pos) override;
-    SettingsWidget(
-        std::unique_ptr<SettingsGroup> group
-    ): Widget("Settings"), mainGroup_(std::move(group)) {}
-};
-
 void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {
     const ImVec2 settingsWindowPos = pos + size * ImVec2{0.65f, 0.4f};
     const ImVec2 scrollRegionSize = pos + size * ImVec2{0.98f, 0.8f};
@@ -94,7 +85,6 @@ void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {
 
     ImGui::SetCursorPos(discardBtnPos);
     if(ImGui::Button("Discard changes", saveBtnSize)) {
-        app()->window_manager().get_current_window()->close();
     }
 
     ImGui::SetCursorPos(saveBtnPos);
@@ -217,22 +207,14 @@ SettingInterface* SettingsManager::add_setting(const std::string &path, std::uni
     return ptr;
 }
 
-void SettingsManager::open_settings(int32_t width, int32_t height) {
-    if(!settingsOpen_) {
-        settingsOpen_ = true;
-        Window *currentWindow = app()->window_manager().get_current_window();
-        Window *window = app()->window_manager().add_window<Window>(
-            "Settings",
-            width,
-            height
-        );
+std::unique_ptr<SettingsWidget> SettingsManager::settings_widget(int32_t width, int32_t height) {
+    auto ptr = dynamic_cast<SettingsGroup*>(mainGroup_->clone().release());
+    std::unique_ptr<SettingsWidget> widget = std::make_unique<SettingsWidget>(
+        std::unique_ptr<SettingsGroup>(ptr)
+    );
+    return widget;
 
-        auto ptr = dynamic_cast<SettingsGroup*>(mainGroup_->clone().release());
-        std::unique_ptr<Widget> widget = std::make_unique<SettingsWidget>(
-            std::unique_ptr<SettingsGroup>(ptr)
-        );
-        window->set_central_widget(std::move(widget));
-    }
+    return nullptr;
 }
 
 void SettingsManager::receive_settings(std::unique_ptr<SettingsGroup> group) {

@@ -6,12 +6,14 @@
 #include <nlohmann/json.hpp>
 
 #include "xyzlabs/setting.hpp"
+#include "xyzlabs/widget.hpp"
 
 namespace xyzlabs {
 
 using json = nlohmann::json;
 
 class XYZLabs;
+class SettingsWidget;
 
 class SettingsGroup: public SettingInterface {
     boost::unordered_map<std::string, std::unique_ptr<SettingInterface>> settings_;
@@ -28,6 +30,15 @@ public:
     SettingsGroup() = default;
 };
 
+class SettingsWidget: public Widget {
+    std::unique_ptr<SettingsGroup> mainGroup_;
+public:
+    void show(const ImVec2 &size, const ImVec2 &pos) override;
+    SettingsWidget(
+        std::unique_ptr<SettingsGroup> group
+    ): Widget("Settings"), mainGroup_(std::move(group)) {}
+};
+
 class SettingsManager {
     bool settingsOpen_ = false;
     std::unique_ptr<SettingsGroup> mainGroup_;
@@ -39,7 +50,7 @@ public:
     SettingInterface* add_setting(const std::string &path, const std::string &label, Args... args);
     SettingInterface* add_setting(const std::string &path, std::unique_ptr<SettingInterface> ptr);
     SettingInterface* get(const std::string &path);
-    void open_settings(int32_t width = 700, int32_t height = 500);
+    std::unique_ptr<SettingsWidget> settings_widget(int32_t width = 700, int32_t height = 500);
     void close_settings();
     void receive_settings(std::unique_ptr<SettingsGroup> group);
     void init();

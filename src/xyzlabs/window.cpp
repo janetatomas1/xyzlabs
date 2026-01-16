@@ -28,7 +28,7 @@ void Window::init() {
         height_ = 5000;
         maximize = true;
     }
-
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     handle_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
     if(!handle_) {
         spdlog::error("GLFW window creation failed!");
@@ -93,7 +93,9 @@ void Window::update() {
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
     glfwSwapBuffers(handle_);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     key_callback();
 
@@ -209,6 +211,16 @@ WindowManager* Window::window_manager() {
 
 void Window::set_window_manager(WindowManager *windowManager) {
     windowManager_ = windowManager;
+}
+
+void Window::set_size(int width, int height) {
+    window_manager()->app()->event_manager().add_action([this, width, height] () {
+        width_ = width;
+        height_ = height;
+        make_context_current();
+        glfwRestoreWindow(handle_);
+        glfwSetWindowSize(handle_, width_, height_);
+    });
 }
 
 }
