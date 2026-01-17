@@ -15,4 +15,16 @@ Object* ObjectRegistry::get(uint64_t id) {
     return nullptr;
 }
 
+void ObjectRegistry::clear() {
+    objects_.clear();
+}
+
+size_t ObjectRegistry::size() const {
+    return objects_.size();
+}
+
+bool ObjectRegistry::contains(uint64_t id) const {
+    return objects_.contains(id);
+}
+
 };

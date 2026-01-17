@@ -19,6 +19,9 @@ public:
     template<ObjectType O = Object>
     O* get_as(uint64_t id);
     void remove(uint64_t id);
+    void clear();
+    size_t size() const;
+    bool contains(uint64_t id) const;
 };
 
 template<ObjectType O>
@@ -34,6 +37,5 @@ template<ObjectType O>
 O* ObjectRegistry::get_as(uint64_t id) {
     return dynamic_cast<O*>(get(id));
 }
-
 
 }
