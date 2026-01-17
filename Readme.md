@@ -12,7 +12,7 @@
 
 To download the project run:
 
-`git clone git@github.com:janetatomas1/xyzlabs.git`
+`git clone --recursive git@github.com:janetatomas1/xyzlabs.git`
 
 ===========================
 

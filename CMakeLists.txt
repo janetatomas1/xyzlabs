@@ -7,7 +7,8 @@ if(DEFINED CMAKE_TOOLCHAIN_FILE_ AND EXISTS ${CMAKE_TOOLCHAIN_FILE_})
 endif()
 
 option(WITH_3D "Build xyzlabs3d library" ON)
-option(WITH_EXAMPLE "Build example" ON)
+option(WITH_EXAMPLES "Build example" ON)
+option(WITH_TESTS "Build tests" ON)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -90,9 +91,9 @@ if(WITH_3D)
     )
 endif()
 
-if(WITH_EXAMPLE AND NOT WITH_3D)
+if(WITH_EXAMPLES AND NOT WITH_3D)
     message(FATAL_ERROR "xyzlabs3d library must be built for examples")
-elseif(WITH_EXAMPLE)
+elseif(WITH_EXAMPLES)
     add_executable(triangle
         "${CMAKE_SOURCE_DIR}/src/triangle/main.cpp"
     )
@@ -132,4 +133,33 @@ if(WITH_3D)
         DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs3d
         DESTINATION include/
     )
+endif()
+
+add_compile_options(
+    -Wfatal-errors
+)
+
+install(
+    TARGETS xyzlabs
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs
+    DESTINATION include/
+)
+
+if(WITH_3D)
+    install(
+        TARGETS xyzlabs3d
+        ARCHIVE DESTINATION lib
+    )
+    install(
+        DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs3d
+        DESTINATION include/
+    )
+endif()
+
+if(WITH_TESTS)
+    add_subdirectory(tests)
 endif()
