@@ -2,8 +2,6 @@
 #include <fstream>
 
 #include "xyzlabs/settingsmanager.hpp"
-#include "xyzlabs/windowmanager.hpp"
-#include "xyzlabs/widget.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
 namespace fs = std::filesystem;
@@ -59,40 +57,6 @@ void save_safe(std::unique_ptr<SettingInterface> settings, const std::string &fi
     auto jv1 = load_json_safe(file);
     auto merged = merge(jv0, jv1);
     save_json(merged, file);
-}
-
-template <typename Derived, typename Base>
-std::unique_ptr<Derived> dynamic_unique_cast(std::unique_ptr<Base>&& base) {
-    if (auto ptr = dynamic_cast<Derived*>(base.get())) {
-        base.release();
-        return std::unique_ptr<Derived>(ptr);
-    }
-    return nullptr;
-}
-
-void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {
-    const ImVec2 settingsWindowPos = pos + size * ImVec2{0.65f, 0.4f};
-    const ImVec2 scrollRegionSize = pos + size * ImVec2{0.98f, 0.8f};
-    const ImVec2 saveBtnSize = pos + size * ImVec2{0.2f, 0.07f};
-    const ImVec2 discardBtnPos = pos + size * ImVec2{0.52f, 0.9f};
-    const ImVec2 saveBtnPos = pos + size * ImVec2{0.75f, 0.9f};
-
-    ImGui::BeginChild("ScrollRegion", scrollRegionSize, true, ImGuiWindowFlags_HorizontalScrollbar);
-
-    mainGroup_->show("");
-
-    ImGui::EndChild();
-
-    ImGui::SetCursorPos(discardBtnPos);
-    if(ImGui::Button("Discard changes", saveBtnSize)) {
-    }
-
-    ImGui::SetCursorPos(saveBtnPos);
-    if(ImGui::Button("Save changes", saveBtnSize)) {
-        auto group = dynamic_unique_cast<SettingsGroup, SettingInterface>(std::move(mainGroup_));
-        app()->settings_manager().receive_settings(std::move(group));
-        app()->window_manager().get_current_window()->close();
-    }
 }
 
 SettingInterface* SettingsGroup::get_child(const std::string &path) {
@@ -207,21 +171,17 @@ SettingInterface* SettingsManager::add_setting(const std::string &path, std::uni
     return ptr;
 }
 
-std::unique_ptr<SettingsWidget> SettingsManager::settings_widget(int32_t width, int32_t height) {
-    auto ptr = dynamic_cast<SettingsGroup*>(mainGroup_->clone().release());
-    std::unique_ptr<SettingsWidget> widget = std::make_unique<SettingsWidget>(
-        std::unique_ptr<SettingsGroup>(ptr)
-    );
-    return widget;
-
-    return nullptr;
-}
-
 void SettingsManager::receive_settings(std::unique_ptr<SettingsGroup> group) {
     save_safe(std::move(group), config_file());
     app()->event_manager().add_action([this]() {
         load_safe();
     });
+}
+
+
+std::unique_ptr<SettingInterface> SettingsManager::clone_settings() {
+    auto ptr = mainGroup_->clone();
+    return ptr;
 }
 
 std::string SettingsManager::config_file() {
