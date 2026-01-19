@@ -8,7 +8,7 @@
 
 #include "xyzlabs/utils/randomgenerator.hpp"
 #include "xyzlabs/task/taskmanager.hpp"
-#include "xyzlabs/settingsmanager.hpp"
+#include "xyzlabs/settings/settingsmanager.hpp"
 #include "xyzlabs/event/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/objectregistry.hpp"

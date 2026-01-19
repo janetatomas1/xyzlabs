@@ -1,7 +1,7 @@
 
 #include <imgui.h>
 
-#include "xyzlabs/operators.hpp"
+#include "xyzlabs/utils/operators.hpp"
 
 ImVec2 operator*(const ImVec2 &first, const ImVec2 &second) {
     return { first.x * second.x, first.y * second.y };

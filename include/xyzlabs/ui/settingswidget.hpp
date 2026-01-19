@@ -2,8 +2,8 @@
 #pragma once
 
 #include "xyzlabs/ui/widget.hpp"
-#include "xyzlabs/setting.hpp"
-#include "xyzlabs/settingsmanager.hpp"
+#include "xyzlabs/settings/setting.hpp"
+#include "xyzlabs/settings/settingsmanager.hpp"
 #include "xyzlabs/window.hpp"
 
 namespace xyzlabs {

@@ -1,7 +1,7 @@
 
 #include <fstream>
 
-#include "xyzlabs/settingsmanager.hpp"
+#include "xyzlabs/settings/settingsmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
 namespace fs = std::filesystem;

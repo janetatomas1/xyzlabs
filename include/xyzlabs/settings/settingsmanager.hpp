@@ -5,7 +5,7 @@
 #include <boost/unordered_map.hpp>
 #include <nlohmann/json.hpp>
 
-#include "xyzlabs/setting.hpp"
+#include "xyzlabs/settings/setting.hpp"
 
 namespace xyzlabs {
 

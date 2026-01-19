@@ -3,7 +3,7 @@
 #include <imgui_stdlib.h>
 #include <fmt/format.h>
 
-#include "xyzlabs/setting.hpp"
+#include "xyzlabs/settings/setting.hpp"
 
 namespace xyzlabs {
 
