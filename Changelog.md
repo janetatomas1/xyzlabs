@@ -1,6 +1,10 @@
 
 # Change Log
 
+## 4.1.0 19. Jan 2026
+### Features
+- Custom SettingsWidget
+
 ## 4.0.0 6. Jan 2026
 ### Features
 - Removed singletons, global access functions
