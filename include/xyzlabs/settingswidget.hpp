@@ -20,9 +20,11 @@ public:
     virtual void accept_callback() {};
     virtual void reject_callback() {};
     SettingsManager& settings_manager();
+    void init() override;
 
 private:
-    std::unique_ptr<SettingInterface> mainGroup_;
+    float rowSize = 10.0f;
+    std::unique_ptr<SettingsGroup> mainGroup_;
     SettingsManager& settingsManager_;
 };
 

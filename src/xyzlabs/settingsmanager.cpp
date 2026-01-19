@@ -179,9 +179,10 @@ void SettingsManager::receive_settings(std::unique_ptr<SettingsGroup> group) {
 }
 
 
-std::unique_ptr<SettingInterface> SettingsManager::clone_settings() {
-    auto ptr = mainGroup_->clone();
-    return ptr;
+std::unique_ptr<SettingsGroup> SettingsManager::clone_settings() {
+    auto ptr = mainGroup_->clone().release();
+    auto cast = dynamic_cast<SettingsGroup*>(ptr);
+    return std::unique_ptr<SettingsGroup>(cast);
 }
 
 std::string SettingsManager::config_file() {

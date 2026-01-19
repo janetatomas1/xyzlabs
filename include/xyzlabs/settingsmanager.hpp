@@ -48,7 +48,7 @@ public:
     SettingInterface* add_setting(const std::string &path, const std::string &label, Args... args);
     SettingInterface* add_setting(const std::string &path, std::unique_ptr<SettingInterface> ptr);
     SettingInterface* get(const std::string &path);
-    std::unique_ptr<SettingInterface> clone_settings();
+    std::unique_ptr<SettingsGroup> clone_settings();
     void receive_settings(std::unique_ptr<SettingsGroup> group);
     void init();
     std::string config_file();
