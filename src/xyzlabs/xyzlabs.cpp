@@ -12,7 +12,7 @@
 #include <fmt/format.h>
 #include <thread>
 
-#include "xyzlabs/utils.hpp"
+#include "xyzlabs/utils/utils.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
 namespace xyzlabs {

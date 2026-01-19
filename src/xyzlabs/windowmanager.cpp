@@ -8,7 +8,7 @@
 
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
-#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/utils/randomgenerator.hpp"
 
 namespace xyzlabs {
 

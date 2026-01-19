@@ -1,7 +1,7 @@
 
-#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/utils/randomgenerator.hpp"
 #include "xyzlabs/object.hpp"
-#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/utils/randomgenerator.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
 namespace xyzlabs {

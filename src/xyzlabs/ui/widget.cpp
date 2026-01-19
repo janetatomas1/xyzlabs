@@ -6,7 +6,7 @@
 #include "xyzlabs/ui/relativelayout.hpp"
 
 #include "xyzlabs/xyzlabs.hpp"
-#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/utils/randomgenerator.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/event/eventmanager.hpp"

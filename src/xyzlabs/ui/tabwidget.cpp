@@ -4,7 +4,7 @@
 
 #include "xyzlabs/ui/tabwidget.hpp"
 #include "xyzlabs/event/eventmanager.hpp"
-#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/utils/randomgenerator.hpp"
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 

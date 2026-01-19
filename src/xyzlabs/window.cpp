@@ -14,7 +14,7 @@
 #include "stb_image_write.h"
 
 #include "xyzlabs/window.hpp"
-#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/utils/randomgenerator.hpp"
 #include "xyzlabs/event/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
