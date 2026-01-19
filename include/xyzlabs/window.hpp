@@ -4,7 +4,7 @@
 #include <concepts>
 #include <vector>
 
-#include "xyzlabs/widget.hpp"
+#include "xyzlabs/ui/widget.hpp"
 
 class ImGuiContext;
 struct GLFWwindow;

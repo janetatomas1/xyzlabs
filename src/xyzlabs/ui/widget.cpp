@@ -2,9 +2,11 @@
 #include <spdlog/spdlog.h>
 #include <format>
 
-#include "xyzlabs/widget.hpp"
-#include "xyzlabs/randomgenerator.hpp"
+#include "xyzlabs/ui/widget.hpp"
+#include "xyzlabs/ui/relativelayout.hpp"
+
 #include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/eventmanager.hpp"

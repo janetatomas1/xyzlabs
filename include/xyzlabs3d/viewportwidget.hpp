@@ -2,7 +2,7 @@
 #pragma once
 
 #include <Corrade/Tags.h>
-#include <xyzlabs/widget.hpp>
+#include <xyzlabs/ui/widget.hpp>
 
 #include "types.hpp"
 #include "xyzlabs3d/types.hpp"

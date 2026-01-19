@@ -1,7 +1,6 @@
 
 #include <xyzlabs3d/viewportwidget.hpp>
 #include <xyzlabs/xyzlabs.hpp>
-#include <xyzlabs/tabwidget.hpp>
 
 #include <Magnum/GL/GL.h>
 #include <Magnum/GL/Mesh.h>
@@ -9,7 +8,6 @@
 #include <Magnum/Shaders/VertexColorGL.h>
 #include <Magnum/GL/Renderer.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
-#incklu
 
 using namespace xyzlabs;
 using namespace Magnum;

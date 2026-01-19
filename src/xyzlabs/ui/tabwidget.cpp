@@ -2,7 +2,7 @@
 #include <fmt/format.h>
 #include <string>
 
-#include "xyzlabs/tabwidget.hpp"
+#include "xyzlabs/ui/tabwidget.hpp"
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/window.hpp"

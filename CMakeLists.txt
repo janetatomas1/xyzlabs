@@ -16,7 +16,7 @@ if(MSVC)
     add_compile_options(/utf-8)
 endif()
 
-file(GLOB XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
+file(GLOB_RECURSE XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules" ${CMAKE_MODULE_PATH})
 add_library(
     xyzlabs

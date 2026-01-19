@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "xyzlabs/widget.hpp"
+#include "xyzlabs/ui/widget.hpp"
 #include "xyzlabs/setting.hpp"
 #include "xyzlabs/settingsmanager.hpp"
 #include "xyzlabs/window.hpp"

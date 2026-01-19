@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <fmt/format.h>
 
-#include "xyzlabs/dialog.hpp"
+#include "xyzlabs/ui/dialog.hpp"
 #include "xyzlabs/eventmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 

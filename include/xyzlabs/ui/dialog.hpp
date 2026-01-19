@@ -1,8 +1,7 @@
 
 #pragma once
 
-#include "widget.hpp"
-#include "xyzlabs/widget.hpp"
+#include "xyzlabs/ui/widget.hpp"
 #include "xyzlabs/event.hpp"
 
 namespace xyzlabs {

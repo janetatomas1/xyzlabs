@@ -6,9 +6,10 @@
 #include <cinttypes>
 #include <memory>
 
-#include "eventmanager.hpp"
+#include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/ui/relativelayout.hpp"
 #include "xyzlabs/operators.hpp"
-#include "xyzlabs/relativelayout.hpp"
+
 
 namespace xyzlabs {
 

@@ -1,5 +1,5 @@
 
-#include "xyzlabs/settingswidget.hpp"
+#include "xyzlabs/ui/settingswidget.hpp"
 
 namespace xyzlabs {
 

@@ -7,8 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "widget.hpp"
-#include "xyzlabs/widget.hpp"
+#include "xyzlabs/ui/widget.hpp"
 
 namespace xyzlabs {
 
