@@ -3,6 +3,7 @@
 
 ## 4.1.0 19. Jan 2026
 ### Features
+- Refactored project with better include/, src structure
 - Custom SettingsWidget
 
 ## 4.0.0 6. Jan 2026
