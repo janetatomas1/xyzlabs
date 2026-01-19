@@ -1,11 +1,11 @@
 
 #include <spdlog/spdlog.h>
 
-#include "xyzlabs/taskmanager.hpp"
+#include "xyzlabs/task/taskmanager.hpp"
 
 namespace xyzlabs {
 
-TaskManager::TaskManager(): 
+TaskManager::TaskManager():
     pool_(asio::thread_pool(threadCount_)),
     guard_(asio::make_work_guard(io_)) {}
 

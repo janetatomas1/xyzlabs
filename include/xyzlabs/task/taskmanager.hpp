@@ -3,8 +3,8 @@
 
 #include <boost/asio.hpp>
 
-#include "xyzlabs/oncetask.hpp"
-#include "xyzlabs/periodictask.hpp"
+#include "xyzlabs/task/oncetask.hpp"
+#include "xyzlabs/task/periodictask.hpp"
 
 namespace xyzlabs {
 
