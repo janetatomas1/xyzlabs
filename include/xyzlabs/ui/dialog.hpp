@@ -2,7 +2,7 @@
 #pragma once
 
 #include "xyzlabs/ui/widget.hpp"
-#include "xyzlabs/event.hpp"
+#include "xyzlabs/event/event.hpp"
 
 namespace xyzlabs {
 

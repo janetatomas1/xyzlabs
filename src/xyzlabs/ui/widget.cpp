@@ -9,7 +9,7 @@
 #include "xyzlabs/randomgenerator.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/window.hpp"
-#include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/event/eventmanager.hpp"
 
 namespace xyzlabs {
 

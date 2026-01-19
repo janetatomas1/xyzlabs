@@ -5,8 +5,8 @@
 #include <memory>
 
 #include "xyzlabs/window.hpp"
-#include "xyzlabs/event.hpp"
-#include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/event/event.hpp"
+#include "xyzlabs/event/eventmanager.hpp"
 
 
 namespace xyzlabs {

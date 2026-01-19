@@ -15,7 +15,7 @@
 
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/randomgenerator.hpp"
-#include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/event/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 

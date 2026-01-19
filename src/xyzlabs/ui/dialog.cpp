@@ -3,7 +3,7 @@
 #include <fmt/format.h>
 
 #include "xyzlabs/ui/dialog.hpp"
-#include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/event/eventmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 
 namespace xyzlabs {

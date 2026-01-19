@@ -1,5 +1,5 @@
 
-#include <xyzlabs/eventmanager.hpp>
+#include <xyzlabs/event/eventmanager.hpp>
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
 

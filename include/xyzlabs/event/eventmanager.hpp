@@ -4,7 +4,7 @@
 #include <boost/unordered/unordered_flat_map.hpp>
 #include <moodycamel/concurrentqueue.h>
 
-#include "xyzlabs/event.hpp"
+#include "xyzlabs/event/event.hpp"
 
 namespace xyzlabs {
 

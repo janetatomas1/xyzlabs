@@ -6,7 +6,7 @@
 #include <cinttypes>
 #include <memory>
 
-#include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/event/eventmanager.hpp"
 #include "xyzlabs/ui/relativelayout.hpp"
 #include "xyzlabs/operators.hpp"
 

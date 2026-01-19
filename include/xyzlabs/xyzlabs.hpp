@@ -9,7 +9,7 @@
 #include "randomgenerator.hpp"
 #include "xyzlabs/taskmanager.hpp"
 #include "xyzlabs/settingsmanager.hpp"
-#include "xyzlabs/eventmanager.hpp"
+#include "xyzlabs/event/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/objectregistry.hpp"
 
