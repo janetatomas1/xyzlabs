@@ -13,6 +13,7 @@ namespace xyzlabs {
 
 class TabWidget: public Widget {
     std::vector<std::unique_ptr<Widget>> tabs_;
+    std::vector<std::string> tabIds_;
 
     Widget* add_tab_internal(std::unique_ptr<Widget> tab, size_t position = std::string::npos);
     Widget* set_tab_internal(std::unique_ptr<Widget> tab, size_t position);
@@ -28,7 +29,7 @@ protected:
         {0.08f, 1.0f},
         {0.0f, 0.0f}
     };
-
+    void recompute_tab_ids();
 public:
     TabWidget(
         const std::string &title = "",

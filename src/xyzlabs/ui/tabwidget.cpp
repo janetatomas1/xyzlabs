@@ -10,6 +10,13 @@
 
 namespace xyzlabs {
 
+void TabWidget::recompute_tab_ids() {
+    tabIds_.clear();
+    for(size_t i = 0; i < tabs_.size(); ++i) {
+        tabIds_.push_back(fmt::format("{}##{}", tabs_[i]->title(), i));
+    }
+}
+
 TabWidget::TabWidget(
     const std::string &title,
     Widget *parent,
@@ -32,6 +39,7 @@ Widget* TabWidget::add_tab_internal(std::unique_ptr<Widget> tab, size_t position
             tabs_.push_back(std::move(widget));
             currentTab_ = tabs_.size() - 1;
         }
+        recompute_tab_ids();
     });
     return ptr;
 }
@@ -46,6 +54,7 @@ Widget* TabWidget::set_tab_internal(std::unique_ptr<Widget> tab, size_t position
             tab->set_window(window());
             tabs_[position]->destroy();
             tabs_[position] = std::move(tab);
+            recompute_tab_ids();
         });
         return ptr;
     }
@@ -70,11 +79,20 @@ void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
         ImGui::BeginChild(tabBarId_.c_str(), tabBarSize, true);
 
         for(size_t i=0;i < tabs_.size();i++) {
+            if(currentTab_ == i) {
+                ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered]);
+            }
             if(ImGui::Button(
                 fmt::format("{}##{}", tabs_[i]->title(),i).c_str(),
                 ImVec2(tabBarSize.x * 0.9f, 30)
             )) {
-                currentTab_ = i;
+                app()->event_manager().add_action([this, i](){
+                    currentTab_ = i;
+                });
+            }
+
+            if(currentTab_ == i) {
+                ImGui::PopStyleColor(1);
             }
         }
 
@@ -117,6 +135,7 @@ void TabWidget::remove_tab(size_t idx) {
         if(currentTab_ != 0) {
             currentTab_ = currentTab_ - 1;
         }
+        recompute_tab_ids();
     });
 }
 
