@@ -13,35 +13,22 @@ namespace xyzlabs {
 
 class TabWidget: public Widget {
     std::vector<std::unique_ptr<Widget>> tabs_;
-    std::string tabBarID_;
-    float padding = 0.005;
-    size_t currentTab_ = 0;
 
-    ImVec2 closeBtnSize = {30.0f, 0.0f};
-    ImVec2 closeBtnPosition = {0.0f, 0.0f};
-    ImVec2 btnSize = {0.0f, 0.0f};
-    ImVec2 btnPosition = {0.0f, 0.0f};
-
-    RelativeLayout btnLayout_ = {{
-        1.0f, 0.035f
-    }, {
-       0.0f, 0.0f
-    }};
-    RelativeLayout closeBtnLayout_ = {{
-        0.02f, 1.0f
-    }, {
-       0.98f, 0.0f
-    }};
-    RelativeLayout tabLayout_ = {{
-        1.0f, 0.965f
-    }, {
-       0.0f, 0.035f
-    }};
     Widget* add_tab_internal(std::unique_ptr<Widget> tab, size_t position = std::string::npos);
     Widget* set_tab_internal(std::unique_ptr<Widget> tab, size_t position);
-    void render_full_tabbar();
-    void render_only_current();
-    void recompute_tab_width();
+
+protected:
+    bool tabBarOpen_ = true;
+    bool renderTabBarOverWidget_ = true;
+
+    std::string tabBarId_;
+    size_t currentTab_ = 0;
+
+    RelativeLayout tabBarLayout_ = {
+        {0.08f, 1.0f},
+        {0.0f, 0.0f}
+    };
+
 public:
     TabWidget(
         const std::string &title = "",
@@ -66,6 +53,10 @@ public:
     size_t count();
     void remove_tab(size_t idx);
     void remove_tab_id(uint64_t id);
+    bool is_tabbar_open() const;
+    void set_tabbar_open(bool open);
+    bool is_render_over_widget() const;
+    void set_render_over_widget(bool render);
 };
 
 template<
