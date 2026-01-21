@@ -64,16 +64,16 @@ Widget* TabWidget::set_tab_internal(std::unique_ptr<Widget> tab, size_t position
 
 void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
     auto [tabBarSize, tabBarPosition] = tabBarLayout_.compute(size, position);
-    auto resizeWidget = tabBarOpen_ && !renderTabBarOverWidget_;
 
-    ImVec2 mainWidgetSize = resizeWidget ? ImVec2{size.x - tabBarSize.x, size.y} : size;
-    ImVec2 mainWidgetPosition = resizeWidget ? ImVec2{position.x + tabBarSize.x, position.y} : position;
+    ImGui::SetCursorPos(position);
+    tabs_[currentTab_]->show(size, position);
 
-    ImGui::SetCursorPos(mainWidgetPosition);
-
-    tabs_[currentTab_]->show(mainWidgetSize, mainWidgetPosition);
-
-    if(tabBarOpen_) {
+    auto mousePos = ImGui::GetMousePos();
+    if(mousePos.x <= position.x + tabBarSize.x
+        && mousePos.y <= position.y + tabBarSize.y
+        && mousePos.x >= position.x
+        && mousePos.y >= position.y
+    ) {
         ImGui::SetCursorPos(tabBarPosition);
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0, 0, 0, 0.05f));
         ImGui::BeginChild(tabBarId_.c_str(), tabBarSize, true);
