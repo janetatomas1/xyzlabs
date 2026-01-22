@@ -8,6 +8,7 @@
 #include <Magnum/Shaders/VertexColorGL.h>
 #include <Magnum/GL/Renderer.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
+#include <xyzlabs/ui/tabwidget.hpp>
 
 using namespace xyzlabs;
 using namespace Magnum;

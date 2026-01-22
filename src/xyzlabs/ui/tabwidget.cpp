@@ -12,8 +12,10 @@ namespace xyzlabs {
 
 void TabWidget::recompute_tab_ids() {
     tabIds_.clear();
+    checkedIds_.clear();
     for(size_t i = 0; i < tabs_.size(); ++i) {
         tabIds_.push_back(fmt::format("{}##{}", tabs_[i]->title(), i));
+        checkedIds_.push_back(fmt::format("##checkbox{}", i));
     }
 }
 
@@ -35,9 +37,11 @@ Widget* TabWidget::add_tab_internal(std::unique_ptr<Widget> tab, size_t position
         if(position < tabs_.size()) {
             tabs_.insert(tabs_.begin() + position, std::move(widget));
             currentTab_ = position;
+            checked_.insert(checked_.begin() + position, false);
         } else {
             tabs_.push_back(std::move(widget));
             currentTab_ = tabs_.size() - 1;
+            checked_.push_back(false);
         }
         recompute_tab_ids();
     });
@@ -63,7 +67,14 @@ Widget* TabWidget::set_tab_internal(std::unique_ptr<Widget> tab, size_t position
 }
 
 void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
+    for(size_t i = 0; i < tabs_.size(); i++) {
+        if(tabs_[i] == nullptr) {
+            spdlog::info("TabWidget index, size: {} {}", i, tabs_.size());
+        }
+    }
+
     auto [tabBarSize, tabBarPosition] = tabBarLayout_.compute(size, position);
+    auto [scrollBarSize, scrollbarPosition] = scrollBarLayout_.compute(tabBarSize, tabBarPosition);
 
     ImGui::SetCursorPos(position);
     tabs_[currentTab_]->show(size, position);
@@ -76,24 +87,57 @@ void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
     ) {
         ImGui::SetCursorPos(tabBarPosition);
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0, 0, 0, 0.05f));
-        ImGui::BeginChild(tabBarId_.c_str(), tabBarSize, true);
+        ImGui::BeginChild(tabBarId_.c_str(), tabBarSize, ImGuiWindowFlags_NoScrollbar, true);
+        ImGui::BeginChild(scrollbarId_.c_str(), scrollBarSize,  true);
+
+        const auto btnSize = tabButtonSize_ * tabBarSize;
 
         for(size_t i=0;i < tabs_.size();i++) {
             if(currentTab_ == i) {
                 ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered]);
             }
+
             if(ImGui::Button(
                 fmt::format("{}##{}", tabs_[i]->title(),i).c_str(),
-                ImVec2(tabBarSize.x * 0.9f, 30)
+                btnSize
             )) {
                 app()->event_manager().add_action([this, i](){
                     currentTab_ = i;
                 });
             }
 
+            ImGui::SameLine();
+            auto cursor = ImGui::GetCursorPos();
+            cursor.y += btnSize.y * 0.3;
+            ImGui::SetCursorPos(cursor);
+            ImGui::Checkbox(checkedIds_[i].c_str(), (bool*)&checked_[i]);
+
             if(currentTab_ == i) {
                 ImGui::PopStyleColor(1);
             }
+        }
+        ImGui::EndChild();
+
+        const auto [closeBtnSize, closeBtnPos] = closeBtnLayout_.compute(tabBarSize, tabBarPosition);
+        ImGui::SetCursorPos(closeBtnPos);
+        if(ImGui::Button("Close checked tabs", closeBtnSize)) {
+            app()->event_manager().add_action([this]() {
+                std::vector<uint64_t> ids;
+                for (size_t i=0;i < tabs_.size();i++){
+                    if(checked_[i]) {
+                        ids.push_back(tabs_[i]->id());
+                    }
+                }
+                std::erase_if(checked_, [](const bool &x) {
+                    return x;
+                });
+                std::erase_if(tabs_, [&ids](const std::unique_ptr<Widget>& w) {
+                    return std::find(ids.begin(), ids.end(), w->id()) != ids.end();
+                });
+
+                recompute_tab_ids();
+                currentTab_ = std::min(currentTab_, tabs_.size() - 1);
+            });
         }
 
         ImGui::EndChild();
@@ -136,19 +180,18 @@ void TabWidget::remove_tab(size_t idx) {
             currentTab_ = currentTab_ - 1;
         }
         recompute_tab_ids();
+        checked_.erase(checked_.begin() + idx);
     });
 }
 
 void TabWidget::remove_tab_id(uint64_t id) {
-    app()->event_manager().add_action([this, id]() {
-        auto it = std::find_if(tabs_.begin(), tabs_.end(),
-            [id](const auto& w) {
-                return w->id() == id;
-            }
-        );
-        size_t index = std::distance(tabs_.begin(), it);
-        remove_tab(index);
-    });
+    auto it = std::find_if(tabs_.begin(), tabs_.end(),
+        [id](const auto& w) {
+            return w->id() == id;
+        }
+    );
+    size_t index = std::distance(tabs_.begin(), it);
+    remove_tab(index);
 }
 
 bool TabWidget::is_tabbar_open() const {

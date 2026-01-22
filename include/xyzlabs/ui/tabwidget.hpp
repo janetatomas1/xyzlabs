@@ -12,24 +12,37 @@
 namespace xyzlabs {
 
 class TabWidget: public Widget {
-    std::vector<std::unique_ptr<Widget>> tabs_;
-    std::vector<std::string> tabIds_;
-
+protected:
     Widget* add_tab_internal(std::unique_ptr<Widget> tab, size_t position = std::string::npos);
     Widget* set_tab_internal(std::unique_ptr<Widget> tab, size_t position);
+    void recompute_tab_ids();
 
-protected:
+    std::vector<std::unique_ptr<Widget>> tabs_;
+    std::vector<std::string> tabIds_;
+    std::vector<uint8_t> checked_;
+    std::vector<std::string> checkedIds_;
     bool tabBarOpen_ = true;
     bool renderTabBarOverWidget_ = true;
 
     std::string tabBarId_;
+    std::string scrollbarId_;
     size_t currentTab_ = 0;
 
     RelativeLayout tabBarLayout_ = {
-        {0.08f, 1.0f},
+        {0.12f, 1.0f},
         {0.0f, 0.0f}
     };
-    void recompute_tab_ids();
+    RelativeLayout scrollBarLayout_ = {
+        {1.0f, 0.9f},
+        {0.0f, 0.0f}
+    };
+    ImVec2 tabButtonSize_ = ImVec2(0.7f, 0.035f);
+    ImU32 closeColor_ = IM_COL32(255, 0, 0, 255);
+    RelativeLayout closeBtnLayout_ = {
+        {0.9f, 0.05f},
+        {0.05f, 0.935f}
+    };
+
 public:
     TabWidget(
         const std::string &title = "",
