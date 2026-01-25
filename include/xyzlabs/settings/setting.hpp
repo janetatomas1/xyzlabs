@@ -5,9 +5,9 @@
 #include "xyzlabs/settings/settinginterface.hpp"
 #include "xyzlabs/settings/settingbase.hpp"
 
-namespace xyzlabs {
-
 using json = nlohmann::json;
+
+namespace xyzlabs {
 
 template<typename T>
 class Setting: public SettingBase {
@@ -76,6 +76,8 @@ struct FloatSetting: public Setting<float> {
         float value, float step = 0.0f,
         float step_fast = 0.0f
     ): Setting(label, value), step(step), step_fast(step_fast) {};
+    json to_json() const override;
+    void from_json(const json &jv) override;
     void show(const std::string &label) override;
     std::unique_ptr<SettingInterface> clone() const override;
 };
@@ -87,6 +89,8 @@ struct FloatSliderSetting: public Setting<float> {
         float value, float step = 0.0f,
         float max = 100.0f
     ): Setting(label, value), min(min), max(max) {};
+    json to_json() const override;
+    void from_json(const json &jv) override;
     void show(const std::string &label) override;
     std::unique_ptr<SettingInterface> clone() const override;
 };

@@ -30,11 +30,9 @@ json merge(const json& a, const json& b) {
 
 json load_json_safe(const std::string &file) {
     json jv;
-    if(!fs::exists(fs::path(file))) {
+    if(fs::exists(fs::path(file))) {
         std::fstream config(file, std::ios::in);
-        try {
-            config >> jv;
-        } catch(...) {}
+        config >> jv;
         config.close();
     }
 
@@ -48,10 +46,6 @@ void save_json(json jv, const std::string &file) {
 }
 
 void save_safe(std::unique_ptr<SettingInterface> settings, const std::string &file) {
-    if(!fs::exists(fs::path(file).parent_path())) {
-        fs::create_directory(fs::path(file).parent_path());
-    }
-
     auto jv0 = settings->to_json();
     auto jv1 = load_json_safe(file);
     auto merged = merge(jv0, jv1);
@@ -71,20 +65,23 @@ void SettingsManager::receive_settings(std::unique_ptr<SettingsGroup> group) {
     load_safe();
 }
 
-
 std::unique_ptr<SettingsGroup> SettingsManager::clone_settings() {
     auto ptr = mainGroup_->clone().release();
     auto cast = dynamic_cast<SettingsGroup*>(ptr);
     return std::unique_ptr<SettingsGroup>(cast);
 }
 
-std::string SettingsManager::config_file() {
-    return "config.json";
-}
-
-void SettingsManager::init() {
+void SettingsManager::init(const std::string &configFile) {
     mainGroup_ = std::make_unique<SettingsGroup>();
     load_safe();
+}
+
+std::string SettingsManager::config_file() {
+    return configFile_;
+}
+
+void SettingsManager::set_config_file(const std::string &configFile) {
+    configFile_ = configFile;
 }
 
 void SettingsManager::save() {
@@ -102,9 +99,8 @@ void SettingsManager::load() {
 }
 
 void SettingsManager::load_safe() {
-    if(!std::filesystem::exists(config_file())) {
-        save_safe(std::move(mainGroup_->clone()), config_file());
-    }
+    const auto jv = load_json_safe(configFile_);
+    mainGroup_->from_json(jv);
 }
 
 }

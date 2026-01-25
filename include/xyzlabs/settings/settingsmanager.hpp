@@ -21,6 +21,7 @@ std::unique_ptr<Derived> dynamic_unique_cast(std::unique_ptr<Base>&& base) {
 class SettingsManager {
     bool settingsOpen_ = false;
     std::unique_ptr<SettingsGroup> mainGroup_;
+    std::string configFile_;
 
 public:
     SettingsManager();
@@ -30,8 +31,9 @@ public:
     SettingInterface* get(const std::string &path);
     std::unique_ptr<SettingsGroup> clone_settings();
     void receive_settings(std::unique_ptr<SettingsGroup> group);
-    void init();
+    void init(const std::string &configFile = "");
     std::string config_file();
+    void set_config_file(const std::string &configFile = "");
     void save();
     void load();
     void load_safe();
