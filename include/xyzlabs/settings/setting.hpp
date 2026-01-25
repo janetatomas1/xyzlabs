@@ -1,33 +1,13 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
 #include <array>
+#include "xyzlabs/settings/settinginterface.hpp"
+#include "xyzlabs/settings/settingbase.hpp"
 
 namespace xyzlabs {
 
 using json = nlohmann::json;
-
-class SettingInterface {
-protected:
-public:
-    virtual ~SettingInterface() = default;
-    virtual SettingInterface* add_child(const std::string &key, std::unique_ptr<SettingInterface> child) { return nullptr; };
-    virtual json to_json() const = 0;
-    virtual void from_json(const nlohmann::json& j) = 0;
-    virtual void show(const std::string &label) = 0;
-    virtual std::unique_ptr<SettingInterface> clone() const = 0;
-    virtual SettingInterface* get_child(const std::string &path) { return nullptr; }
-};
-
-class SettingBase: public SettingInterface {
-protected:
-    std::string label_;
-public:
-    virtual ~SettingBase() = default;
-    SettingBase(const std::string &label): label_(label) {};
-    virtual const char* label() { return label_.c_str(); };
-};
 
 template<typename T>
 class Setting: public SettingBase {
