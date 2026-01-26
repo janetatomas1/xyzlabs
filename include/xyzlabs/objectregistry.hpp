@@ -4,7 +4,7 @@
 #include <memory>
 #include <boost/unordered/unordered_flat_map.hpp>
 
-#include "xyzlabs/object.hpp"
+#include "xyzlabs/assert.hpp"
 #include "xyzlabs/object.hpp"
 
 namespace xyzlabs {
@@ -101,10 +101,10 @@ public:
 
 template<ObjectType O>
 O* ObjectRegistry::insert(std::unique_ptr<O> obj) {
+    XYZ_ASSERT_MSG(obj != nullptr, "Object pointer cannot be null");
     auto ptr = obj.get();
     uint64_t id = obj->id();
-    std::unique_ptr<Object> proxy = std::move(obj);
-    objects_[id] = std::move(proxy);
+    objects_[id] = std::move(obj);
     return ptr;
 }
 
