@@ -35,4 +35,4 @@ using callback = std::move_only_function<void(std::unique_ptr<Event> event)>;
  */
 using action = std::move_only_function<void()>;
 
-}
+} // namespace xyzlabs

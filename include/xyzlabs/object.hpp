@@ -63,4 +63,4 @@ public:
 template <typename T>
 concept ObjectType = std::derived_from<T, Object> || std::same_as<T, Object>;
 
-}
+} // namespace xyzlabs

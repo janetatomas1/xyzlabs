@@ -95,4 +95,4 @@ public:
     void unsubscribe(const std::string &label);
 };
 
-}
+} // namespace xyzlabs

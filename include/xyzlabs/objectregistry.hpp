@@ -113,4 +113,4 @@ O* ObjectRegistry::get_as(uint64_t id) {
     return dynamic_cast<O*>(get(id));
 }
 
-}
+} // namespace xyzlabs
