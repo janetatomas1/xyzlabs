@@ -1,15 +1,48 @@
 
 #include "xyzlabs/ui/relativelayout.hpp"
+#include "xyzlabs/assert.hpp"
 
 namespace xyzlabs {
 
-RelativeLayout::RelativeLayout(const ImVec2 &size, const ImVec2 &position): size_(size), position_(position) {}
+RelativeLayout::RelativeLayout(
+    const ImVec2 &size,
+    const ImVec2 &position
+): size_(size), position_(position) {
+    XYZ_ASSERT_MSG(
+        size.x <= 1.0f
+        && size.y <= 1.0f
+        && size.x >= 0.0f
+        && size.y >= 0.0f,
+        "Size must be between 0 and 1"
+    );
+    XYZ_ASSERT_MSG(
+        position.x <= 1.0f
+        && position.y <= 1.0f
+        && position.x >= 0.0f
+        && position.y >= 0.0f,
+        "Position must be between 0 and 1"
+    );
+}
 
 void RelativeLayout::set_size_relative(const ImVec2 &size) {
+    XYZ_ASSERT_MSG(
+        size.x <= 1.0f
+        && size.y <= 1.0f
+        && size.x >= 0.0f
+        && size.y >= 0.0f,
+        "Size must be between 0 and 1"
+    );
     size_ = size;
 }
 
 void RelativeLayout::set_position_relative(const ImVec2 &position) {
+    XYZ_ASSERT_MSG(
+        position.x <= 1.0f
+        && position.y <= 1.0f
+        && position.x >= 0.0f
+        && position.y >= 0.0f,
+        "Position must be between 0 and 1"
+    );
     position_ = position;
 }
 
