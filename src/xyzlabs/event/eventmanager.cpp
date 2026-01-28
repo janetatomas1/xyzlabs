@@ -4,15 +4,30 @@
 
 #include "xyzlabs/event/event.hpp"
 #include "xyzlabs/event/eventmanager.hpp"
+#include "xyzlabs/assert.hpp"
 
 namespace xyzlabs {
 
 void EventManager::add_event(event_ptr event) {
+    XYZ_ASSERT_MSG(
+        event != nullptr,
+        "Event cannot be null"
+    );
+    XYZ_ASSERT_MSG(
+        !event->label.empty(),
+        "Event label cannot be empty"
+    );
+
     spdlog::info("Adding event {}", event->label);
     events_.enqueue(std::move(event));
 }
 
 void EventManager::add_action(action act) {
+    XYZ_ASSERT_MSG(
+        act,
+        "Action cannot be null"
+    );
+
     actions_.enqueue(std::move(act));
 }
 
@@ -46,6 +61,15 @@ void EventManager::dispatch() {
 }
 
 void EventManager::subscribe(const std::string &label, callback call) {
+    XYZ_ASSERT_MSG(
+        !label.empty(),
+        "EventManager::subscribe: label must not be empty"
+    );
+    XYZ_ASSERT_MSG(
+        call,
+        "EventManager::subscribe: callback must be valid"
+    );
+
     callbacks_[label] = std::move(call);
     spdlog::info("Subscribed to event {}", label);
 }
