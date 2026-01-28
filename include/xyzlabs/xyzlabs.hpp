@@ -34,6 +34,7 @@ class XYZLabs {
     uint64_t frame_ = 0;
 public:
     XYZLabs();
+    virtual ~XYZLabs() = default;
     template<WidgetType W = Widget, typename... Args>
     void set_initial_widget(Args... args);
     template<WidgetType W = Widget, typename... Args>
