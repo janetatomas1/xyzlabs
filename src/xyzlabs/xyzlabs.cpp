@@ -94,6 +94,14 @@ uint64_t XYZLabs::frame() {
     return frame_;
 }
 
+size_t XYZLabs::timeout() {
+    return renderTimeout_;
+}
+
+void XYZLabs::set_timeout(size_t timeout) {
+    renderTimeout_ = timeout;
+}
+
 RandomGenerator &XYZLabs::random_generator() {
     static RandomGenerator generator;
     return generator;
