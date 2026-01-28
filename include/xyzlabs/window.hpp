@@ -50,7 +50,7 @@ class Window {
     WindowHandle handle_ = nullptr;
 
     /// ImGui context associated with this window
-    ImGuiContext *ctx = nullptr;
+    ImGuiContext *ctx_ = nullptr;
 
     /// Window title displayed by the system
     std::string title_;
@@ -163,10 +163,14 @@ public:
     virtual void key_callback();
 
     /// Returns the window title
-    const std::string& title() const;
+    const std::string& title() const {
+        return title_;
+    };
 
     /// Returns the unique window identifier
-    uint64_t id();
+    uint64_t id() const {
+        return id_;
+    }
 
     /**
      * @brief Sets the central widget of the window.
@@ -219,6 +223,12 @@ public:
 
     /// Returns the owning WindowManager
     WindowManager *window_manager();
+
+    /// Returns the central widget of the window
+    template <WidgetType W = Widget>
+    W* central_widget() {
+        return dynamic_cast<W*>(centralWidget_.get());
+    }
 
     /// Sets the owning WindowManager
     void set_window_manager(WindowManager *windowManager);

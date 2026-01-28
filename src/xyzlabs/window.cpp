@@ -10,14 +10,12 @@
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
-
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/utils/randomgenerator.hpp"
 #include "xyzlabs/event/eventmanager.hpp"
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/assert.hpp"
 
 namespace xyzlabs {
 
@@ -50,7 +48,7 @@ void Window::init() {
     }
 
     IMGUI_CHECKVERSION();
-    ctx = ImGui::CreateContext();
+    ctx_ = ImGui::CreateContext();
     ImGui::GetIO().IniFilename = nullptr;
 
     make_context_current();
@@ -69,13 +67,15 @@ Window::~Window() {
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext(ctx);
+    ImGui::DestroyContext(ctx_);
 
     glfwDestroyWindow(handle_);
     spdlog::info("Closed window. Title: {}, id: {}", title_, id_);
 }
 
 void Window::update() {
+    XYZ_ASSERT_MSG(centralWidget_, "Window::update called without a central widget");
+
     make_context_current();
     glfwSwapInterval(0);
 
@@ -109,8 +109,10 @@ GLFWwindow* Window::handle() {
 }
 
 void Window::make_context_current() {
+    XYZ_ASSERT_MSG(handle_, "Window::make_context_current called with invalid GLF window handle");
+    XYZ_ASSERT_MSG(ctx_, "Window::make_context_current called with invalid ImGui context");
     glfwMakeContextCurrent(handle_);
-    ImGui::SetCurrentContext(ctx);
+    ImGui::SetCurrentContext(ctx_);
 }
 
 Window::Window(const std::string &title, int32_t width, int32_t height):
@@ -131,6 +133,7 @@ void Window::close() {
 }
 
 Widget* Window::submit_widget(std::unique_ptr<Widget> widget) {
+    XYZ_ASSERT_MSG(widget, "Window::submit_widget received null widget");
     auto ptr = widget.get();
     auto action = [this, widget = std::move(widget)]() mutable {
         make_context_current();
@@ -168,7 +171,7 @@ void Window::set_color(const std::array<float, 4> &color) {
         ->event_manager()
         .add_action([this, color] () {
         make_context_current();
-        if(ctx->ColorStack.Size > 0) {
+        if(ctx_->ColorStack.Size > 0) {
             ImGui::PopStyleColor();
         }
         ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255));

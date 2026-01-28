@@ -43,7 +43,6 @@ int main(int argc, char** argv) {
             framebuffer().clear(GL::FramebufferClear::Color);
             shader.draw(mesh);
             GL::defaultFramebuffer.bind();
-            app()->object_registry().insert(std::unique_ptr<Object>(nullptr));
         }
 
         void destroy() override {
