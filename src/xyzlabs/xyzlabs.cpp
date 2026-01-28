@@ -25,8 +25,6 @@ void XYZLabs::init_() {
     settingsManager_.init();
 
     IMGUI_CHECKVERSION();
-
-    create_app_directory();
 }
 
 void XYZLabs::mainloop_() {
@@ -37,6 +35,7 @@ void XYZLabs::mainloop_() {
 
         eventManager_.dispatch();
         windowManager_.update();
+        frame_++;
         std::this_thread::sleep_for(std::chrono::milliseconds(renderTimeout_));
     }
 }
@@ -87,24 +86,12 @@ void XYZLabs::set_title(const std::string& title) {
     title_ = title;
 }
 
-std::filesystem::path XYZLabs::app_directory() {
-    auto titleStandardized = utils::standardize(title());
-
-    #ifdef __unix__
-        return std::filesystem::path(std::getenv("HOME")) / fmt::format(".{}", titleStandardized);
-    #else
-        return (std::filesystem::path(std::getenv("USERPROFILE")) / fmt::format(".{}", titleStandardized)).string();
-    #endif
+int XYZLabs::return_code() {
+    return exitCode_;
 }
 
-std::filesystem::path XYZLabs::create_app_directory() {
-    auto appDirectory = app_directory();
-
-    if(!std::filesystem::is_directory(appDirectory)) {
-        std::filesystem::create_directory(appDirectory);
-    }
-
-    return appDirectory;
+uint64_t XYZLabs::frame() {
+    return frame_;
 }
 
 RandomGenerator &XYZLabs::random_generator() {

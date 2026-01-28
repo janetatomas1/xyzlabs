@@ -31,6 +31,7 @@ class XYZLabs {
     void mainloop_();
 
     int exitCode_ = 0;
+    uint64_t frame_ = 0;
 public:
     XYZLabs();
     template<WidgetType W = Widget, typename... Args>
@@ -49,11 +50,8 @@ public:
     int exec();
     const std::string& title();
     void set_title(const std::string& title);
-    int return_code() {
-        return exitCode_;
-    }
-    std::filesystem::path app_directory();
-    std::filesystem::path create_app_directory();
+    int return_code();
+    uint64_t frame();
 };
 
 template<WidgetType W, typename... Args>
