@@ -9,12 +9,17 @@
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/utils/randomgenerator.hpp"
+#include "xyzlabs/assert.hpp"
 
 namespace xyzlabs {
 
-WindowManager::WindowManager(XYZLabs* app) : app_(app) {}
+WindowManager::WindowManager(XYZLabs* app) : app_(app) {
+    XYZ_ASSERT_MSG(app_, "WindowManager requires a valid XYZLabs app");
+}
 
 void WindowManager::init_main_window(std::unique_ptr<Window> window) {
+    XYZ_ASSERT_MSG(window, "Cannot submit null window");
+
     auto mainWindow = std::move(window);
     mainWindow->init();
     mainWindow->set_window_manager(this);
@@ -42,7 +47,6 @@ void WindowManager::update() {
 }
 
 void WindowManager::destroy() {
-    ImGui::DestroyContext();
     glfwTerminate();
 }
 
@@ -91,6 +95,10 @@ Window* WindowManager::get_window_by_title(const std::string &title) const {
 }
 
 Window* WindowManager::get_current_window() {
+    XYZ_ASSERT_MSG(
+        currentWindowIDx_ < windows_.size(),
+        "currentWindowIDx_ out of bounds"
+    );
     if(currentWindowIDx_ >= 0 && windows_.size() > currentWindowIDx_) {
         return windows_[currentWindowIDx_].get();
     }
@@ -98,7 +106,13 @@ Window* WindowManager::get_current_window() {
     return nullptr;
 }
 
+size_t WindowManager::current_window_index() const {
+    return currentWindowIDx_;
+}
+
 Window* WindowManager::submit_window(std::unique_ptr<Window> window) {
+    XYZ_ASSERT_MSG(window, "Cannot submit null window");
+
     auto ptr = window.get();
     window->set_window_manager(this);
     app()->event_manager().add_action(std::move([window = std::move(window), this] () mutable {
