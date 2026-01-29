@@ -10,6 +10,8 @@
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/event/eventmanager.hpp"
+#include "xyzlabs/assert.hpp"
+
 
 namespace xyzlabs {
 
@@ -24,6 +26,15 @@ Widget::Widget(const std::string &title, Widget *parent, Window *window):
 void Widget::show(const ImVec2 &size, const ImVec2& position) {}
 
 void Widget::display(const ImVec2 &size, const ImVec2& position) {
+    BOOST_ASSERT_MSG(
+        app() != nullptr,
+        "Widget must be associated with an application instance"
+    );
+    BOOST_ASSERT_MSG(
+        window() != nullptr,
+        "Widget must be contained within a window to call display()"
+    );
+
     if(ImGui::Begin(windowID_.c_str(), nullptr, windowFlags_)) {
         auto [localSize, localPosition] = layout_.compute(size, position);
         ImGui::SetWindowPos(localPosition);
@@ -63,6 +74,12 @@ Widget* Widget::parent() {
 
 void Widget::set_parent(Widget *parent) {
     parent_ = parent;
+
+    XYZ_ASSERT_MSG(parent != this, "Widget cannot be its own parent");
+    BOOST_ASSERT_MSG(
+        !parent || !window_ || parent->window() == window_,
+        "Parent widget must belong to the same window"
+    );
 }
 
 Window* Widget::window() {
