@@ -1,10 +1,16 @@
 
 # Change Log
+
+## 4.3.0 29 Feb 2026
+### Features
+- Added documentation for classes that are stabilized
+- Added Runtime debug assertions
+
 ## 4.2.0 25 Jan 2026
 ### Features
-Added tests for SettingsGroup class
-Separated Settings related classes into multiple headers
-Refactored TabWidget with vertical automatically hiding side-panel
+- Added tests for SettingsGroup class
+-Separated Settings related classes into multiple headers
+-Refactored TabWidget with vertical automatically hiding side-panel
 
 ## 4.1.0 19. Jan 2026
 ### Features
