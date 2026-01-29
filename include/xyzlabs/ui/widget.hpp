@@ -33,6 +33,74 @@ class SettingsManager;
  * The display() method handles ImGui window creation and layout.
  */
 class Widget {
+    /**
+       * @brief Human-readable title of the widget.
+       *
+       * Used for UI display and as part of the unique ImGui window identifier.
+       * Can be empty, but should remain stable for debugging and identification.
+       */
+      std::string title_;
+
+      /**
+       * @brief Unique identifier for the widget instance.
+       *
+       * Generated at construction time using a random generator.
+       * Ensures that the ImGui window ID is unique even if multiple widgets
+       * have the same title.
+       */
+      uint64_t id_ = 0;
+
+      /**
+       * @brief ImGui-compatible window identifier.
+       *
+       * Built from `title_` and `id_` to create a stable and unique ID
+       * for ImGui::Begin calls.
+       * Cached for performance.
+       */
+      std::string windowID_;
+
+      /**
+       * @brief ImGui window flags controlling appearance and behavior.
+       *
+       * Defaults to a non-titlebar, non-resizable, fixed-position window
+       * that cannot collapse:
+       * - `ImGuiWindowFlags_NoTitleBar`
+       * - `ImGuiWindowFlags_NoResize`
+       * - `ImGuiWindowFlags_NoMove`
+       * - `ImGuiWindowFlags_NoCollapse`
+       *
+       * Can be modified via `set_flags()` to adjust behavior dynamically.
+       */
+      int windowFlags_ = ImGuiWindowFlags_NoTitleBar |
+                         ImGuiWindowFlags_NoResize |
+                         ImGuiWindowFlags_NoMove |
+                         ImGuiWindowFlags_NoCollapse;
+
+      /**
+       * @brief Layout manager for the widget.
+       *
+       * Responsible for computing widget position and size relative
+       * to its parent or containing window. Provides spacing, alignment,
+       * and scaling.
+       */
+      RelativeLayout layout_;
+
+      /**
+       * @brief Parent widget in the hierarchy.
+       *
+       * Used to resolve window ownership and relative layout.
+       * Can be `nullptr` if the widget has no parent.
+       */
+      Widget* parent_;
+
+      /**
+       * @brief Owning window for the widget.
+       *
+       * If `nullptr`, the widget may inherit its window from the parent
+       * hierarchy. Must eventually resolve to a valid `Window` before
+       * `display()` is called.
+       */
+      Window* window_;
 protected:
     /**
      * @brief Access the global task manager.
