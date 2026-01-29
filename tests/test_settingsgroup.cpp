@@ -2,6 +2,8 @@
 #include <gtest/gtest.h>
 #include <xyzlabs/settings/settingsgroup.hpp>
 #include <xyzlabs/settings/setting.hpp>
+#include <boost/exception/all.hpp>
+#include <exception>
 
 using namespace xyzlabs;
 
@@ -16,7 +18,9 @@ TEST(SettingsGroup, AddAndGetSetting) {
 
 TEST(SettingsGroup, DoesNotExist) {
     SettingsGroup g;
-    EXPECT_EQ(g.get("does.not.exist"), nullptr);
+
+    // Runtime debug assertion
+    EXPECT_THROW(g.get("does.not.exist"), boost::wrapexcept<std::out_of_range>);
 }
 
 TEST(SettingsGroup, DuplicateSetting) {

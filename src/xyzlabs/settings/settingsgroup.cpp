@@ -3,13 +3,23 @@
 #include <exception>
 
 #include "xyzlabs/settings/settingsgroup.hpp"
+#include "xyzlabs/assert.hpp"
 
 namespace xyzlabs {
 
 SettingInterface* SettingsGroup::get_child(const std::string &path) {
+    XYZ_ASSERT_MSG(!path.empty(), "SettingsGroup: path must not be empty");
+    XYZ_ASSERT_MSG(path.front() != '.', "SettingsGroup: path must not start with '.'");
+    XYZ_ASSERT_MSG(path.back()  != '.', "SettingsGroup: path must not end with '.'");
+    XYZ_ASSERT_MSG(path.find("..") == std::string::npos,
+                     "SettingsGroup: path must not contain empty components ('..')");
+
     auto idx = path.find(".");
 
     auto prefix = idx == std::string::npos ? path : path.substr(0, idx);
+    XYZ_ASSERT_MSG(settings_.at(prefix) != nullptr,
+        "SettingsGroup: internal invariant violated (null child stored)");
+
     auto suffix = idx == std::string::npos ? "" : path.substr(idx + 1, path.size() - idx - 1);
 
     if(settings_.contains(prefix)) {
@@ -28,6 +38,15 @@ SettingInterface* SettingsGroup::get(const std::string &path) {
 }
 
 SettingInterface* SettingsGroup::add_child(const std::string &path, std::unique_ptr<SettingInterface> child) {
+    XYZ_ASSERT_MSG(!path.empty(), "SettingsGroup: path must not be empty");
+    XYZ_ASSERT_MSG(path.front() != '.', "SettingsGroup: path must not start with '.'");
+    XYZ_ASSERT_MSG(path.back()  != '.', "SettingsGroup: path must not end with '.'");
+    XYZ_ASSERT_MSG(path.find("..") == std::string::npos,
+                     "SettingsGroup: path must not contain empty components ('..')");
+    XYZ_ASSERT_MSG(child != nullptr,
+        "SettingsGroup: attempting to add a null SettingInterface");
+
+
     auto idx = path.find(".");
 
     auto prefix = idx == std::string::npos ? path : path.substr(0, idx);
