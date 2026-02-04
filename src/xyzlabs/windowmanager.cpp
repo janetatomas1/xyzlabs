@@ -23,7 +23,12 @@ void WindowManager::init_main_window(std::unique_ptr<Window> window) {
     auto mainWindow = std::move(window);
     mainWindow->init();
     mainWindow->set_window_manager(this);
-    windows_.push_back(std::move(mainWindow));
+
+    if(windows_.size() == 0) {
+        windows_.push_back(std::move(mainWindow));
+    } else {
+        windows_[0] = std::move(mainWindow);
+    }
 }
 
 void WindowManager::init() {

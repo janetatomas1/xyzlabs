@@ -17,7 +17,11 @@
 
 namespace xyzlabs {
 
-XYZLabs::XYZLabs(): windowManager_(this), settingsManager_() {}
+XYZLabs::XYZLabs():
+    windowManager_(this),
+    settingsManager_() {
+    init_();
+}
 
 void XYZLabs::init_() {
     windowManager_.init();

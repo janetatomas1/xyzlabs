@@ -194,8 +194,6 @@ void XYZLabs::set_initial_widget(Args... args) {
 
 template<WidgetType W, typename... Args>
 void XYZLabs::init(const std::string &title, Args... args) {
-    title_ = title;
-    init_();
     windowManager_.init_main_window(std::make_unique<Window>(title));
     set_initial_widget<W>(std::forward<Args>(args)...);
 }
@@ -203,7 +201,6 @@ void XYZLabs::init(const std::string &title, Args... args) {
 template<WindowType Win, WidgetType W, typename... Args>
 void XYZLabs::init(const std::string &title, Args... args) {
     title_ = title;
-    init_();
     windowManager_.init_main_window(std::make_unique<Win>(title));
     set_initial_widget<W>(std::forward<Args>(args)...);
 }

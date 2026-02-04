@@ -44,10 +44,6 @@ int main(int argc, char** argv) {
             shader.draw(mesh);
             GL::defaultFramebuffer.bind();
         }
-
-        void destroy() override {
-            xyzlabs3d::ViewportWidget::destroy();
-        }
     };
 
     auto app_ = XYZLabs();
