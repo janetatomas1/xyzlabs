@@ -147,7 +147,7 @@ if(WITH_3D)
 endif()
 
 add_compile_options(
-    -Wfatal-errors
+    -Wfatal-errors -Wall -Wextra -Wpedantic
 )
 
 install(

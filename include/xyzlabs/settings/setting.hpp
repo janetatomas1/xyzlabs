@@ -97,7 +97,7 @@ void Setting<T>::from_json(const json& j) {
 }
 
 template<typename T>
-void Setting<T>::show(const std::string &label) {}
+void Setting<T>::show(const std::string &) {}
 
 template<typename T>
 std::unique_ptr<SettingInterface> Setting<T>::clone() const {
@@ -185,10 +185,11 @@ struct FloatSetting: public Setting<float> {
  * Rendered using ImGui::SliderFloat.
  */
 struct FloatSliderSetting: public Setting<float> {
-    float min = 0.0f, max = 100.0f;
+    float min = 0.0f;
+    float max = 100.0f;
     FloatSliderSetting(
         const std::string &label,
-        float value, float step = 0.0f,
+        float value,
         float min = 0.0f, float max = 100.0f
     ): Setting(label, value), min(min), max(max) {};
     json to_json() const override;

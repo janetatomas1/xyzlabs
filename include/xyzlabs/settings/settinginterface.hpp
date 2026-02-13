@@ -41,8 +41,8 @@ public:
      * @return Pointer to the added child, or nullptr if unsupported.
      */
     virtual SettingInterface* add_child(
-        const std::string &key,
-        std::unique_ptr<SettingInterface> child
+        const std::string &,
+        std::unique_ptr<SettingInterface>
     ) { return nullptr; }
 
     /**
@@ -95,7 +95,7 @@ public:
      * @param path Path identifying the child.
      * @return Pointer to the child setting, or nullptr if not found.
      */
-    virtual SettingInterface* get_child(const std::string &path) { return nullptr; }
+    virtual SettingInterface* get_child(const std::string &) { return nullptr; }
 };
 
 } // namespace xyzlabs

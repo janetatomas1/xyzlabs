@@ -177,7 +177,7 @@ TEST(EventManagerTest, EventsAndActions) {
         order.push_back("A");
     });
 
-    manager.subscribe("B", [&order](event_ptr event) {
+    manager.subscribe("B", [&order](event_ptr) {
         order.push_back("B");
     });
 
@@ -194,7 +194,7 @@ TEST(EventManagerTest, ActionAddEvent) {
     EventManager manager;
 
     std::vector<std::string> order;
-    manager.subscribe("B", [&order](event_ptr event) {
+    manager.subscribe("B", [&order](event_ptr) {
         order.push_back("B");
     });
 
