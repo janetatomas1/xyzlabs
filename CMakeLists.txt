@@ -18,24 +18,28 @@ endif()
 
 file(GLOB_RECURSE XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules" ${CMAKE_MODULE_PATH})
+
 add_library(
     xyzlabs
     STATIC
     "${XYZLABS_SOURCES}"
 )
 
-find_package(GLFW REQUIRED)
+find_package(glfw3 REQUIRED)
 find_package(fmt REQUIRED)
-find_package(spdloG REQUIRED)
+find_package(spdlog REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(imgui MODULE REQUIRED)
+find_package(imgui REQUIRED)
+find_package(Boost REQUIRED)
+find_package(nlohmann_json REQUIRED)
+find_package(concurrentqueue REQUIRED)
+find_package(stb REQUIRED)
+find_package(GLEW REQUIRED)
 
 target_include_directories(
     xyzlabs
     PUBLIC
-    ${CMAKE_INCLUDE_PATH}
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_INCLUDE_PATH}>
     $<INSTALL_INTERFACE:include>
 )
 
@@ -52,19 +56,25 @@ target_link_libraries(
     PUBLIC
     fmt::fmt
     spdlog::spdlog
-    ${OPENGL_LIBRARY}
-    ${GLEW_LIBRARY}
+    OpenGL::GL
+    GLEW::GLEW
     imgui::imgui
-    GLFW::GLFW
+    glfw
+    ${Boost_LIBRARIES}
+    nlohmann_json::nlohmann_json
+    concurrentqueue::concurrentqueue
+    stb::stb
 )
 
 add_definitions(-DGLEW_STATIC)
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL)
 target_compile_definitions(xyzlabs PUBLIC FMT_HEADER_ONLY)
 
+get_target_property(LIBS imgui::imgui INTERFACE_INCLUDE_DIRECTORIES)
+message(STATUS "Directly linked libraries: ${LIBS}")
+
 if(WITH_3D)
     set(MAGNUM_APPLICATION_BACKEND GlfwApplication)
-
     find_package(
         Magnum
         REQUIRED
@@ -106,6 +116,7 @@ elseif(WITH_EXAMPLES)
         triangle
         PRIVATE
         xyzlabs
+        imgui::imgui
         xyzlabs3d
     )
 endif()
