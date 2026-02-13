@@ -276,7 +276,7 @@ struct is_unique_ptr_to_widget;
  * @brief Convenience boolean for is_unique_ptr_to_widget.
  */
 template<typename T>
-inline constexpr bool is_unique_ptr_to_widget_v;
+inline constexpr bool is_unique_ptr_to_widget_v = false;
 
 /**
  * @brief Concept matching Widget or any class derived from Widget.
