@@ -1,6 +1,0 @@
-[submodule "submodules/stb"]
-	path = submodules/stb
-	url = https://github.com/nothings/stb.git
-[submodule "cmake-modules"]
-	path = cmake-modules
-	url = git@github.com:janetatomas1/cmake-modules.git
