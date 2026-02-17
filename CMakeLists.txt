@@ -51,6 +51,8 @@ else()
     set(OPENGL_LIBRARY GL)
 endif()
 
+set(CMAKE_VERBOSE_MAKEFILE 1)
+
 target_link_libraries(
     xyzlabs
     PUBLIC
@@ -65,13 +67,17 @@ target_link_libraries(
     concurrentqueue::concurrentqueue
     stb::stb
 )
+target_include_directories(
+    xyzlabs
+    PUBLIC
+    ${CMAKE_INCLUDE_PATH}
+)
 
 add_definitions(-DGLEW_STATIC)
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL)
 target_compile_definitions(xyzlabs PUBLIC FMT_HEADER_ONLY)
 
 get_target_property(LIBS imgui::imgui INTERFACE_INCLUDE_DIRECTORIES)
-message(STATUS "Directly linked libraries: ${LIBS}")
 
 if(WITH_3D)
     set(MAGNUM_APPLICATION_BACKEND GlfwApplication)
@@ -98,6 +104,7 @@ if(WITH_3D)
         Magnum::Application
         Magnum::Shaders
         Magnum::SceneGraph
+        GLEW::GLEW
     )
 endif()
 
@@ -118,6 +125,7 @@ elseif(WITH_EXAMPLES)
         xyzlabs
         imgui::imgui
         xyzlabs3d
+        GLEW::GLEW
     )
 endif()
 
