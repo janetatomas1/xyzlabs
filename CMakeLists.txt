@@ -43,14 +43,6 @@ target_include_directories(
     $<INSTALL_INTERFACE:include>
 )
 
-if(MSVS)
-    set(GLEW_LIBRARY "libglew32")
-    set(OPENGL_LIBRARY OpenGL::GL)
-else()
-    set(GLEW_LIBRARY GLEW)
-    set(OPENGL_LIBRARY GL)
-endif()
-
 target_link_libraries(
     xyzlabs
     PUBLIC
@@ -71,7 +63,6 @@ target_include_directories(
     ${CMAKE_INCLUDE_PATH}
 )
 
-add_definitions(-DGLEW_STATIC)
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL)
 target_compile_definitions(xyzlabs PUBLIC FMT_HEADER_ONLY)
 
@@ -102,27 +93,6 @@ if(WITH_3D)
         Magnum::Application
         Magnum::Shaders
         Magnum::SceneGraph
-        GLEW::GLEW
-    )
-endif()
-
-if(WITH_EXAMPLES AND NOT WITH_3D)
-    message(FATAL_ERROR "xyzlabs3d library must be built for examples")
-elseif(WITH_EXAMPLES)
-    add_executable(triangle
-        "${CMAKE_SOURCE_DIR}/src/triangle/main.cpp"
-    )
-    target_include_directories(
-        triangle
-        PRIVATE
-        "${CMAKE_SOURCE_DIR}/include/"
-    )
-    target_link_libraries(
-        triangle
-        PRIVATE
-        xyzlabs
-        imgui::imgui
-        xyzlabs3d
         GLEW::GLEW
     )
 endif()
@@ -165,6 +135,10 @@ install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs
     DESTINATION include/
 )
+
+if(WITH_EXAMPLES)
+    add_subdirectory(examples)
+endif()
 
 if(WITH_3D)
     install(

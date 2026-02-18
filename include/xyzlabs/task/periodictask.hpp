@@ -20,7 +20,7 @@ class PeriodicTaskInterface {
         timer_.expires_after(std::chrono::milliseconds(milisecondsTimeout_));
         timer_.async_wait(handler);
     };
-    std::function<void(const boost::system::error_code& code)> handler = [this](const boost::system::error_code& code) {
+    std::function<void(const boost::system::error_code&)> handler = [this](const boost::system::error_code&) {
         if(running_) {
             if(!writeReady_) {
                 update();

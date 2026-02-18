@@ -14,7 +14,7 @@
 using namespace xyzlabs;
 using namespace Magnum;
 
-int main(int argc, char** argv) {
+int main() {
     struct TriangleWidget: public xyzlabs3d::ViewportWidget {
         TriangleWidget(): xyzlabs3d::ViewportWidget("Triangle") {}
 
