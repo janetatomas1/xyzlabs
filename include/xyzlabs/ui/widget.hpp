@@ -284,5 +284,9 @@ inline constexpr bool is_unique_ptr_to_widget_v = false;
 template <typename T>
 concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
 
+template<class W>
+W* Widget::parent_as() {
+    return dynamic_cast<W>(parent_);
+}
 
 }
