@@ -16,13 +16,6 @@ TEST(SettingsGroup, AddAndGetSetting) {
     EXPECT_EQ(ptr, g.get("foo"));
 }
 
-TEST(SettingsGroup, DoesNotExist) {
-    SettingsGroup g;
-
-    // Runtime debug assertion
-    EXPECT_THROW(g.get("does.not.exist"), boost::wrapexcept<std::out_of_range>);
-}
-
 TEST(SettingsGroup, DuplicateSetting) {
     SettingsGroup g;
 

@@ -51,8 +51,6 @@ else()
     set(OPENGL_LIBRARY GL)
 endif()
 
-set(CMAKE_VERBOSE_MAKEFILE 1)
-
 target_link_libraries(
     xyzlabs
     PUBLIC
