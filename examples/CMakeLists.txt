@@ -1,14 +1,16 @@
 
-add_executable(
-    triangle
-    triangle/main.cpp
-)
-target_link_libraries(
-    triangle
-    PRIVATE
-    xyzlabs
-    xyzlabs3d
-)
+if(WITH_3D)
+    add_executable(
+        triangle
+        triangle/main.cpp
+    )
+    target_link_libraries(
+        triangle
+        PRIVATE
+        xyzlabs
+        xyzlabs3d
+    )
+endif()
 
 add_executable(
     helloworld
