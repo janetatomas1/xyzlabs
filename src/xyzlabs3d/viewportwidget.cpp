@@ -49,7 +49,7 @@ void ViewportWidget::init() {
     camera_ = new Camera3D(*cameraObject_);
 }
 
-void ViewportWidget::show(const ImVec2 &size, const ImVec2 &position) {
+void ViewportWidget::show(const ImVec2 &size, const ImVec2 &) {
     ImGui::Image(texture_.id(), size);
 }
 

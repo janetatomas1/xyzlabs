@@ -11,7 +11,7 @@ std::string format_label(const std::string& l) {
     return fmt::format("##{}", l);
 }
 
-void TextSetting::show(const std::string &label) {
+void TextSetting::show(const std::string &) {
     ImGui::InputText(format_label(label_).c_str(), &value_);
 }
 
@@ -19,7 +19,7 @@ std::unique_ptr<SettingInterface> TextSetting::clone() const {
     return std::make_unique<TextSetting>(label_, value_);
 }
 
-void MultilineTextSetting::show(const std::string &label) {
+void MultilineTextSetting::show(const std::string &) {
     ImGui::InputTextMultiline(format_label(label_).c_str(), &value_);
 }
 
@@ -27,7 +27,7 @@ std::unique_ptr<SettingInterface> MultilineTextSetting::clone() const {
     return std::make_unique<MultilineTextSetting>(label_, value_);
 }
 
-void ColorSetting::show(const std::string &label) {
+void ColorSetting::show(const std::string &) {
     ImGui::ColorEdit4(format_label(label_).c_str(), &value_[0]);
 }
 
@@ -49,7 +49,7 @@ void FloatSetting::from_json(const json &jv) {
     value_ = jv["value"];
 }
 
-void FloatSetting::show(const std::string &label) {
+void FloatSetting::show(const std::string &) {
     ImGui::InputFloat(format_label(label_).c_str(), &value_, step, step_fast);
 }
 
@@ -71,7 +71,7 @@ void FloatSliderSetting::from_json(const json &jv) {
     value_ = jv["value"];
 }
 
-void FloatSliderSetting::show(const std::string &label) {
+void FloatSliderSetting::show(const std::string &) {
     ImGui::SliderFloat(format_label(label_).c_str(), &value_, min, max);
 }
 

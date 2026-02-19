@@ -73,6 +73,7 @@ std::unique_ptr<SettingsGroup> SettingsManager::clone_settings() {
 
 void SettingsManager::init(const std::string &configFile) {
     mainGroup_ = std::make_unique<SettingsGroup>();
+    configFile_ = configFile;
     load_safe();
 }
 

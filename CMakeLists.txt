@@ -100,10 +100,6 @@ if(WITH_3D)
     )
 endif()
 
-add_compile_options(
-    -Wfatal-errors
-)
-
 install(
     TARGETS xyzlabs
     EXPORT xyzlabsTargets

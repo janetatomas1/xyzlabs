@@ -126,9 +126,9 @@ void Window::make_context_current() {
 Window::Window(const std::string &title, int32_t width, int32_t height):
     title_(title),
     id_(XYZLabs::random_generator()()),
-    centralWidget_(std::move(std::make_unique<Widget>())),
     width_(width),
-    height_(height)
+    height_(height),
+    centralWidget_(std::move(std::make_unique<Widget>()))
 {}
 
 void Window::close() {
@@ -190,7 +190,7 @@ auto flip_image(uint8_t *data, size_t width, size_t height) {
     int row_bytes = width * 4;
     std::vector<unsigned char> temp(row_bytes);
 
-    for (int y = 0; y < height / 2; ++y) {
+    for (size_t y = 0; y < height / 2; ++y) {
         unsigned char* row_top = data + y * row_bytes;
         unsigned char* row_bottom = data + (height - 1 - y) * row_bytes;
         std::copy(row_top, row_top + row_bytes, temp.begin());

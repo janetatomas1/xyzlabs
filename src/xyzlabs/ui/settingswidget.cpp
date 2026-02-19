@@ -14,7 +14,6 @@ SettingsWidget::SettingsWidget(
 
 void SettingsWidget::show(const ImVec2 &size, const ImVec2 &pos) {
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, rowSize));
-    const ImVec2 settingsWindowPos = pos + size * ImVec2{0.65f, 0.4f};
     const ImVec2 scrollRegionSize = pos + size * ImVec2{0.98f, 0.8f};
     const ImVec2 saveBtnSize = pos + size * ImVec2{0.2f, 0.07f};
     const ImVec2 discardBtnPos = pos + size * ImVec2{0.52f, 0.9f};

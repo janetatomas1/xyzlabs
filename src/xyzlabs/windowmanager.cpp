@@ -104,7 +104,7 @@ Window* WindowManager::get_current_window() {
         currentWindowIDx_ < windows_.size(),
         "currentWindowIDx_ out of bounds"
     );
-    if(currentWindowIDx_ >= 0 && windows_.size() > currentWindowIDx_) {
+    if(windows_.size() > currentWindowIDx_) {
         return windows_[currentWindowIDx_].get();
     }
 

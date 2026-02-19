@@ -23,7 +23,7 @@ Widget::Widget(const std::string &title, Widget *parent, Window *window):
     windowID_ = fmt::format("{}##{}", title_, id_);
 }
 
-void Widget::show(const ImVec2 &size, const ImVec2& position) {}
+void Widget::show(const ImVec2 &, const ImVec2&) {}
 
 void Widget::display(const ImVec2 &size, const ImVec2& position) {
     BOOST_ASSERT_MSG(
