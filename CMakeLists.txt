@@ -10,6 +10,10 @@ option(WITH_3D "Build xyzlabs3d library" ON)
 option(WITH_EXAMPLES "Build example" ON)
 option(WITH_TESTS "Build tests" ON)
 
+add_compile_options(
+    -Wfatal-errors -Wall -Wextra -Wpedantic
+)
+
 set(CMAKE_CXX_STANDARD 23)
 
 if(MSVC)
@@ -69,13 +73,12 @@ target_compile_definitions(xyzlabs PUBLIC FMT_HEADER_ONLY)
 get_target_property(LIBS imgui::imgui INTERFACE_INCLUDE_DIRECTORIES)
 
 if(WITH_3D)
-    set(MAGNUM_APPLICATION_BACKEND GlfwApplication)
     find_package(
         Magnum
         REQUIRED
         GL
         SceneGraph
-        ${MAGNUM_APPLICATION_BACKEND}
+        GlfwApplication
         Shaders
     )
     file(GLOB XYZLABS3D_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs3d/*.cpp")
@@ -103,9 +106,13 @@ add_compile_options(
 
 install(
     TARGETS xyzlabs
+    EXPORT xyzlabsTargets
+    ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
 )
+
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs
     DESTINATION include/
@@ -114,43 +121,51 @@ install(
 if(WITH_3D)
     install(
         TARGETS xyzlabs3d
+        EXPORT xyzlabsTargets
         ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
     )
+
     install(
         DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs3d
         DESTINATION include/
     )
 endif()
 
-add_compile_options(
-    -Wfatal-errors -Wall -Wextra -Wpedantic
-)
-
 install(
-    TARGETS xyzlabs
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
-)
-install(
-    DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs
-    DESTINATION include/
+    EXPORT xyzlabsTargets
+    FILE xyzlabsTargets.cmake
+    NAMESPACE xyzlabs::
+    DESTINATION lib/cmake/xyzlabs
 )
 
 if(WITH_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-if(WITH_3D)
-    install(
-        TARGETS xyzlabs3d
-        ARCHIVE DESTINATION lib
-    )
-    install(
-        DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs3d
-        DESTINATION include/
-    )
-endif()
-
 if(WITH_TESTS)
     add_subdirectory(tests)
 endif()
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/xyzlabsConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/xyzlabsConfig.cmake
+    INSTALL_DESTINATION lib/cmake/xyzlabs
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/xyzlabsConfigVersion.cmake
+    VERSION 1.0.0
+    COMPATIBILITY SameMajorVersion
+)
+
+install(
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/xyzlabsConfig.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/xyzlabsConfigVersion.cmake
+    DESTINATION lib/cmake/xyzlabs
+)
