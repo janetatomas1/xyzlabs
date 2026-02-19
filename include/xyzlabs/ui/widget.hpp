@@ -286,7 +286,7 @@ concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
 
 template<class W>
 W* Widget::parent_as() {
-    return dynamic_cast<W>(parent_);
+    return dynamic_cast<W*>(parent_);
 }
 
 }

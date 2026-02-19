@@ -60,6 +60,14 @@ void Window::init() {
     spdlog::info("Opened new window. Title: {}, id: {}", title_, id_);
 }
 
+int32_t Window::width() {
+    return width_;
+}
+
+int32_t Window::height() {
+    return height_;
+}
+
 Window::~Window() {
     make_context_current();
 
