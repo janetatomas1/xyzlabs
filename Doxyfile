@@ -1,0 +1,17 @@
+PROJECT_NAME           = "xyzlabs"
+OUTPUT_DIRECTORY       = html
+INPUT                  = include src Readme.md
+RECURSIVE              = YES
+
+GENERATE_HTML          = YES
+HTML_OUTPUT            = docs
+
+GENERATE_LATEX         = NO
+GENERATE_TREEVIEW      = NO
+FULL_PATH_NAMES        = NO
+
+HAVE_DOT               = YES
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+USE_MDFILE_AS_MAINPAGE = Readme.md
+GENERATE_TREEVIEW = YES

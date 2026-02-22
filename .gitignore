@@ -3,6 +3,8 @@ build
 third-party
 CMakeUserPresets.json
 CMakePresets.json
+docs
 .vscode
 .zed
 .cache
+html
