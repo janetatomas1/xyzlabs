@@ -9,7 +9,6 @@ endif()
 option(WITH_3D "Build xyzlabs3d library" OFF)
 option(WITH_EXAMPLES "Build examples" OFF)
 option(WITH_TESTS "Build tests" OFF)
-option(WITH_DOCS "Build HTML documentation" OFF)
 
 add_compile_options(
     -Wfatal-errors -Wall -Wextra -Wpedantic
@@ -144,19 +143,6 @@ endif()
 
 if(WITH_TESTS)
     add_subdirectory(tests)
-endif()
-
-if(WITH_DOCS)
-    find_package(Doxygen REQUIRED)
-    set(DOXYGEN_GENERATE_HTML YES)
-    set(DOXYGEN_RECURSIVE YES)
-    set(DOXYGEN_USE_MDFILE_AS_MAINPAGE ${CMAKE_SOURCE_DIR}/Readme.md)
-    doxygen_add_docs(
-        docs
-        ${CMAKE_SOURCE_DIR}/include
-        ALL
-        CONFIGURATION_FILE ${CMAKE_SOURCE_DIR}/Doxyfile
-    )
 endif()
 
 include(CMakePackageConfigHelpers)
