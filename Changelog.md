@@ -1,5 +1,16 @@
 
 # Change Log
+## 4.4.0 22 Feb 2026
+### Features
+- Proper Readme and docs
+- Building doxygen documentation
+- Added new examples
+- Compilation warnings
+- cppcheck script
+
+## Bugfixes
+- Addd forgotten parent_as method to Widget class
+
 
 ## 4.3.0 29 Feb 2026
 ### Features
