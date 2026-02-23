@@ -7,6 +7,7 @@
 #include "xyzlabs/utils/randomgenerator.hpp"
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/utils/operators.hpp"
 
 namespace xyzlabs {
 

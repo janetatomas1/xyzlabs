@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <imgui_impl_opengl3.h>
 #include <imgui.h>
-#include <imgui_internal.h>
 #include <spdlog/spdlog.h>
 
 #include <GLFW/glfw3.h>
@@ -16,6 +15,8 @@
 #include "xyzlabs/windowmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
 #include "xyzlabs/assert.hpp"
+#include "xyzlabs/utils/operators.hpp"
+
 
 namespace xyzlabs {
 

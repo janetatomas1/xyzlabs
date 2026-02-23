@@ -8,17 +8,15 @@ target_include_directories(
     "${CMAKE_SOURCE_DIR}/include/"
     "${CMAKE_INCLUDE_PATH}"
 )
-
-if(UNIX)
-    set(GTEST_LIBRARY "libgtest.a")
-else()
-    set(GTEST_LIBRARY "gtest.lib")
-endif()
-
-find_package(GTest REQUIRED)
+target_link_directories(
+    tests
+    PRIVATE
+    ${CMAKE_LIBRARY_PATH}
+)
+find_package(gtest REQUIRED)
 target_link_libraries(
     tests
     PRIVATE
     xyzlabs
-    GTest::gtest
+    gtest
 )

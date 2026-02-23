@@ -1,4 +1,6 @@
 
+#include "xyzlabs/utils/operators.hpp"
+
 #include "xyzlabs/ui/settingswidget.hpp"
 
 namespace xyzlabs {

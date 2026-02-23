@@ -10,9 +10,12 @@ option(WITH_3D "Build xyzlabs3d library" OFF)
 option(WITH_EXAMPLES "Build examples" OFF)
 option(WITH_TESTS "Build tests" OFF)
 
-add_compile_options(
-    -Wfatal-errors -Wall -Wextra -Wpedantic
-)
+if(MSVC)
+else()
+    add_compile_options(
+        -Wfatal-errors -Wall -Wextra -Wpedantic
+    )
+endif()
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -29,7 +32,7 @@ add_library(
     "${XYZLABS_SOURCES}"
 )
 
-find_package(glfw3 REQUIRED)
+find_package(glfw REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(OpenGL REQUIRED)
@@ -55,18 +58,14 @@ target_link_libraries(
     OpenGL::GL
     GLEW::GLEW
     imgui::imgui
-    glfw
+    glfw::glfw
     ${Boost_LIBRARIES}
     nlohmann_json::nlohmann_json
     concurrentqueue::concurrentqueue
     stb::stb
 )
-target_include_directories(
-    xyzlabs
-    PUBLIC
-    ${CMAKE_INCLUDE_PATH}
-)
-
+target_compile_definitions(xyzlabs PUBLIC GLEW_STATIC)
+target_compile_definitions(xyzlabs PUBLIC IMGUI_DEFINE_MATH_OPERATORS)
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL)
 target_compile_definitions(xyzlabs PUBLIC FMT_HEADER_ONLY)
 
@@ -96,7 +95,6 @@ if(WITH_3D)
         Magnum::Application
         Magnum::Shaders
         Magnum::SceneGraph
-        GLEW::GLEW
     )
 endif()
 

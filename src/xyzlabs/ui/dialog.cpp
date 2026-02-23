@@ -5,6 +5,8 @@
 #include "xyzlabs/ui/dialog.hpp"
 #include "xyzlabs/event/eventmanager.hpp"
 #include "xyzlabs/xyzlabs.hpp"
+#include "xyzlabs/utils/operators.hpp"
+
 
 namespace xyzlabs {
 

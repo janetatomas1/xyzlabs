@@ -8,3 +8,5 @@ docs
 .zed
 .cache
 html
+.vs/
+build*/
