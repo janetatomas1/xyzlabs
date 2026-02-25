@@ -2,10 +2,6 @@
 cmake_minimum_required(VERSION 3.28)
 project(xyzlabs)
 
-if(DEFINED CMAKE_TOOLCHAIN_FILE AND EXISTS ${CMAKE_TOOLCHAIN_FILE})
-    include(${CMAKE_TOOLCHAIN_FILE})
-endif()
-
 option(WITH_3D "Build xyzlabs3d library" OFF)
 option(WITH_EXAMPLES "Build examples" OFF)
 option(WITH_TESTS "Build tests" OFF)
