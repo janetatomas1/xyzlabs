@@ -28,7 +28,12 @@ add_library(
     "${XYZLABS_SOURCES}"
 )
 
-find_package(glfw REQUIRED)
+if(UNIX)
+    find_package(glfw3 REQUIRED)
+else()
+    find_package(glfw REQUIRED)
+endif()
+
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(OpenGL REQUIRED)
