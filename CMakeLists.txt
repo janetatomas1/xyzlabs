@@ -7,6 +7,7 @@ option(WITH_EXAMPLES "Build examples" OFF)
 option(WITH_TESTS "Build tests" OFF)
 
 if(MSVC)
+    add_compile_options(/utf-8)
 else()
     add_compile_options(
         -Wfatal-errors -Wall -Wextra -Wpedantic
@@ -14,10 +15,6 @@ else()
 endif()
 
 set(CMAKE_CXX_STANDARD 23)
-
-if(MSVC)
-    add_compile_options(/utf-8)
-endif()
 
 file(GLOB_RECURSE XYZLABS_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs/*.cpp")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules" ${CMAKE_MODULE_PATH})
