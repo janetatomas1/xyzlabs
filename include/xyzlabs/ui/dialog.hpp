@@ -3,13 +3,15 @@
 
 #include "xyzlabs/ui/widget.hpp"
 #include "xyzlabs/event/event.hpp"
+#include "xyzlabs/ui/button.hpp"
 
 namespace xyzlabs {
 
 class Dialog: public Widget {
     std::string content_;
-    std::string acceptText_ = "OK";
     std::string rejectText_ = "Cancel";
+
+    Button acceptButton_;
 
     action acceptAction_ = []() {};
     action rejectAction_ = []() {};
@@ -48,20 +50,16 @@ public:
     virtual void accept();
     virtual void reject();
     void set_content(const std::string &text);
-    void set_accept_text(const std::string &text);
     void set_reject_text(const std::string &text);
     std::string content();
-    std::string accept_text();
     std::string reject_text();
     void set_accept_action(action act);
     void set_reject_action(action act);
-    ImVec4 background_color();
+    ImVec4& background_color();
     void set_background_color(const ImVec4 &color);
     void set_reject_active(bool value);
-    RelativeLayout &accept_btn_layout();
-    RelativeLayout &reject_btn_layout();
-    RelativeLayout &accept_btn_alone_layout();
     RelativeLayout &content_layout();
+    Button &accept_button();
 };
 
 }
