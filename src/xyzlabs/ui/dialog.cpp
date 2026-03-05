@@ -18,7 +18,7 @@ Dialog::Dialog(
     Window *window):
     Widget(title, parent, window),
     content_(content),
-    rejectText_(rejectText),
+    rejectButton_(rejectText),
     acceptButton_(acceptText) {
     layout().set_size_relative({0.4f, 0.3f});
     layout().set_position_relative({0.3f, 0.1f});
@@ -26,9 +26,7 @@ Dialog::Dialog(
 
 void Dialog::show(const ImVec2 &size, const ImVec2 &position) {
     auto [outerSize, outerPos] = layout().compute(size, position);
-
     auto [contentSize, contentPos] = contentLayout_.compute(outerSize, {0.0f, 0.0f});
-    auto [rejectBtnSize, rejectBtnPos] = rejectBtnLayout_.compute(outerSize, {0.0f, 0.0f});
 
     auto drawList = ImGui::GetWindowDrawList();
     drawList->AddRectFilled(outerPos, outerPos + outerSize, ImGui::GetColorU32(ImGuiCol_WindowBg));
@@ -39,8 +37,7 @@ void Dialog::show(const ImVec2 &size, const ImVec2 &position) {
     ImGui::SetCursorPos(contentPos);
     ImGui::TextWrapped("%s", content_.c_str());
 
-    ImGui::SetCursorPos(rejectBtnPos);
-    if(rejectActive_ && ImGui::Button(rejectText_.c_str(), rejectBtnSize)) {
+    if(rejectActive_ && rejectButton_(outerSize, {0.0f, 0.0f})) {
         reject();
     }
 
@@ -62,16 +59,8 @@ void Dialog::set_content(const std::string &text) {
     content_ = text;
 }
 
-void Dialog::set_reject_text(const std::string &text) {
-    rejectText_ = text;
-}
-
 std::string Dialog::content() {
     return content_;
-}
-
-std::string Dialog::reject_text() {
-    return rejectText_;
 }
 
 void Dialog::set_accept_action(action act) {
@@ -96,6 +85,10 @@ RelativeLayout &Dialog::content_layout() {
 
 Button& Dialog::accept_button() {
     return acceptButton_;
+}
+
+Button& Dialog::reject_button() {
+    return rejectButton_;
 }
 
 }

@@ -9,8 +9,8 @@ namespace xyzlabs {
 
 class Dialog: public Widget {
     std::string content_;
-    std::string rejectText_ = "Cancel";
 
+    Button rejectButton_;
     Button acceptButton_;
 
     action acceptAction_ = []() {};
@@ -25,18 +25,6 @@ class Dialog: public Widget {
         {0.3f, 0.2f},
         {0.1f, 0.1f}
     };
-    RelativeLayout acceptBtnLayout_ = {
-        {0.2f, 0.15f},
-        {0.55f, 0.5f}
-    };
-    RelativeLayout acceptBtnAloneLayout_ = {
-        {0.2f, 0.15f},
-        {0.45f, 0.5f}
-    };
-    RelativeLayout rejectBtnLayout_ = {
-        {0.2f, 0.15f},
-        {0.25f, 0.5f}
-    };
 public:
     Dialog(
         const std::string &content,
@@ -50,16 +38,14 @@ public:
     virtual void accept();
     virtual void reject();
     void set_content(const std::string &text);
-    void set_reject_text(const std::string &text);
     std::string content();
-    std::string reject_text();
     void set_accept_action(action act);
     void set_reject_action(action act);
     ImVec4& background_color();
-    void set_background_color(const ImVec4 &color);
     void set_reject_active(bool value);
     RelativeLayout &content_layout();
     Button &accept_button();
+    Button &reject_button();
 };
 
 }
