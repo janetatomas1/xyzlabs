@@ -5,9 +5,10 @@
 #include "xyzlabs/ui/tabwidget.hpp"
 #include "xyzlabs/event/eventmanager.hpp"
 #include "xyzlabs/utils/randomgenerator.hpp"
+#include "xyzlabs/utils/operators.hpp"
 #include "xyzlabs/window.hpp"
 #include "xyzlabs/xyzlabs.hpp"
-#include "xyzlabs/utils/operators.hpp"
+#include "xyzlabs/assert.hpp"
 
 namespace xyzlabs {
 
@@ -24,8 +25,9 @@ TabWidget::TabWidget(
     const std::string &title,
     Widget *parent,
     Window *window
-): Widget(title, parent, window) {
-    tabBarId_ = fmt::format("##{}", XYZLabs::random_generator()());
+): Widget(title, parent, window),
+   tabBarId_(fmt::format("##{}", XYZLabs::random_generator()())),
+   scrollbarId_(fmt::format("##{}", XYZLabs::random_generator()())) {
 }
 
 Widget* TabWidget::add_tab_internal(std::unique_ptr<Widget> tab, size_t position) {
@@ -68,16 +70,13 @@ Widget* TabWidget::set_tab_internal(std::unique_ptr<Widget> tab, size_t position
 }
 
 void TabWidget::show(const ImVec2 &size, const ImVec2 &position) {
-    for(size_t i = 0; i < tabs_.size(); i++) {
-        if(tabs_[i] == nullptr) {
-            spdlog::info("TabWidget index, size: {} {}", i, tabs_.size());
-        }
-    }
-
     auto [tabBarSize, tabBarPosition] = tabBarLayout_.compute(size, position);
     auto [scrollBarSize, scrollbarPosition] = scrollBarLayout_.compute(tabBarSize, tabBarPosition);
 
     ImGui::SetCursorPos(position);
+    XYZ_ASSERT(
+        currentTab_ < tabs_.size()
+    );
     tabs_[currentTab_]->show(size, position);
 
     auto mousePos = ImGui::GetMousePos();

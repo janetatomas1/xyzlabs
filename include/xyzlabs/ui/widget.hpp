@@ -265,6 +265,11 @@ public:
     XYZLabs* app();
 };
 
+/**
+ * @brief Concept matching Widget or any class derived from Widget.
+ */
+template <typename T>
+concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
 
 /**
  * @brief Type trait to detect std::unique_ptr<T> where T derives from Widget.
@@ -278,11 +283,8 @@ struct is_unique_ptr_to_widget;
 template<typename T>
 inline constexpr bool is_unique_ptr_to_widget_v = false;
 
-/**
- * @brief Concept matching Widget or any class derived from Widget.
- */
-template <typename T>
-concept WidgetType = std::derived_from<T, Widget> || std::same_as<T, Widget>;
+template<WidgetType W>
+inline constexpr bool is_unique_ptr_to_widget_v<std::unique_ptr<W>> = true;
 
 template<class W>
 W* Widget::parent_as() {

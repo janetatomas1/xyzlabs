@@ -9,7 +9,7 @@ using namespace xyzlabs;
 
 struct HelloWorldWidget: public Widget {
     Button btn;
-    HelloWorldWidget() {
+    HelloWorldWidget(): Widget("Hello world") {
         btn = Button("Click me !");
         btn.layout().set_size_relative({0.15f, 0.1f});
         btn.layout().set_position_relative({0.4f, 0.3f});
