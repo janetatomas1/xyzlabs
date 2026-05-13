@@ -27,7 +27,11 @@ void Window::init() {
         height_ = 5000;
         maximize = true;
     }
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+
     handle_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
     if(!handle_) {
         spdlog::error("GLFW window creation failed!");
