@@ -48,7 +48,6 @@ cmake --build build
 
 ## Dependencies
 - [glfw](https://github.com/glfw/glfw) for window managment
-- [glew](https://github.com/nigels-com/glew) for OpenGL loading
 - [Dear ImGui](https://github.com/ocornut/imgui) for UI
 - [spdlog](https://github.com/gabime/spdlog) for string formatting
 - [GTest](https://github.com/google/googletest) for unit testing

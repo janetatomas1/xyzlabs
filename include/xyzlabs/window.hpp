@@ -88,7 +88,7 @@ public:
     /**
      * @brief Initializes the window, OpenGL context, and ImGui backend.
      *
-     * Creates the GLFW window, initializes GLEW, sets up ImGui,
+     * Creates the GLFW window, initializes OpenGL and GLFW, sets up ImGui,
      * and registers necessary GLFW callbacks.
      *
      * Called once by the WindowManager during window creation.

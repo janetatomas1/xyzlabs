@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+#include <glbinding/glbinding.h>
 #include <spdlog/spdlog.h>
 #include <algorithm>
 

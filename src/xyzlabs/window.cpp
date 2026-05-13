@@ -1,6 +1,17 @@
 
-#include <GL/glew.h>
+#include <glbinding/glbinding.h>
+#include <glbinding/Version.h>
+#include <glbinding/FunctionCall.h>
+#include <glbinding/CallbackMask.h>
 
+#include <glbinding/gl/gl.h>
+#include <glbinding/getProcAddress.h>
+
+#include <glbinding-aux/ContextInfo.h>
+#include <glbinding-aux/Meta.h>
+#include <glbinding-aux/types_to_string.h>
+#include <glbinding-aux/ValidVersions.h>
+#include <glbinding-aux/debug.h>
 #include <cstdint>
 #include <imgui_impl_opengl3.h>
 #include <imgui.h>
@@ -17,6 +28,7 @@
 #include "xyzlabs/assert.hpp"
 #include "xyzlabs/utils/operators.hpp"
 
+using namespace gl;
 
 namespace xyzlabs {
 
@@ -44,13 +56,8 @@ void Window::init() {
         glfwMaximizeWindow(handle_);
     }
     glfwMakeContextCurrent(handle_);
-
-    glewExperimental = GL_TRUE;
-    if(glewInit() != GLEW_OK) {
-        spdlog::error("GLEW initialisation failed!");
-    } else {
-        spdlog::info("GLEW initialisation SUCCESS!");
-    }
+    glbinding::initialize(glfwGetProcAddress, false); // only resolve functions that are actually used (lazy)
+    glbinding::aux::enableGetErrorCallback();
 
     IMGUI_CHECKVERSION();
     ctx_ = ImGui::CreateContext();

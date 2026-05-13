@@ -7,9 +7,9 @@ option(WITH_EXAMPLES "Build examples" OFF)
 option(WITH_TESTS "Build tests" OFF)
 
 if(MSVC)
-    add_compile_options(/utf-8)
+  add_compile_options(/utf-8)
 else()
-    add_compile_options(
+  add_compile_options(
         -Wfatal-errors -Wall -Wextra -Wpedantic
     )
 endif()
@@ -26,9 +26,9 @@ add_library(
 )
 
 if(UNIX)
-    find_package(glfw3 REQUIRED)
+  find_package(glfw3 REQUIRED)
 else()
-    find_package(glfw REQUIRED)
+  find_package(glfw REQUIRED)
 endif()
 
 find_package(fmt REQUIRED)
@@ -39,7 +39,7 @@ find_package(Boost REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(concurrentqueue REQUIRED)
 find_package(stb REQUIRED)
-find_package(GLEW REQUIRED)
+find_package(glbinding)
 
 target_include_directories(
     xyzlabs
@@ -54,7 +54,7 @@ target_link_libraries(
     fmt::fmt
     spdlog::spdlog
     OpenGL::GL
-    GLEW::GLEW
+    glbinding::glbinding
     imgui::imgui
     glfw::glfw
     ${Boost_LIBRARIES}
@@ -62,7 +62,6 @@ target_link_libraries(
     concurrentqueue::concurrentqueue
     stb::stb
 )
-target_compile_definitions(xyzlabs PUBLIC GLEW_STATIC)
 target_compile_definitions(xyzlabs PUBLIC IMGUI_DEFINE_MATH_OPERATORS)
 target_compile_definitions(xyzlabs PUBLIC SPDLOG_FMT_EXTERNAL)
 target_compile_definitions(xyzlabs PUBLIC FMT_HEADER_ONLY)
@@ -70,7 +69,7 @@ target_compile_definitions(xyzlabs PUBLIC FMT_HEADER_ONLY)
 get_target_property(LIBS imgui::imgui INTERFACE_INCLUDE_DIRECTORIES)
 
 if(WITH_3D)
-    find_package(
+  find_package(
         Magnum
         REQUIRED
         GL
@@ -78,15 +77,15 @@ if(WITH_3D)
         GlfwApplication
         Shaders
     )
-    file(GLOB XYZLABS3D_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs3d/*.cpp")
-    add_library(xyzlabs3d STATIC "${XYZLABS3D_SOURCES}")
-    target_include_directories(
+  file(GLOB XYZLABS3D_SOURCES "${CMAKE_SOURCE_DIR}/src/xyzlabs3d/*.cpp")
+  add_library(xyzlabs3d STATIC "${XYZLABS3D_SOURCES}")
+  target_include_directories(
         xyzlabs3d
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
     )
-    target_link_libraries(
+  target_link_libraries(
         xyzlabs3d
         PUBLIC xyzlabs
         Magnum::GL
@@ -111,7 +110,7 @@ install(
 )
 
 if(WITH_3D)
-    install(
+  install(
         TARGETS xyzlabs3d
         EXPORT xyzlabsTargets
         ARCHIVE DESTINATION lib
@@ -120,7 +119,7 @@ if(WITH_3D)
         INCLUDES DESTINATION include
     )
 
-    install(
+  install(
         DIRECTORY ${CMAKE_SOURCE_DIR}/include/xyzlabs3d
         DESTINATION include/
     )
@@ -134,11 +133,11 @@ install(
 )
 
 if(WITH_EXAMPLES)
-    add_subdirectory(examples)
+  add_subdirectory(examples)
 endif()
 
 if(WITH_TESTS)
-    add_subdirectory(tests)
+  add_subdirectory(tests)
 endif()
 
 include(CMakePackageConfigHelpers)
