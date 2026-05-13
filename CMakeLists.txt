@@ -39,7 +39,7 @@ find_package(Boost REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(concurrentqueue REQUIRED)
 find_package(stb REQUIRED)
-find_package(glbinding)
+find_package(glbinding REQUIRED)
 
 target_include_directories(
     xyzlabs
@@ -55,6 +55,7 @@ target_link_libraries(
     spdlog::spdlog
     OpenGL::GL
     glbinding::glbinding
+    glbinding::glbinding-aux
     imgui::imgui
     glfw::glfw
     ${Boost_LIBRARIES}
