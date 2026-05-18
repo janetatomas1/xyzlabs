@@ -97,6 +97,7 @@ void Window::update() {
     XYZ_ASSERT_MSG(centralWidget_, "Window::update called without a central widget");
 
     make_context_current();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glfwSwapInterval(0);
 
     glfwGetWindowSize(handle_, &width_, &height_);
@@ -115,7 +116,6 @@ void Window::update() {
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     glfwSwapBuffers(handle_);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     key_callback();
 
@@ -212,10 +212,11 @@ auto flip_image(uint8_t *data, size_t width, size_t height) {
 }
 
 std::vector<unsigned char> Window::export_img(int x, int y, int width, int height) {
-    std::vector<unsigned char> pixels(width_ * height_ * 4);
+    std::vector<unsigned char> pixels(width * height * 4);
 
     make_context_current();
-    glReadBuffer(GL_FRONT);
+    glfwSwapBuffers(handle_);
+    glReadBuffer(GL_BACK);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
     glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
 

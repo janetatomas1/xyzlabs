@@ -5,6 +5,22 @@
 #include <xyzlabs/ui/button.hpp>
 #include <spdlog/spdlog.h>
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
+bool save_png(const std::string& filename,
+              const std::vector<unsigned char>& rgba,
+              int width,
+              int height)
+{
+    return stbi_write_png(filename.c_str(),
+                          width,
+                          height,
+                          4,                // RGBA
+                          rgba.data(),
+                          width * 4) != 0;  // stride
+}
+
 using namespace xyzlabs;
 
 struct HelloWorldWidget: public Widget {
@@ -18,6 +34,8 @@ struct HelloWorldWidget: public Widget {
     void show(const ImVec2 &size, const ImVec2 &pos) override {
         if(btn(size, pos)) {
             spdlog::info("Button clicked");
+            auto a = window()->export_img(0, 0, size.x, size.y);
+            save_png("a.png", a, size.x, size.y);
         }
     }
 };
