@@ -7,10 +7,10 @@ option(WITH_EXAMPLES "Build examples" OFF)
 option(WITH_TESTS "Build tests" OFF)
 
 if(MSVC)
-  add_compile_options(/utf-8)
+  add_compile_options(/utf-8 /O2)
 else()
   add_compile_options(
-        -Wfatal-errors -Wall -Wextra -Wpedantic
+        -Wfatal-errors -Wall -Wextra -Wpedantic -O3
     )
 endif()
 
