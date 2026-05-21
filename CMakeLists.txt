@@ -7,7 +7,7 @@ option(WITH_EXAMPLES "Build examples" OFF)
 option(WITH_TESTS "Build tests" OFF)
 
 if(MSVC)
-  add_compile_options(/utf-8 /O2)
+  add_compile_options(/utf-8)
 else()
   add_compile_options(
         -Wfatal-errors -Wall -Wextra -Wpedantic -O3
@@ -24,6 +24,13 @@ add_library(
     STATIC
     "${XYZLABS_SOURCES}"
 )
+
+if(MSVC)
+    target_compile_options(xyzlabs PRIVATE
+        $<$<CONFIG:Debug>:/RTC1>
+        $<$<NOT:$<CONFIG:Debug>>:/O2>
+    )
+endif()
 
 if(UNIX)
   find_package(glfw3 REQUIRED)
@@ -44,6 +51,7 @@ find_package(glbinding REQUIRED)
 target_include_directories(
     xyzlabs
     PUBLIC
+    ${glbinding_INCLUDE_DIRS}/glbinding/3rdparty
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
