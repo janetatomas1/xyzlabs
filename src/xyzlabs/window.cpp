@@ -97,6 +97,7 @@ void Window::update() {
     XYZ_ASSERT_MSG(centralWidget_, "Window::update called without a central widget");
 
     make_context_current();
+    glfwSwapBuffers(handle_);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glfwSwapInterval(0);
 
@@ -114,8 +115,6 @@ void Window::update() {
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-    glfwSwapBuffers(handle_);
 
     key_callback();
 
@@ -215,8 +214,7 @@ std::vector<unsigned char> Window::export_img(int x, int y, int width, int heigh
     std::vector<unsigned char> pixels(width * height * 4);
 
     make_context_current();
-    glfwSwapBuffers(handle_);
-    glReadBuffer(GL_BACK);
+    glReadBuffer(GL_FRONT);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
     glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
 
