@@ -32,11 +32,7 @@ if(MSVC)
     )
 endif()
 
-if(UNIX)
-  find_package(glfw3 REQUIRED)
-else()
-  find_package(glfw REQUIRED)
-endif()
+find_package(glfw REQUIRED)
 
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
